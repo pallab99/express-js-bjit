@@ -12,10 +12,24 @@ const validateProductsBeforeUpdate = require('../../util/updateProductValidator'
 class Product {
     async getAll(req, res) {
         try {
+            const offset = parseInt(req.query.offset);
+            const itemsPerPage = parseInt(req.query.itemsPerPage);
             const data = await readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
-            res.status(200).json(success('Successfully get the data', data));
+            if (isNaN(offset) && isNaN(itemsPerPage)) {
+                res.status(200).json(
+                    success('Successfully get the data', data)
+                );
+            } else {
+                const startIndex = offset * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                const paginatedProducts = data.slice(startIndex, endIndex);
+                res.status(200).json(
+                    success('Successfully get the data', paginatedProducts)
+                );
+            }
         } catch (error) {
             res.status(400).json(failure('Can not get the data'));
         }
