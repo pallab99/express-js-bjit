@@ -1,7 +1,13 @@
 const path = require('path');
 const { success, failure } = require('../../common/response');
-const { readFile, addDataToFile } = require('../../util/fileHandler');
-const validateProductsBeforeAdd = require('../../util/productValidator');
+const {
+    readFile,
+    addDataToFile,
+    deleteData,
+    updateData,
+} = require('../../util/fileHandler');
+const validateProductsBeforeAdd = require('../../util/addProductValidator');
+const validateProductsBeforeUpdate = require('../../util/updateProductValidator');
 
 class Product {
     async getAll(req, res) {
@@ -58,6 +64,55 @@ class Product {
                 }
             }
         } catch (error) {
+            res.status(500).json(failure('Internal server error'));
+        }
+    }
+
+    async deleteData(req, res) {
+        try {
+            const id = req.params.id;
+
+            const result = await deleteData(
+                path.join(__dirname, '..', '..', 'data', 'products.json'),
+                req,
+                res
+            );
+            if (result.success) {
+                res.status(200).json(
+                    success('Successfully deleted data', result.data)
+                );
+            } else {
+                res.status(400).json(failure(`Id ${id} does not exist`));
+            }
+        } catch (error) {
+            res.status(500).json(failure('Internal server error'));
+        }
+    }
+
+    async updateData(req, res) {
+        try {
+            const validateProducts = validateProductsBeforeUpdate(req);
+            if (!validateProducts.success) {
+                res.status(400).json(
+                    failure('Can not add products', validateProducts.error)
+                );
+            } else {
+                const id = req.params.id;
+                const result = await updateData(
+                    path.join(__dirname, '..', '..', 'data', 'products.json'),
+                    req,
+                    res
+                );
+                if (result.success) {
+                    res.status(200).json(
+                        success('Successfully updated the data', result.data)
+                    );
+                } else {
+                    res.status(400).json(failure(`Id ${id} does not exist`));
+                }
+            }
+        } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }

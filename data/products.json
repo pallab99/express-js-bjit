@@ -1813,16 +1813,5 @@
         "stock": 133,
         "thumbnail": "https://i.dummyjson.com/data/products/100/thumbnail.jpg",
         "title": "Crystal chandelier maria theresa for 12 light"
-    },
-    {
-        "id": 101,
-        "title": "Macbook air m1",
-        "description": "Apple laptop",
-        "price": 14,
-        "discountPercentage": 12,
-        "rating": 3,
-        "stock": 146,
-        "brand": "Apple",
-        "category": "laptops"
     }
 ]

@@ -1,4 +1,4 @@
-const validateProductsBeforeAdd = (req) => {
+const validateProductsBeforeUpdate = (req) => {
     const body = req.body;
     const {
         title,
@@ -12,46 +12,50 @@ const validateProductsBeforeAdd = (req) => {
     } = body;
     const error = {};
 
-    const isInvalidNumber = (value) => isNaN(value) || value < 0;
     const isInvalidString = (value) =>
         typeof value !== 'string' || value.trim() === '';
 
-    if (isInvalidString(title)) {
+    const isInvalidNumber = (value, max) =>
+        isNaN(value) || value <= 0 || value > max;
+    if (title !== undefined && isInvalidString(title)) {
         error.title = 'Title is required.';
     }
 
-    if (isInvalidNumber(price) || price > 100) {
+    if (price !== undefined && isInvalidNumber(price, 100)) {
         error.price =
             'Price must be a valid number greater than 0 and less than 100';
     }
 
-    if (isInvalidNumber(stock) || stock > 300) {
+    if (stock !== undefined && isInvalidNumber(stock, 300)) {
         error.stock =
-            'Stock must be a valid number greater than 0 and less than 100';
+            'Stock must be a valid number greater than 0 and less than 300';
     }
 
-    if (isInvalidString(description)) {
+    if (description !== undefined && isInvalidString(description)) {
         error.description = 'Description is required.';
     }
 
-    if (isInvalidNumber(discountPercentage) || discountPercentage > 50) {
+    if (
+        discountPercentage !== undefined &&
+        isInvalidNumber(discountPercentage, 50)
+    ) {
         error.discountPercentage =
             'DiscountPercentage is required and must be less than 50';
     }
 
-    if (rating < 0 || rating > 5) {
+    if ((rating !== undefined && isInvalidNumber(rating, 5)) || rating <= 0) {
         error.rating = 'Rating is required and must be between 0 to 5';
     }
 
-    if (isInvalidString(brand)) {
+    if (brand !== undefined && isInvalidString(brand)) {
         error.brand = 'Brand is required.';
     }
 
-    if (isInvalidString(category)) {
+    if (category !== undefined && isInvalidString(category)) {
         error.category = 'Category is required.';
     }
 
     return { success: Object.keys(error).length === 0, error: error };
 };
 
-module.exports = validateProductsBeforeAdd;
+module.exports = validateProductsBeforeUpdate;
