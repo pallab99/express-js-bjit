@@ -18,12 +18,14 @@ const readFile = async (path) => {
 const addDataToFile = async (path, req, res) => {
     try {
         const body = req.body;
-        // console.log(token);
         if (req.url === '/users/signUp') {
             const token = generateSecretToken();
             body.token = token;
         }
         const result = await readFile(path);
+        if (req.url === '/orders/create') {
+            body.user.id = result[result.length - 1].id + 1;
+        }
         const newData = {
             id: result[result.length - 1].id + 1,
             ...body,
@@ -32,7 +34,6 @@ const addDataToFile = async (path, req, res) => {
         await fsPromise.writeFile(path, JSON.stringify(result, 2, null));
         return { success: true, data: newData };
     } catch (error) {
-        console.log(error);
         return { success: false, data: null };
     }
 };

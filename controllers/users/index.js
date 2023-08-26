@@ -51,7 +51,7 @@ class Users {
                 userData[index].token = token;
 
                 res.cookie('token', token, {
-                    maxAge: 1 * 60 * 1000,
+                    maxAge: 20 * 60 * 1000,
                     httpOnly: true,
                     secure: true,
                 });
