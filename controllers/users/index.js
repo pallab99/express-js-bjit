@@ -35,7 +35,6 @@ class Users {
 
     async signInUser(req, res) {
         try {
-            // console.log(req.body);
             const { email, password } = req.body;
             const userData = await readFile(
                 path.join(__dirname, '..', '..', 'data', 'users.json')

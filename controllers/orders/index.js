@@ -14,7 +14,6 @@ class Orders {
                 success('Successfully get the data', ordersData)
             );
         } catch (error) {
-            console.log(error);
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }
@@ -50,7 +49,6 @@ class Orders {
                 res.status(400).json(failure(`User id ${id} does not exist`));
             }
         } catch (error) {
-            console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
