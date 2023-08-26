@@ -1,7 +1,7 @@
 const express = require('express');
 const server = express();
 const bodyParser = require('body-parser');
-
+const cookieParser = require('cookie-parser');
 const port = 8000;
 
 const productRouter = require('./routes/products');
@@ -11,7 +11,7 @@ const userRouter = require('./routes/users/');
 const { failure, success } = require('./common/response');
 server.use(express.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-
+server.use(cookieParser());
 //! api routes
 server.use('/api', productRouter.router);
 server.use('/api', orderRouter.router);

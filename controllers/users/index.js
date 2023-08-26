@@ -51,7 +51,7 @@ class Users {
                 userData[index].token = token;
 
                 res.cookie('token', token, {
-                    maxAge: 24 * 60 * 60 * 1000,
+                    maxAge: 1 * 60 * 1000,
                     httpOnly: true,
                     secure: true,
                 });
@@ -67,6 +67,19 @@ class Users {
             }
         } catch (error) {
             res.status(500).json(failure('Internal Server Error'));
+        }
+    }
+
+    async signOutUser(req, res) {
+        try {
+            if (req.cookies.token != undefined) {
+                res.clearCookie('token');
+                res.status(200).json(success('Sign out successful'));
+            } else {
+                res.status(400).json(failure('Token Already Expired'));
+            }
+        } catch (error) {
+            res.status(400).json(failure('Wrong email or password'));
         }
     }
 }

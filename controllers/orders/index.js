@@ -9,6 +9,7 @@ class Orders {
                 path.join(__dirname, '..', '..', 'data', 'orders.json'),
                 'utf-8'
             );
+
             res.status(200).json(
                 success('Successfully get the data', ordersData)
             );
