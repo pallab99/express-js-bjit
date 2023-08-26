@@ -1,18 +1,1 @@
-[
-    {
-        "id": 1,
-        "name": "Pallab Majumdar",
-        "email": "majumdarp79@gmail.com",
-        "age": 23,
-        "address": { "country": "BD", "division": "Dhaka", "area": "mirpur-2" }
-    },
-    {
-        "id": 2,
-        "name": "test user",
-        "email": "test@gmail.com",
-        "password": "12345678",
-        "age": 23,
-        "address": { "country": "BD", "division": "Dhaka", "area": "mirpur-2" },
-        "token": "wDSCPA0pcy43vpwkUa5YV37Al7CxiG93ijVWBQqsq3NupPPbXI"
-    }
-]
+[{"id":1,"name":"Pallab Majumdar","email":"majumdarp79@gmail.com","age":23,"address":{"country":"BD","division":"Dhaka","area":"mirpur-2"}},{"id":2,"name":"test user","email":"test@gmail.com","password":"12345678","age":23,"address":{"country":"BD","division":"Dhaka","area":"mirpur-2"},"token":"H9iujqkoFIXZBSAcZbui7HL2KQ9pHc4BNCQRmuvH4rvpvYFbPL"}]

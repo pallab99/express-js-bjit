@@ -18,6 +18,7 @@ const readFile = async (path) => {
 const addDataToFile = async (path, req, res) => {
     try {
         const body = req.body;
+        // console.log(token);
         if (req.url === '/users/signUp') {
             const token = generateSecretToken();
             body.token = token;
