@@ -1,8 +1,7 @@
 const path = require('path');
 const { readFile, addDataToFile } = require('../../util/fileHandler');
-const Product = require('./../product/');
 const { failure, success } = require('../../common/response');
-const product = new Product();
+
 class Orders {
     async createOrders(req, res) {
         try {
