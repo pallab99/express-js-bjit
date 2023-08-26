@@ -17,7 +17,6 @@ const readFile = async (path) => {
 const addDataToFile = async (path, req, res) => {
     try {
         const body = req.body;
-
         const result = await readFile(path);
         const newProduct = {
             id: result[result.length - 1].id + 1,

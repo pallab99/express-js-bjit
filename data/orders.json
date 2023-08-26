@@ -5,7 +5,12 @@
             "id": 1,
             "name": "Pallab Majumdar",
             "email": "majumdarp79@gmail.com",
-            "age": 23
+            "age": 23,
+            "address": {
+                "country": "BD",
+                "division": "Dhaka",
+                "area": "mirpur-2"
+            }
         },
         "products": [2, 3, 4, 5, 7]
     },
@@ -28,5 +33,19 @@
             "age": 27
         },
         "products": [1, 2, 3]
+    },
+    {
+        "id": 4,
+        "user": {
+            "name": "Pallab Majumdar",
+            "email": "majumdarp79@gmail.com",
+            "age": 23,
+            "address": {
+                "country": "BD",
+                "division": "Dhaka",
+                "area": "Mirpur-2"
+            }
+        },
+        "products": [1, 2, 100]
     }
 ]
