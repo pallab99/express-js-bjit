@@ -3,6 +3,57 @@ const { readFile, addDataToFile } = require('../../util/fileHandler');
 const { failure, success } = require('../../common/response');
 
 class Orders {
+    async getAllOrders(req, res) {
+        try {
+            const ordersData = await readFile(
+                path.join(__dirname, '..', '..', 'data', 'orders.json'),
+                'utf-8'
+            );
+            res.status(200).json(
+                success('Successfully get the data', ordersData)
+            );
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+
+    async getOrderByUserId(req, res) {
+        try {
+            const id = req.params.user_id;
+            const orders = await readFile(
+                path.join(__dirname, '..', '..', 'data', 'orders.json')
+            );
+            const filteredData = orders.filter((ele) => {
+                return ele.user.id === +id;
+            });
+
+            if (filteredData.length) {
+                const productsId = filteredData[0].products;
+                const productData = await readFile(
+                    path.join(__dirname, '..', '..', 'data', 'products.json')
+                );
+
+                const newData = productData.filter((product) => {
+                    return productsId.includes(product.id);
+                });
+                const responseData = {
+                    id: id,
+                    user: filteredData[0].user,
+                    product: newData,
+                };
+                res.status(200).json(
+                    success('Successfully get the data', responseData)
+                );
+            } else {
+                res.status(400).json(failure(`User id ${id} does not exist`));
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal Server Error'));
+        }
+    }
+
     async createOrders(req, res) {
         try {
             const body = req.body;
@@ -61,8 +112,7 @@ class Orders {
                 }
             }
         } catch (error) {
-            console.log(error);
-            res.status(400).json(failure('Can not get the data'));
+            res.status(500).json(failure('Internal Server Error'));
         }
     }
 }
