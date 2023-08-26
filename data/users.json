@@ -4,15 +4,15 @@
         "name": "Pallab Majumdar",
         "email": "majumdarp79@gmail.com",
         "age": 23,
-        "address": {
-            "country": "BD",
-            "division": "Dhaka",
-            "area": "mirpur-2"
-        }
+        "address": { "country": "BD", "division": "Dhaka", "area": "mirpur-2" }
     },
-    { "id": 2, "name": "Test User", "email": "test@gmail.com", "age": 27 },
-    { "id": 3, "name": "Test User 1", "email": "test1@gmail.com", "age": 27 },
-    { "id": 4, "name": "Test User 2", "email": "test2@gmail.com", "age": 65 },
-    { "id": 5, "name": "Test user 3", "email": "test3@gmail.com", "age": 34 },
-    { "id": 6, "name": "Test user 3", "email": "test3@gmail.com", "age": 34 }
+    {
+        "id": 2,
+        "name": "test user",
+        "email": "test@gmail.com",
+        "password": "12345678",
+        "age": 23,
+        "address": { "country": "BD", "division": "Dhaka", "area": "mirpur-2" },
+        "token": "wDSCPA0pcy43vpwkUa5YV37Al7CxiG93ijVWBQqsq3NupPPbXI"
+    }
 ]

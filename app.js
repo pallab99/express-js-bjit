@@ -3,8 +3,10 @@ const server = express();
 const bodyParser = require('body-parser');
 
 const port = 8000;
+
 const productRouter = require('./routes/products');
 const orderRouter = require('./routes/orders');
+const userRouter = require('./routes/users/');
 
 const { failure, success } = require('./common/response');
 server.use(express.json());
@@ -13,6 +15,8 @@ server.use(bodyParser.urlencoded({ extended: true }));
 //! api routes
 server.use('/api', productRouter.router);
 server.use('/api', orderRouter.router);
+server.use('/api', userRouter.router);
+
 server.get('/', (req, res) => {
     res.status(200).json(success('This is the base route'));
 });

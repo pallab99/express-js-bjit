@@ -1,4 +1,5 @@
 const path = require('path');
+const generateSecretToken = require('./tokenGenerator');
 
 const fsPromise = require('fs').promises;
 
@@ -17,15 +18,20 @@ const readFile = async (path) => {
 const addDataToFile = async (path, req, res) => {
     try {
         const body = req.body;
+        if (req.url === '/users/signUp') {
+            const token = generateSecretToken();
+            body.token = token;
+        }
         const result = await readFile(path);
-        const newProduct = {
+        const newData = {
             id: result[result.length - 1].id + 1,
             ...body,
         };
-        result.push(newProduct);
+        result.push(newData);
         await fsPromise.writeFile(path, JSON.stringify(result, 2, null));
-        return { success: true, data: newProduct };
+        return { success: true, data: newData };
     } catch (error) {
+        console.log(error);
         return { success: false, data: null };
     }
 };
