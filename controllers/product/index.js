@@ -130,6 +130,35 @@ class Product {
             res.status(500).json(failure('Internal server error'));
         }
     }
+
+    async sortByPrice(req, res) {
+        try {
+            console.log('sort');
+            const queryParams = req.query._sort;
+            console.log();
+            const result = await readFile(
+                path.join(__dirname, '..', '..', 'data', 'products.json')
+            );
+
+            if (queryParams == 'ASC') {
+                const sortedData = result
+                    .slice()
+                    .sort((a, b) => a.price - b.price);
+                res.status(200).json(
+                    success('Successfully Get the data', sortedData)
+                );
+            } else if (queryParams == 'DESC') {
+                const sortedData = result
+                    .slice()
+                    .sort((a, b) => b.price - a.price);
+                res.status(200).json(
+                    success('Successfully Get the data', sortedData)
+                );
+            }
+        } catch (error) {
+            return { success: false };
+        }
+    }
 }
 
 module.exports = Product;
