@@ -1,0 +1,1 @@
+GET /api/products/all?offset=0&itemsPerPage=10 200 5228 - 7.793 ms 

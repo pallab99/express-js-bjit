@@ -26,6 +26,7 @@ class Product {
                 const endIndex = startIndex + itemsPerPage;
 
                 const paginatedProducts = data.slice(startIndex, endIndex);
+
                 res.status(200).json(
                     success('Successfully get the data', paginatedProducts)
                 );
