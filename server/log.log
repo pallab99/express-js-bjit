@@ -1,1 +1,2 @@
 GET /api/products/all 200 56468 - 6.230 ms 
+GET /api/products/all 200 56468 - 9.356 ms 
