@@ -8,7 +8,7 @@ const path = require('path');
 
 const productRouter = require('./routes/products');
 const orderRouter = require('./routes/orders');
-const userRouter = require('./routes/users/');
+const userRouter = require('./routes/users');
 
 const dotEnv = require('dotenv');
 dotEnv.config();
@@ -22,7 +22,6 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cookieParser());
 server.use(morgan('tiny'));
 
-//! Logger
 const logStream = {
     write: (message) => {
         fs.appendFile(

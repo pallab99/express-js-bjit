@@ -1,2 +1,7 @@
 GET /api/products/all?offset=0&itemsPerPage=10 200 5288 - 2.015 ms 
 GET /api/products/details/101 200 246 - 12.391 ms 
+GET /api/users/signOut 400 64 - 5.059 ms 
+POST /api/users/signIn 200 366 - 4.277 ms 
+POST /api/users/signIn 200 366 - 13.074 ms 
+POST /api/users/signIn 200 366 - 13.343 ms 
+POST /api/users/signIn 200 366 - 13.298 ms 
