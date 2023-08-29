@@ -15,7 +15,7 @@ class Product {
             } else {
                 if (isNaN(offset) && isNaN(itemsPerPage)) {
                     res.status(200).json(
-                        success('Successfully get the data', data)
+                        success('Successfully get the data', data.slice(0, 30))
                     );
                 } else {
                     const startIndex = offset * itemsPerPage;
