@@ -1,4 +1,6 @@
-const validateProductsBeforeAdd = (req) => {
+const { failure } = require('../common/response');
+
+const validateProductsBeforeAdd = (req, res, next) => {
     const body = req.body;
     const {
         title,
@@ -50,8 +52,10 @@ const validateProductsBeforeAdd = (req) => {
     if (isInvalidString(category)) {
         error.category = 'Category is required.';
     }
-
-    return { success: Object.keys(error).length === 0, error: error };
+    if (Object.keys(error).length > 0) {
+        res.status(401).json(failure('Unprocessable Entity', error));
+    }
+    next();
 };
 
 module.exports = validateProductsBeforeAdd;

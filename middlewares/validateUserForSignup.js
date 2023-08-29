@@ -1,9 +1,10 @@
-const { readFile } = require('./fileHandler');
+const { failure } = require('../common/response');
+const FileHandlerModel = require('./../model/filehandler');
 const path = require('path');
-const validateUser = async (req) => {
+const validateUser = async (req, res, next) => {
     const { name, email, password } = req.body;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const userData = await readFile(
+    const userData = await FileHandlerModel.readFile(
         path.join(__dirname, '..', 'data', 'users.json')
     );
     const error = {};
@@ -28,7 +29,10 @@ const validateUser = async (req) => {
     if (isSameEmail != -1) {
         error.email = 'Email is already taken';
     }
-    return { success: Object.keys(error).length === 0, error: error };
+    if (Object.keys(error).length > 0) {
+        return res.status(401).json(failure('Unprocessable Entity', error));
+    }
+    next();
 };
 
 module.exports = validateUser;

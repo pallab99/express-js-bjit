@@ -1,8 +1,6 @@
 const path = require('path');
 const { success, failure } = require('../../common/response');
 const FileHandlerModel = require('../../model/filehandler');
-const validateProductsBeforeAdd = require('./../../util/addProductValidator');
-const validateProductsBeforeUpdate = require('../../util/updateProductValidator');
 
 class Product {
     async getAll(req, res) {
@@ -54,24 +52,17 @@ class Product {
 
     async addData(req, res) {
         try {
-            const validateProducts = validateProductsBeforeAdd(req);
-            if (!validateProducts.success) {
-                res.status(400).json(
-                    failure('Can not add products', validateProducts.error)
+            const result = await FileHandlerModel.addDataToFile(
+                path.join(__dirname, '..', '..', 'data', 'products.json'),
+                req,
+                res
+            );
+            if (result.success) {
+                res.status(200).json(
+                    success('Successfully added data', result.data)
                 );
             } else {
-                const result = await FileHandlerModel.addDataToFile(
-                    path.join(__dirname, '..', '..', 'data', 'products.json'),
-                    req,
-                    res
-                );
-                if (result.success) {
-                    res.status(200).json(
-                        success('Successfully added data', result.data)
-                    );
-                } else {
-                    res.status(400).json(failure('Can not add the data'));
-                }
+                res.status(400).json(failure('Can not add the data'));
             }
         } catch (error) {
             res.status(500).json(failure('Internal server error'));
@@ -101,25 +92,18 @@ class Product {
 
     async updateData(req, res) {
         try {
-            const validateProducts = validateProductsBeforeUpdate(req);
-            if (!validateProducts.success) {
-                res.status(400).json(
-                    failure('Can not add products', validateProducts.error)
+            const id = req.params.id;
+            const result = await FileHandlerModel.updateData(
+                path.join(__dirname, '..', '..', 'data', 'products.json'),
+                req,
+                res
+            );
+            if (result.success) {
+                res.status(200).json(
+                    success('Successfully updated the data', result.data)
                 );
             } else {
-                const id = req.params.id;
-                const result = await FileHandlerModel.updateData(
-                    path.join(__dirname, '..', '..', 'data', 'products.json'),
-                    req,
-                    res
-                );
-                if (result.success) {
-                    res.status(200).json(
-                        success('Successfully updated the data', result.data)
-                    );
-                } else {
-                    res.status(400).json(failure(`Id ${id} does not exist`));
-                }
+                res.status(400).json(failure(`Id ${id} does not exist`));
             }
         } catch (error) {
             res.status(500).json(failure('Internal server error'));
