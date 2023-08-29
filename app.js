@@ -2,14 +2,18 @@ const express = require('express');
 const server = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const port = 8000;
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
+
 const productRouter = require('./routes/products');
 const orderRouter = require('./routes/orders');
 const userRouter = require('./routes/users/');
 
+const dotEnv = require('dotenv');
+dotEnv.config();
+
+const port = process.env.PORT;
 const { failure, success } = require('./common/response');
 
 //! Middleware
@@ -20,7 +24,7 @@ server.use(morgan('tiny'));
 
 //! Logger
 const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, 'log', 'log.log'),
+    path.join(__dirname, 'server', 'log.log'),
     { flags: 'a' }
 );
 server.use(
