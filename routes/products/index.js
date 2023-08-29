@@ -12,6 +12,7 @@ router
     .get('/sortByPrice', productController.sortByPrice)
     .get('/filterByCategory', productController.filterByCategory)
     .get('/filterByBrand', productController.filterByBrand)
+    .get('/filterProducts', productController.filterProducts)
     .post('/create', validateProductsBeforeAdd, productController.addData)
     .delete('/delete/:id', productController.deleteData)
     .patch(

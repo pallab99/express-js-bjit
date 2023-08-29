@@ -143,7 +143,7 @@ class Product {
                 );
             }
         } catch (error) {
-            return { success: false };
+            res.status(500).json(failure('Internal Server Error'));
         }
     }
 
@@ -176,7 +176,7 @@ class Product {
                 );
             }
         } catch (error) {
-            return { success: false };
+            res.status(500).json(failure('Internal Server Error'));
         }
     }
 
@@ -205,11 +205,74 @@ class Product {
                 );
             } else {
                 res.status(200).json(
-                    success('There is data with this categories', filteredData)
+                    success(
+                        'There is no data with this categories',
+                        filteredData
+                    )
                 );
             }
         } catch (error) {
-            return { success: false };
+            res.status(500).json(failure('Internal Server Error'));
+        }
+    }
+
+    async filterProducts(req, res) {
+        try {
+            const { category, brand, ram, processor, os, storage } = req.query;
+
+            const result = await FileHandlerModel.readFile(
+                path.join(__dirname, '..', '..', 'data', 'products.json')
+            );
+            if (result.length) {
+                const newData = result.filter((ele) => {
+                    return (
+                        ele.category != undefined &&
+                        ele.brand != undefined &&
+                        ele.ram != undefined &&
+                        ele.processor != undefined &&
+                        ele.os != undefined &&
+                        ele.storage != undefined
+                    );
+                });
+                // console.log(newData);
+                if (brand != undefined) {
+                    const filteredData = newData.filter((item) => {
+                        return (
+                            item.brand === brand &&
+                            (item.ram === ram ||
+                                item.processor === processor ||
+                                item.os === os ||
+                                item.storage === storage)
+                        );
+                    });
+                    res.status(200).json(
+                        success('Successfully get the data', filteredData)
+                    );
+                } else {
+                    const filteredData = newData.filter((ele) => {
+                        return (
+                            ele.category === category ||
+                            ele.brand === brand ||
+                            ele.ram === ram ||
+                            ele.processor === processor ||
+                            ele.os === os ||
+                            ele.storage === storage
+                        );
+                    });
+                    res.status(200).json(
+                        success('Successfully get the data', filteredData)
+                    );
+                }
+
+                // console.log(filteredData);
+            } else {
+                res.status(200).json(
+                    success('There is data with this categories', result)
+                );
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal Server Error'));
         }
     }
 }

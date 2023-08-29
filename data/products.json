@@ -16,7 +16,11 @@
         "rating": 4.69,
         "stock": 94,
         "thumbnail": "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
-        "title": "iPhone 9"
+        "title": "iPhone 9",
+        "ram": "4 Gb",
+        "processor": "A 15 Bionic",
+        "os": "IOS",
+        "storage": "512 Gb"
     },
     {
         "brand": "Apple",
@@ -34,7 +38,11 @@
         "rating": 4.44,
         "stock": 34,
         "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
-        "title": "iPhone X"
+        "title": "iPhone X",
+        "ram": "3 Gb",
+        "processor": "A 12 Bionic",
+        "os": "IOS",
+        "storage": "256 Gb"
     },
     {
         "brand": "Samsung",
@@ -47,7 +55,9 @@
         "rating": 4.09,
         "stock": 36,
         "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
-        "title": "Samsung Universe 9"
+        "title": "Samsung Universe 9",
+        "ram": "8 Gb",
+        "processor": "Snapdragon 888"
     },
     {
         "brand": "OPPO",
@@ -66,7 +76,11 @@
         "rating": 4.3,
         "stock": 123,
         "thumbnail": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
-        "title": "OPPOF19"
+        "title": "OPPOF19",
+        "ram": "6 Gb",
+        "processor": "Snapdragon 730g",
+        "os": "Android",
+        "storage": "128 Gb"
     },
     {
         "brand": "Huawei",
@@ -83,7 +97,11 @@
         "rating": 4.09,
         "stock": 32,
         "thumbnail": "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
-        "title": "Huawei P30"
+        "title": "Huawei P30",
+        "ram": "8 Gb",
+        "processor": "Huawei P30",
+        "os": "Android",
+        "storage": "128 Gb"
     },
     {
         "brand": "Apple",
