@@ -4,18 +4,22 @@ const Product = require('./../../controllers/product/index');
 const validateProductsBeforeAdd = require('../../middlewares/addProductValidator');
 const validateProductsBeforeUpdate = require('../../middlewares/updateProductValidator');
 
-const product = new Product();
+const productController = new Product();
 
 router
-    .get('/products/all', product.getAll)
-    .get('/products/details/:id', product.getDataById)
-    .get('/products/sortByPrice', product.sortByPrice)
-    .post('/products/create', validateProductsBeforeAdd, product.addData)
-    .delete('/products/delete/:id', product.deleteData)
+    .get('/products/all', productController.getAll)
+    .get('/products/details/:id', productController.getDataById)
+    .get('/products/sortByPrice', productController.sortByPrice)
+    .post(
+        '/products/create',
+        validateProductsBeforeAdd,
+        productController.addData
+    )
+    .delete('/products/delete/:id', productController.deleteData)
     .put(
         '/products/update/:id',
         validateProductsBeforeUpdate,
-        product.updateData
+        productController.updateData
     );
 
 exports.router = router;
