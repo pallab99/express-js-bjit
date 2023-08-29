@@ -158,7 +158,6 @@ class Product {
             if (typeof category === 'string') {
                 categoryArray.push(category);
             } else {
-                console.log(category);
                 category.forEach((ele) => {
                     categoryArray.push(ele);
                 });
@@ -166,6 +165,39 @@ class Product {
 
             const filteredData = result.filter((item) =>
                 categoryArray.includes(item.category)
+            );
+            if (filteredData.length) {
+                res.status(200).json(
+                    success('Successfully Get the data', filteredData)
+                );
+            } else {
+                res.status(200).json(
+                    success('There is data with this categories', filteredData)
+                );
+            }
+        } catch (error) {
+            return { success: false };
+        }
+    }
+
+    async filterByBrand(req, res) {
+        try {
+            const { brand } = req.query;
+
+            const result = await FileHandlerModel.readFile(
+                path.join(__dirname, '..', '..', 'data', 'products.json')
+            );
+            let brandArray = [];
+            if (typeof brand === 'string') {
+                brandArray.push(brand);
+            } else {
+                brand.forEach((ele) => {
+                    brandArray.push(ele);
+                });
+            }
+
+            const filteredData = result.filter((item) =>
+                brandArray.includes(item.brand)
             );
             if (filteredData.length) {
                 res.status(200).json(

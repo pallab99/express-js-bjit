@@ -22,3 +22,5 @@ GET /api/products//filterByCategory?category=smartphones&category=laptops&catego
 GET /api/products//filterByCategory?category=smartphones&category=laptops&category=skincare 200 8374 - 3.221 ms 
 GET /api/products//filterByCategory?category=smartphonesvxbv 200 73 - 2.421 ms 
 GET /api/products//filterByCategory?category=smartphones 200 2495 - 1.336 ms 
+GET /api/products//filterByCategory?brand=Dermive&brand=L%27Oreal%20Paris - - - - ms 
+GET /api/products//filterByBrand?brand=Dermive&brand=L%27Oreal%20Paris 200 1274 - 4.654 ms 
