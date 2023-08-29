@@ -39,9 +39,9 @@ server.use((err, req, res, next) => {
     next();
 });
 //! api routes
-server.use('/api', productRouter.router);
-server.use('/api', orderRouter.router);
-server.use('/api', userRouter.router);
+server.use('/api/products', productRouter.router);
+server.use('/api/orders', orderRouter.router);
+server.use('/api/users', userRouter.router);
 
 server.get('/', (req, res) => {
     res.status(200).json(success('This is the base route'));
@@ -50,5 +50,5 @@ server.use((req, res, next) => {
     res.status(500).json(failure("Can't find the route"));
 });
 server.listen(port, () => {
-    console.log(`server started on port : ${port}`);
+    console.log(`server started`);
 });

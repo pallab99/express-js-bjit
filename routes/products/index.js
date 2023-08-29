@@ -7,17 +7,13 @@ const validateProductsBeforeUpdate = require('../../middlewares/updateProductVal
 const productController = new Product();
 
 router
-    .get('/products/all', productController.getAll)
-    .get('/products/details/:id', productController.getDataById)
-    .get('/products/sortByPrice', productController.sortByPrice)
-    .post(
-        '/products/create',
-        validateProductsBeforeAdd,
-        productController.addData
-    )
-    .delete('/products/delete/:id', productController.deleteData)
-    .put(
-        '/products/update/:id',
+    .get('/all', productController.getAll)
+    .get('/details/:id', productController.getDataById)
+    .get('/sortByPrice', productController.sortByPrice)
+    .post('/create', validateProductsBeforeAdd, productController.addData)
+    .delete('/delete/:id', productController.deleteData)
+    .patch(
+        '/update/:id',
         validateProductsBeforeUpdate,
         productController.updateData
     );

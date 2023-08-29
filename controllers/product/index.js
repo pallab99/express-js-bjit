@@ -20,8 +20,14 @@ class Product {
 
                 const paginatedProducts = data.slice(startIndex, endIndex);
 
+                const paginatedData = {
+                    totalItems: data.length,
+                    totalPages: data.length / itemsPerPage,
+                    itemsPerPage: itemsPerPage,
+                    data: paginatedProducts,
+                };
                 res.status(200).json(
-                    success('Successfully get the data', paginatedProducts)
+                    success('Successfully get the data', paginatedData)
                 );
             }
         } catch (error) {

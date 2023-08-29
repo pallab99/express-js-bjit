@@ -4,12 +4,8 @@ const orderController = require('../../controllers/orders');
 const validateToken = require('../../middlewares/tokenValidator');
 
 router
-    .get('/orders/all', validateToken, orderController.getAllOrders)
-    .get(
-        '/orders/details/:user_id',
-        validateToken,
-        orderController.getOrderByUserId
-    )
-    .post('/orders/create', validateToken, orderController.createOrders);
+    .get('/all', validateToken, orderController.getAllOrders)
+    .get('/details/:user_id', validateToken, orderController.getOrderByUserId)
+    .post('/create', validateToken, orderController.createOrders);
 
 exports.router = router;
