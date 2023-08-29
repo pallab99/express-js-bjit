@@ -10,25 +10,29 @@ class Product {
             const data = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
-            if (isNaN(offset) && isNaN(itemsPerPage)) {
-                res.status(200).json(
-                    success('Successfully get the data', data)
-                );
+            if (data.length === 0) {
+                res.status(400).json(failure('Can not get the data'));
             } else {
-                const startIndex = offset * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage;
+                if (isNaN(offset) && isNaN(itemsPerPage)) {
+                    res.status(200).json(
+                        success('Successfully get the data', data)
+                    );
+                } else {
+                    const startIndex = offset * itemsPerPage;
+                    const endIndex = startIndex + itemsPerPage;
 
-                const paginatedProducts = data.slice(startIndex, endIndex);
+                    const paginatedProducts = data.slice(startIndex, endIndex);
 
-                const paginatedData = {
-                    totalItems: data.length,
-                    totalPages: data.length / itemsPerPage,
-                    itemsPerPage: itemsPerPage,
-                    data: paginatedProducts,
-                };
-                res.status(200).json(
-                    success('Successfully get the data', paginatedData)
-                );
+                    const paginatedData = {
+                        totalItems: data.length,
+                        totalPages: data.length / itemsPerPage,
+                        itemsPerPage: itemsPerPage,
+                        data: paginatedProducts,
+                    };
+                    res.status(200).json(
+                        success('Successfully get the data', paginatedData)
+                    );
+                }
             }
         } catch (error) {
             res.status(400).json(failure('Can not get the data'));

@@ -5,3 +5,9 @@ POST /api/users/signIn 200 366 - 4.277 ms
 POST /api/users/signIn 200 366 - 13.074 ms 
 POST /api/users/signIn 200 366 - 13.343 ms 
 POST /api/users/signIn 200 366 - 13.298 ms 
+GET /api/products/all?offset=0&itemsPerPage=10 200 5288 - 560.414 ms 
+GET /api/products/all?offset=0&itemsPerPage=10 200 5288 - 11.273 ms 
+GET /api/products/all?offset=0&itemsPerPage=10 200 5288 - 10.401 ms 
+GET /api/products/all?offset=0&itemsPerPage=10 200 5288 - 8.135 ms 
+GET /api/products/all?offset=1&itemsPerPage=10 200 5942 - 4.624 ms 
+GET /api/products/all 200 56653 - 2.153 ms 
