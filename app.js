@@ -23,15 +23,25 @@ server.use(cookieParser());
 server.use(morgan('tiny'));
 
 //! Logger
-const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, 'server', 'log.log'),
-    { flags: 'a' }
-);
+const logStream = {
+    write: (message) => {
+        fs.appendFile(
+            path.join(__dirname, 'server', 'log.log'),
+            message,
+            (err) => {
+                if (err) {
+                    console.error('Error appending to log file:', err);
+                }
+            }
+        );
+    },
+};
 server.use(
     morgan(':method :url :status :res[content-length] - :response-time ms ', {
-        stream: accessLogStream,
+        stream: logStream,
     })
 );
+//! Invalid json handler
 server.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
         return res.status(400).json({ error: 'Invalid JSON' });
