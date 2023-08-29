@@ -122,9 +122,7 @@ class Product {
 
     async sortByPrice(req, res) {
         try {
-            console.log('sort');
             const queryParams = req.query._sort;
-            console.log();
             const result = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
@@ -142,6 +140,40 @@ class Product {
                     .sort((a, b) => b.price - a.price);
                 res.status(200).json(
                     success('Successfully Get the data', sortedData)
+                );
+            }
+        } catch (error) {
+            return { success: false };
+        }
+    }
+
+    async filterByCategory(req, res) {
+        try {
+            const { category } = req.query;
+
+            const result = await FileHandlerModel.readFile(
+                path.join(__dirname, '..', '..', 'data', 'products.json')
+            );
+            let categoryArray = [];
+            if (typeof category === 'string') {
+                categoryArray.push(category);
+            } else {
+                console.log(category);
+                category.forEach((ele) => {
+                    categoryArray.push(ele);
+                });
+            }
+
+            const filteredData = result.filter((item) =>
+                categoryArray.includes(item.category)
+            );
+            if (filteredData.length) {
+                res.status(200).json(
+                    success('Successfully Get the data', filteredData)
+                );
+            } else {
+                res.status(200).json(
+                    success('There is data with this categories', filteredData)
                 );
             }
         } catch (error) {

@@ -11,3 +11,14 @@ GET /api/products/all?offset=0&itemsPerPage=10 200 5288 - 10.401 ms
 GET /api/products/all?offset=0&itemsPerPage=10 200 5288 - 8.135 ms 
 GET /api/products/all?offset=1&itemsPerPage=10 200 5942 - 4.624 ms 
 GET /api/products/all 200 56653 - 2.153 ms 
+GET /api/products//filterByCategory?category=smartphones&category=laptops 200 5413 - 7.563 ms 
+GET /api/products//filterByCategory?category=smartphones - - - - ms 
+GET /api/products//filterByCategory?category=smartphones&category=laptops 200 5413 - 4.378 ms 
+GET /api/products//filterByCategory?category=laptops 200 2981 - 6.176 ms 
+GET /api/products//filterByCategory - - - - ms 
+GET /api/products//filterByCategory?category=smartphones&category=laptops&categoty=skincare 200 5413 - 3.540 ms 
+GET /api/products//filterByCategory?category=smartphones&category=laptops&categoty=skincare 200 5413 - 12.829 ms 
+GET /api/products//filterByCategory?category=smartphones&category=laptops&categoty=skincare 200 5413 - 9.300 ms 
+GET /api/products//filterByCategory?category=smartphones&category=laptops&category=skincare 200 8374 - 3.221 ms 
+GET /api/products//filterByCategory?category=smartphonesvxbv 200 73 - 2.421 ms 
+GET /api/products//filterByCategory?category=smartphones 200 2495 - 1.336 ms 

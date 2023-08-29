@@ -10,6 +10,7 @@ router
     .get('/all', productController.getAll)
     .get('/details/:id', productController.getDataById)
     .get('/sortByPrice', productController.sortByPrice)
+    .get('/filterByCategory', productController.filterByCategory)
     .post('/create', validateProductsBeforeAdd, productController.addData)
     .delete('/delete/:id', productController.deleteData)
     .patch(
