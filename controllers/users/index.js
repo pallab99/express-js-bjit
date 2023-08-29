@@ -1,16 +1,16 @@
 const path = require('path');
 const fsPromise = require('fs').promises;
-const { readFile, addDataToFile } = require('../../util/fileHandler');
 const { failure, success } = require('../../common/response');
 const validateUser = require('../../util/validateUserForSignup');
 const generateSecretToken = require('../../util/tokenGenerator');
+const FileHandlerModel = require('../../model/filehandler');
 
 class Users {
     async signUpUser(req, res) {
         try {
             const validationResult = await validateUser(req);
             if (validationResult.success) {
-                const result = await addDataToFile(
+                const result = await FileHandlerModel.addDataToFile(
                     path.join(__dirname, '..', '..', 'data', 'users.json'),
                     req,
                     res
@@ -36,7 +36,7 @@ class Users {
     async signInUser(req, res) {
         try {
             const { email, password } = req.body;
-            const userData = await readFile(
+            const userData = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'users.json')
             );
             const index = userData.findIndex(

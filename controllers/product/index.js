@@ -1,12 +1,7 @@
 const path = require('path');
 const { success, failure } = require('../../common/response');
-const {
-    readFile,
-    addDataToFile,
-    deleteData,
-    updateData,
-} = require('../../util/fileHandler');
-const validateProductsBeforeAdd = require('../../util/addProductValidator');
+const FileHandlerModel = require('../../model/filehandler');
+const validateProductsBeforeAdd = require('./../../util/addProductValidator');
 const validateProductsBeforeUpdate = require('../../util/updateProductValidator');
 
 class Product {
@@ -14,7 +9,7 @@ class Product {
         try {
             const offset = parseInt(req.query.offset);
             const itemsPerPage = parseInt(req.query.itemsPerPage);
-            const data = await readFile(
+            const data = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
             if (isNaN(offset) && isNaN(itemsPerPage)) {
@@ -38,7 +33,7 @@ class Product {
 
     async getDataById(req, res) {
         try {
-            const result = await readFile(
+            const result = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
             const id = req.params.id;
@@ -65,7 +60,7 @@ class Product {
                     failure('Can not add products', validateProducts.error)
                 );
             } else {
-                const result = await addDataToFile(
+                const result = await FileHandlerModel.addDataToFile(
                     path.join(__dirname, '..', '..', 'data', 'products.json'),
                     req,
                     res
@@ -87,7 +82,7 @@ class Product {
         try {
             const id = req.params.id;
 
-            const result = await deleteData(
+            const result = await FileHandlerModel.deleteData(
                 path.join(__dirname, '..', '..', 'data', 'products.json'),
                 req,
                 res
@@ -113,7 +108,7 @@ class Product {
                 );
             } else {
                 const id = req.params.id;
-                const result = await updateData(
+                const result = await FileHandlerModel.updateData(
                     path.join(__dirname, '..', '..', 'data', 'products.json'),
                     req,
                     res
@@ -136,7 +131,7 @@ class Product {
             console.log('sort');
             const queryParams = req.query._sort;
             console.log();
-            const result = await readFile(
+            const result = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
 

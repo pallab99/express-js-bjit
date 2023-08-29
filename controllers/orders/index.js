@@ -1,11 +1,11 @@
 const path = require('path');
-const { readFile, addDataToFile } = require('../../util/fileHandler');
 const { failure, success } = require('../../common/response');
+const FileHandlerModel = require('../../model/filehandler');
 
 class Orders {
     async getAllOrders(req, res) {
         try {
-            const ordersData = await readFile(
+            const ordersData = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'orders.json'),
                 'utf-8'
             );
@@ -21,7 +21,7 @@ class Orders {
     async getOrderByUserId(req, res) {
         try {
             const id = req.params.user_id;
-            const orders = await readFile(
+            const orders = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'orders.json')
             );
             const filteredData = orders.filter((ele) => {
@@ -30,7 +30,7 @@ class Orders {
 
             if (filteredData.length) {
                 const productsId = filteredData[0].products;
-                const productData = await readFile(
+                const productData = await FileHandlerModel.readFile(
                     path.join(__dirname, '..', '..', 'data', 'products.json')
                 );
 
@@ -59,10 +59,10 @@ class Orders {
             const user_area = body.user.address.area;
             const orderedProducts = body.products;
 
-            const coverage_area = await readFile(
+            const coverage_area = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'coverage.json')
             );
-            const products = await readFile(
+            const products = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
 
@@ -81,7 +81,7 @@ class Orders {
                 isAllProductsAvailable &&
                 orderedProducts.length
             ) {
-                const result = await addDataToFile(
+                const result = await FileHandlerModel.addDataToFile(
                     path.join(__dirname, '..', '..', 'data', 'orders.json'),
                     req,
                     res

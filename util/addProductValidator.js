@@ -39,7 +39,7 @@ const validateProductsBeforeAdd = (req) => {
             'DiscountPercentage is required and must be less than 50';
     }
 
-    if (rating <= 0 || rating > 5) {
+    if (isInvalidNumber(rating) || rating <= 0 || rating > 5) {
         error.rating = 'Rating is required and must be between 0 to 5';
     }
 

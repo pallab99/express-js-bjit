@@ -1,1 +1,29 @@
-[{"id":1,"name":"Pallab Majumdar","email":"majumdarp79@gmail.com","password":"12345678","age":23,"address":{"country":"BD","division":"Dhaka","area":"mirpur-2"},"token":"oVG0BprSNZPmVgMzSmrHcGK69rmK52nAxtfE6cPPh2FrIjDBRywpcytbbd1GXcI3FPKEdRVRpMpE8Nt9N5waclU9ODaUiFMxOm0kYyBjyLY7lPSPMsPpkeW6PRNc3KwgOaLNzd7or4JcL1Q7ywjUb1"},{"id":2,"name":"test user","email":"test@gmail.com","password":"12345678","age":23,"address":{"country":"BD","division":"Dhaka","area":"mirpur-2"},"token":"5VSjaz51q6lY7HENPDka1zbQhu7qwH5G8Fqd5yOhaaiY0CD2CZgaKAoUeWwrD35Bnd9VTQdCONegyedX4e8KKJLYMxvmYeH7ZoLPyaLkWmQREgMYkSYHDLOinQRk0lz3SiSSCotDj8kVMMheFOOrbX"}]
+[
+    {
+        "id": 1,
+        "name": "Pallab Majumdar",
+        "email": "majumdarp79@gmail.com",
+        "password": "12345678",
+        "age": 23,
+        "address": { "country": "BD", "division": "Dhaka", "area": "mirpur-2" },
+        "token": "oVG0BprSNZPmVgMzSmrHcGK69rmK52nAxtfE6cPPh2FrIjDBRywpcytbbd1GXcI3FPKEdRVRpMpE8Nt9N5waclU9ODaUiFMxOm0kYyBjyLY7lPSPMsPpkeW6PRNc3KwgOaLNzd7or4JcL1Q7ywjUb1"
+    },
+    {
+        "id": 2,
+        "name": "test user",
+        "email": "test@gmail.com",
+        "password": "12345678",
+        "age": 23,
+        "address": { "country": "BD", "division": "Dhaka", "area": "mirpur-2" },
+        "token": "5VSjaz51q6lY7HENPDka1zbQhu7qwH5G8Fqd5yOhaaiY0CD2CZgaKAoUeWwrD35Bnd9VTQdCONegyedX4e8KKJLYMxvmYeH7ZoLPyaLkWmQREgMYkSYHDLOinQRk0lz3SiSSCotDj8kVMMheFOOrbX"
+    },
+    {
+        "id": 3,
+        "name": "test user1",
+        "email": "test1@gmail.com",
+        "password": "12345678",
+        "age": 23,
+        "address": { "country": "BD", "division": "Dhaka", "area": "mirpur-2" },
+        "token": "NhX5SuQD5Ve1vcHRHSfzJFHJRgGFOw02cyxi1WDEgIT3tMOUdF6QaevPkykRsegMh0b2L5yM6wJO9jmBi2sdtts1EB5CnXxeCHqBQKa7dBsud9xOnGl8fpq40eOfcs0BesEUsSvvtrI51lNaUKSnxq"
+    }
+]
