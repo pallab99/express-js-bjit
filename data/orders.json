@@ -32,66 +32,6 @@
     {
         "id": 3,
         "user": {
-            "id": 3,
-            "name": "Test User",
-            "email": "test@gmail.com",
-            "age": 23,
-            "address": {
-                "country": "BD",
-                "division": "Dhaka",
-                "area": "Baridhara"
-            }
-        },
-        "products": [1, 2, 100, 12, 34]
-    },
-    {
-        "id": 4,
-        "user": {
-            "name": "Test User",
-            "email": "test@gmail.com",
-            "age": 23,
-            "address": {
-                "country": "BD",
-                "division": "Dhaka",
-                "area": "Baridhara"
-            },
-            "id": 4
-        },
-        "products": [1, 2, 100, 12, 34, 23]
-    },
-    {
-        "id": 5,
-        "user": {
-            "name": "Pallab Majumdar",
-            "email": "majumdarp79@gmail.com",
-            "age": 23,
-            "address": {
-                "country": "BD",
-                "division": "Dhaka",
-                "area": "Baridhara"
-            },
-            "id": 5
-        },
-        "products": [10]
-    },
-    {
-        "id": 6,
-        "user": {
-            "name": "Test User 1",
-            "email": "test1@gmail.com",
-            "age": 23,
-            "address": {
-                "country": "BD",
-                "division": "Dhaka",
-                "area": "Baridhara"
-            },
-            "id": 6
-        },
-        "products": [10, 100]
-    },
-    {
-        "id": 7,
-        "user": {
             "name": "Test User 1",
             "email": "test1@gmail.com",
             "age": 23,
@@ -100,37 +40,7 @@
                 "division": "Dhaka",
                 "area": "Mirpur-2"
             },
-            "id": 7
-        },
-        "products": [10, 100]
-    },
-    {
-        "id": 8,
-        "user": {
-            "name": "Test User 1",
-            "email": "test1@gmail.com",
-            "age": 23,
-            "address": {
-                "country": "BD",
-                "division": "Dhaka",
-                "area": "Mirpur-2"
-            },
-            "id": 8
-        },
-        "products": [10, 100, 20]
-    },
-    {
-        "id": 9,
-        "user": {
-            "name": "Test User 1",
-            "email": "test1@gmail.com",
-            "age": 23,
-            "address": {
-                "country": "BD",
-                "division": "Dhaka",
-                "area": "Mirpur-2"
-            },
-            "id": 9
+            "id": 3
         },
         "products": [10, 100, 20]
     }

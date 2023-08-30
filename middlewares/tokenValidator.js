@@ -5,16 +5,19 @@ dotEnv.config();
 const validateToken = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const charset = process.env.TOKEN_KEY;
-
-    jwt.verify(token, charset, (err, decoded) => {
-        if (err) {
-            res.status(401).json(
-                failure('Authorization failed.Please Sign in.')
-            );
-        } else {
-            next();
-        }
-    });
+    if (req.cookies.token === undefined) {
+        res.status(401).json(failure('Authorization failed.Please Sign in.'));
+    } else {
+        jwt.verify(token, charset, (err, decoded) => {
+            if (err) {
+                res.status(401).json(
+                    failure('Authorization failed.Please Sign in.')
+                );
+            } else {
+                next();
+            }
+        });
+    }
 };
 
 module.exports = validateToken;
