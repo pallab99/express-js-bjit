@@ -247,7 +247,38 @@ class Product {
 
             let filteredData = [];
 
-            if (category !== undefined && brand !== undefined) {
+            if (
+                category != undefined &&
+                brand != undefined &&
+                ram === undefined &&
+                processor === undefined &&
+                os === undefined &&
+                storage === undefined
+            ) {
+                filteredData = newData.filter(
+                    (item) => item.category == category && item.brand == brand
+                );
+            } else if (
+                category != undefined &&
+                brand === undefined &&
+                ram === undefined &&
+                processor === undefined &&
+                os === undefined &&
+                storage === undefined
+            ) {
+                filteredData = newData.filter(
+                    (item) => item.category === category
+                );
+            } else if (
+                brand != undefined &&
+                category === undefined &&
+                ram === undefined &&
+                processor === undefined &&
+                os === undefined &&
+                storage === undefined
+            ) {
+                filteredData = newData.filter((item) => item.brand === brand);
+            } else if (category != undefined && brand != undefined) {
                 filteredData = newData.filter(
                     (item) =>
                         item.category === category &&
@@ -257,7 +288,7 @@ class Product {
                             item.os === os ||
                             item.storage === storage)
                 );
-            } else if (category !== undefined) {
+            } else if (category != undefined) {
                 filteredData = newData.filter(
                     (item) =>
                         item.category === category &&
@@ -266,7 +297,7 @@ class Product {
                             item.os === os ||
                             item.storage === storage)
                 );
-            } else if (brand !== undefined) {
+            } else if (brand != undefined) {
                 filteredData = newData.filter(
                     (item) =>
                         item.brand === brand &&
