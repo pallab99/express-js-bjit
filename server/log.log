@@ -52,3 +52,11 @@ GET /api/products/filterProducts?brand=Apple&category=laptops&ram=8%20Gb 200 324
 GET /api/products/filterProducts?brand=Apple&category=laptops&ram=8%20Gb 200 324 - 13.393 ms 
 GET /api/products/filterProducts?brand=Apple&category=laptops&ram= 400 168 - 3.404 ms 
 GET /api/products/filterProducts?brand=Apple&category=laptops&ram=8%20Gb 200 324 - 3.031 ms 
+GET /api/products/filterProducts?brand=Apple&category=laptops&ram=8%20Gb 200 324 - 14.337 ms 
+GET /api/products/filterProducts?brand=Apple&category=laptops 200 899 - 3.468 ms 
+GET /api/products/filterProducts?brand=Apple 200 2087 - 2.865 ms 
+GET /api/products/filterProducts?brand=Apple&processor=Intel%20core%20i5 200 77 - 2.448 ms 
+GET /api/products/filterProducts?brand=Apple&os=Macos 200 899 - 2.256 ms 
+GET /api/products/filterProducts?os=Macos 200 899 - 18.640 ms 
+GET /api/products/filterProducts 200 77 - 5.220 ms 
+GET /api/products/filterProducts 200 52 - 11.090 ms 
