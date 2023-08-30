@@ -2,41 +2,45 @@ const path = require('path');
 const { success, failure } = require('../../common/response');
 const FileHandlerModel = require('../../model/filehandler');
 const { validationResult } = require('express-validator');
+const { products } = require('../../model/products');
 
 class Product {
     async getAll(req, res) {
         try {
-            const offset = parseInt(req.query.offset);
-            const itemsPerPage = parseInt(req.query.itemsPerPage);
-            const data = await FileHandlerModel.readFile(
-                path.join(__dirname, '..', '..', 'data', 'products.json')
-            );
-            if (data.length === 0) {
-                res.status(400).json(failure('Can not get the data'));
-            } else {
-                if (isNaN(offset) && isNaN(itemsPerPage)) {
+            const page = parseInt(req.query.offset);
+            const limit = parseInt(req.query.limit);
+            if (isNaN(page) && isNaN(limit)) {
+                const data = await products.find().limit(30);
+                if (data.length) {
                     res.status(200).json(
-                        success('Successfully get the data', data.slice(0, 30))
+                        success('Successfully get the data', {
+                            items: data,
+                            totalCount: data.length,
+                        })
                     );
                 } else {
-                    const startIndex = offset * itemsPerPage;
-                    const endIndex = startIndex + itemsPerPage;
+                    res.status(400).json(success('Can not get the data', []));
+                }
+            } else {
+                const skip = (page - 1) * limit;
+                const data = await products.find().skip(skip).limit(limit);
+                const totalCount = await products.countDocuments();
+                const totalPages = Math.ceil(totalCount / limit);
 
-                    const paginatedProducts = data.slice(startIndex, endIndex);
-
-                    const paginatedData = {
-                        totalItems: data.length,
-                        totalPages: data.length / itemsPerPage,
-                        itemsPerPage: itemsPerPage,
-                        data: paginatedProducts,
-                    };
+                if (data.length) {
                     res.status(200).json(
-                        success('Successfully get the data', paginatedData)
+                        success('Successfully get the data', {
+                            items: data,
+                            currentPage: page,
+                            totalPages: totalPages,
+                        })
                     );
+                } else {
+                    res.status(400).json(success('Can not get the data', []));
                 }
             }
         } catch (error) {
-            res.status(400).json(failure('Can not get the data'));
+            res.status(500).json(failure('Internal server error'));
         }
     }
 

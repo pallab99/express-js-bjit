@@ -15,6 +15,7 @@ dotEnv.config();
 
 const port = process.env.PORT;
 const { failure, success } = require('./common/response');
+const connectDB = require('./configs/databaseConnection');
 
 //! Middleware
 server.use(express.json());
@@ -58,6 +59,8 @@ server.get('/', (req, res) => {
 server.use((req, res, next) => {
     res.status(500).json(failure("Can't find the route"));
 });
+
+connectDB();
 server.listen(port, () => {
     console.log(`server started`);
 });

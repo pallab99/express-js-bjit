@@ -70,3 +70,10 @@ GET /api/products/filterProducts?brand=Apple&category= 400 178 - 7.606 ms
 GET /api/products/filterProducts?brand=Apple&category= 400 181 - 13.914 ms 
 GET /api/products/filterProducts 200 52 - 4.619 ms 
 GET /api/products/filterProducts?brand=Apple 200 2087 - 4.498 ms 
+GET /api/products/all 200 60315 - 3760.513 ms 
+GET /api/products/all 200 60315 - 3527.819 ms 
+GET /api/products/all?offset=1&limit=10 200 5886 - 630.179 ms 
+GET /api/products/all 200 5886 - 609.282 ms 
+GET /api/products/all 200 18024 - 3887.911 ms 
+GET /api/products/all 200 60362 - 4161.827 ms 
+GET /api/products/all?offset=1&limit=10 200 5886 - 673.862 ms 
