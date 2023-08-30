@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require('./../../controllers/product/index');
 const validateProductsBeforeAdd = require('../../middlewares/addProductValidator');
 const validateProductsBeforeUpdate = require('../../middlewares/updateProductValidator');
+const queryValidator = require('../../middlewares/validator');
 
 const productController = new Product();
 
@@ -12,7 +13,11 @@ router
     .get('/sortByPrice', productController.sortByPrice)
     .get('/filterByCategory', productController.filterByCategory)
     .get('/filterByBrand', productController.filterByBrand)
-    .get('/filterProducts', productController.filterProducts)
+    .get(
+        '/filterProducts',
+        queryValidator.filterProduct,
+        productController.filterProducts
+    )
     .post('/create', validateProductsBeforeAdd, productController.addData)
     .delete('/delete/:id', productController.deleteData)
     .patch(
