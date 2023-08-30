@@ -221,9 +221,9 @@ class Product {
         try {
             const validateResult = validationResult(req).array();
             const { category, brand, ram, processor, os, storage } = req.query;
-            if (Object.keys(req.query).length === 0) {
+            if (validateResult.length != 0) {
                 res.status(400).json(
-                    success('There is no data.', validateResult)
+                    failure('There is no data.', validateResult)
                 );
             } else {
                 const result = await FileHandlerModel.readFile(

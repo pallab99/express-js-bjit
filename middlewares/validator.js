@@ -4,28 +4,76 @@ const queryValidator = {
     filterProduct: [
         query('category')
             .optional()
-            .isString()
-            .withMessage('category must be of type string'),
+            .custom((value, { req }) => {
+                if (
+                    value === undefined ||
+                    (typeof value === 'string' && value.trim() !== '')
+                ) {
+                    return true;
+                }
+                throw new Error(
+                    'Category must be a non-empty string if provided'
+                );
+            }),
         query('brand')
             .optional()
-            .isString()
-            .withMessage('brand must be of type string'),
+            .custom((value, { req }) => {
+                if (
+                    value === undefined ||
+                    (typeof value === 'string' && value.trim() !== '')
+                ) {
+                    return true;
+                }
+                throw new Error('Brand must be a non-empty string if provided');
+            }),
         query('ram')
             .optional()
-            .isString()
-            .withMessage('ram must be of type string'),
+            .custom((value, { req }) => {
+                if (
+                    value === undefined ||
+                    (typeof value === 'string' && value.trim() !== '')
+                ) {
+                    return true;
+                }
+                throw new Error('Ram must be a non-empty string if provided');
+            }),
         query('processor')
             .optional()
-            .isString()
-            .withMessage('processor must be of type string'),
+            .custom((value, { req }) => {
+                if (
+                    value === undefined ||
+                    (typeof value === 'string' && value.trim() !== '')
+                ) {
+                    return true;
+                }
+                throw new Error(
+                    'Processor must be a non-empty string if provided'
+                );
+            }),
         query('os')
             .optional()
-            .isString()
-            .withMessage('os must be of type string'),
+            .custom((value, { req }) => {
+                if (
+                    value === undefined ||
+                    (typeof value === 'string' && value.trim() !== '')
+                ) {
+                    return true;
+                }
+                throw new Error('OS must be a non-empty string if provided');
+            }),
         query('storage')
             .optional()
-            .isString()
-            .withMessage('storage must be of type string'),
+            .custom((value, { req }) => {
+                if (
+                    value === undefined ||
+                    (typeof value === 'string' && value.trim() !== '')
+                ) {
+                    return true;
+                }
+                throw new Error(
+                    'Storage must be a non-empty string if provided'
+                );
+            }),
     ],
 };
 
