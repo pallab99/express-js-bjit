@@ -18,6 +18,7 @@ router
         queryValidator.filterProduct,
         productController.filterProducts
     )
+    .get('/search', productController.searchByTitle)
     .post('/create', validateProductsBeforeAdd, productController.addData)
     .delete('/delete/:id', productController.deleteData)
     .patch(
