@@ -1,15 +1,20 @@
 const { failure } = require('../common/response');
-
+const jwt = require('jsonwebtoken');
+const dotEnv = require('dotenv');
+dotEnv.config();
 const validateToken = (req, res, next) => {
-    if (req.headers.authorization === undefined) {
-        return res.status(401).json(failure('Please sign in'));
-    }
     const token = req.headers.authorization.split(' ')[1];
-    if (token === req.cookies.token) {
-        next();
-    } else {
-        return res.status(401).json(failure('Please sign in'));
-    }
+    const charset = process.env.TOKEN_KEY;
+
+    jwt.verify(token, charset, (err, decoded) => {
+        if (err) {
+            res.status(401).json(
+                failure('Authorization failed.Please Sign in.')
+            );
+        } else {
+            next();
+        }
+    });
 };
 
 module.exports = validateToken;

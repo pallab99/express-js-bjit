@@ -35,7 +35,7 @@ class Users {
                 return ele.email === email && ele.password === password;
             });
             if (index != -1) {
-                const token = generateSecretToken();
+                const token = generateSecretToken(req.body);
                 userData[index].token = token;
 
                 res.cookie('token', token, {

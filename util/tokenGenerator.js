@@ -1,14 +1,14 @@
 const dotEnv = require('dotenv');
 dotEnv.config();
-const generateSecretToken = () => {
+const jwt = require('jsonwebtoken');
+
+const generateSecretToken = (body) => {
+    const payload = {
+        name: body.name,
+        email: body.email,
+    };
     const charset = process.env.TOKEN_KEY;
-    let token = '';
-
-    for (let i = 0; i < 150; i++) {
-        const randomIndex = Math.floor(Math.random() * charset.length);
-        token += charset.charAt(randomIndex);
-    }
-
+    const token = jwt.sign(payload, charset);
     return token;
 };
 

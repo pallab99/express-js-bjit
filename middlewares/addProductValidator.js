@@ -53,7 +53,7 @@ const validateProductsBeforeAdd = (req, res, next) => {
         error.category = 'Category is required.';
     }
     if (Object.keys(error).length > 0) {
-        res.status(401).json(failure('Unprocessable Entity', error));
+        res.status(422).json(failure('Unprocessable Entity', error));
     }
     next();
 };

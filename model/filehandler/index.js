@@ -19,12 +19,12 @@ class FileHandlerModel {
     addDataToFile = async (path, req, res) => {
         try {
             const body = req.body;
-            if (req.url === '/users/signUp') {
-                const token = generateSecretToken();
+            if (req.url === '/signUp') {
+                const token = generateSecretToken(body);
                 body.token = token;
             }
             const result = await this.readFile(path);
-            if (req.url === '/orders/create') {
+            if (req.url === '/create') {
                 body.user.id = result[result.length - 1].id + 1;
             }
             const newData = {
