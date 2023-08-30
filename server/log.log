@@ -198,3 +198,11 @@ POST /api/users/signUp 401 124 - 7.225 ms
 POST /api/users/signUp 200 433 - 3875.142 ms 
 POST /api/users/verifyCode 400 63 - 12.670 ms 
 POST /api/users/verifyCode 200 64 - 23.156 ms 
+POST /api/users/signUp 200 437 - 3844.729 ms 
+POST /api/users/signIn 400 66 - 6.908 ms 
+POST /api/users/signIn 200 411 - 14.970 ms 
+POST /api/users/signIn 200 411 - 14.571 ms 
+POST /api/users/signIn 400 73 - 7.555 ms 
+POST /api/users/verifyCode 200 64 - 31.699 ms 
+POST /api/users/signIn 200 410 - 18.019 ms 
+POST /api/users/signIn 400 73 - 7.587 ms 

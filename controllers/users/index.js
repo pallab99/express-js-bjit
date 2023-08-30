@@ -58,10 +58,11 @@ class Users {
             const index = userData.findIndex(
                 (ele) => ele.email === email && ele.password === password
             );
+            const isVerified = userData[index].isVerified ? true : false;
             const filteredUser = userData.filter((ele) => {
                 return ele.email === email && ele.password === password;
             });
-            if (index != -1) {
+            if (index != -1 && isVerified) {
                 const token = generateSecretToken(req.body);
                 userData[index].token = token;
 
@@ -77,8 +78,10 @@ class Users {
                 res.status(200).json(
                     success('SignIn successful', filteredUser)
                 );
-            } else {
+            } else if (index === -1) {
                 res.status(400).json(failure('Wrong email or password'));
+            } else if (!isVerified) {
+                res.status(400).json(failure('You did not verified your code'));
             }
         } catch (error) {
             res.status(500).json(failure('Internal Server Error'));
