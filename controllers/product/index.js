@@ -223,51 +223,80 @@ class Product {
             const result = await FileHandlerModel.readFile(
                 path.join(__dirname, '..', '..', 'data', 'products.json')
             );
-            if (result.length) {
-                const newData = result.filter((ele) => {
-                    return (
-                        ele.category != undefined &&
-                        ele.brand != undefined &&
-                        ele.ram != undefined &&
-                        ele.processor != undefined &&
-                        ele.os != undefined &&
-                        ele.storage != undefined
-                    );
-                });
-                // console.log(newData);
-                if (brand != undefined) {
-                    const filteredData = newData.filter((item) => {
-                        return (
-                            item.brand === brand &&
-                            (item.ram === ram ||
-                                item.processor === processor ||
-                                item.os === os ||
-                                item.storage === storage)
-                        );
-                    });
-                    res.status(200).json(
-                        success('Successfully get the data', filteredData)
-                    );
-                } else {
-                    const filteredData = newData.filter((ele) => {
-                        return (
-                            ele.category === category ||
-                            ele.brand === brand ||
-                            ele.ram === ram ||
-                            ele.processor === processor ||
-                            ele.os === os ||
-                            ele.storage === storage
-                        );
-                    });
-                    res.status(200).json(
-                        success('Successfully get the data', filteredData)
-                    );
-                }
 
-                // console.log(filteredData);
+            if (result.length === 0) {
+                return res
+                    .status(200)
+                    .json(
+                        success(
+                            'There is no data with these categories',
+                            result
+                        )
+                    );
+            }
+
+            const newData = result.filter(
+                (ele) =>
+                    ele.category !== undefined &&
+                    ele.brand !== undefined &&
+                    ele.ram !== undefined &&
+                    ele.processor !== undefined &&
+                    ele.os !== undefined &&
+                    ele.storage !== undefined
+            );
+
+            let filteredData = [];
+
+            if (category !== undefined && brand !== undefined) {
+                filteredData = newData.filter(
+                    (item) =>
+                        item.category === category &&
+                        item.brand === brand &&
+                        (item.ram === ram ||
+                            item.processor === processor ||
+                            item.os === os ||
+                            item.storage === storage)
+                );
+            } else if (category !== undefined) {
+                filteredData = newData.filter(
+                    (item) =>
+                        item.category === category &&
+                        (item.ram === ram ||
+                            item.processor === processor ||
+                            item.os === os ||
+                            item.storage === storage)
+                );
+            } else if (brand !== undefined) {
+                filteredData = newData.filter(
+                    (item) =>
+                        item.brand === brand &&
+                        (item.ram === ram ||
+                            item.processor === processor ||
+                            item.os === os ||
+                            item.storage === storage)
+                );
+            } else {
+                filteredData = newData.filter(
+                    (ele) =>
+                        ele.category === category ||
+                        ele.brand === brand ||
+                        ele.ram === ram ||
+                        ele.processor === processor ||
+                        ele.os === os ||
+                        ele.storage === storage
+                );
+            }
+
+            if (filteredData.length !== 0) {
+                res.status(200).json(
+                    success('Successfully get the data', filteredData)
+                );
             } else {
                 res.status(200).json(
-                    success('There is data with this categories', result)
+                    success(
+                        'There is no data with these categories',
+                        filteredData
+                    )
                 );
             }
         } catch (error) {

@@ -119,7 +119,11 @@
         "rating": 4.57,
         "stock": 83,
         "thumbnail": "https://i.dummyjson.com/data/products/6/thumbnail.png",
-        "title": "MacBook Pro"
+        "title": "MacBook Pro",
+        "ram": "16 Gb",
+        "processor": "Apple silicon m1",
+        "os": "Macos",
+        "storage": "512 Gb"
     },
     {
         "brand": "Samsung",
@@ -137,7 +141,11 @@
         "rating": 4.25,
         "stock": 50,
         "thumbnail": "https://i.dummyjson.com/data/products/7/thumbnail.jpg",
-        "title": "Samsung Galaxy Book"
+        "title": "Samsung Galaxy Book",
+        "ram": "8 Gb",
+        "processor": "Intel core i5",
+        "os": "Windows 10",
+        "storage": "1 Tb"
     },
     {
         "brand": "Microsoft Surface",
@@ -156,7 +164,11 @@
         "rating": 4.43,
         "stock": 68,
         "thumbnail": "https://i.dummyjson.com/data/products/8/thumbnail.jpg",
-        "title": "Microsoft Surface Laptop 4"
+        "title": "Microsoft Surface Laptop 4",
+        "ram": "16 Gb",
+        "processor": "Intel core i7",
+        "os": "Windows 10",
+        "storage": "1 Tb"
     },
     {
         "brand": "Infinix",
@@ -175,7 +187,11 @@
         "rating": 4.54,
         "stock": 96,
         "thumbnail": "https://i.dummyjson.com/data/products/9/thumbnail.jpg",
-        "title": "Infinix INBOOK"
+        "title": "Infinix INBOOK",
+        "ram": "8 Gb",
+        "processor": "Intel core i3",
+        "os": "Windows 10",
+        "storage": "256 Gb"
     },
     {
         "brand": "HP Pavilion",
@@ -193,7 +209,11 @@
         "rating": 4.43,
         "stock": 89,
         "thumbnail": "https://i.dummyjson.com/data/products/10/thumbnail.jpeg",
-        "title": "HP Pavilion 15-DK1056WM"
+        "title": "HP Pavilion 15-DK1056WM",
+        "ram": "8 Gb",
+        "processor": "Intel core i7",
+        "os": "Windows 11",
+        "storage": "1 Tb"
     },
     {
         "brand": "Impression of Acqua Di Gio",
@@ -1841,6 +1861,10 @@
         "rating": 3,
         "stock": 146,
         "brand": "Apple",
-        "category": "laptops"
+        "category": "laptops",
+        "ram": "8 Gb",
+        "processor": "Apple silicon m1",
+        "os": "Macos",
+        "storage": "256 Gb"
     }
 ]
