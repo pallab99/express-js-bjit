@@ -46,40 +46,36 @@ class Product {
 
     async getDataById(req, res) {
         try {
-            const result = await FileHandlerModel.readFile(
-                path.join(__dirname, '..', '..', 'data', 'products.json')
-            );
-            const id = req.params.id;
-            const filteredData = result.filter((ele) => {
-                return ele.id === +id;
-            });
-            if (filteredData.length) {
+            const { id } = req.params;
+            const data = await products.findById(id);
+            if (Object.keys(data).length) {
                 res.status(200).json(
-                    success('Successfully get the data', filteredData[0])
+                    success('Successfully get the data', data)
                 );
             } else {
                 res.status(400).json(failure(`Id ${id} does not exist`));
             }
         } catch (error) {
-            res.status(400).json(failure('Can not get the data'));
+            res.status(500).json(failure('Internal Server Error'));
         }
     }
 
     async addData(req, res) {
         try {
-            const result = await FileHandlerModel.addDataToFile(
-                path.join(__dirname, '..', '..', 'data', 'products.json'),
-                req,
-                res
-            );
-            if (result.success) {
+            const dataToInsert = req.body;
+            const result = await products.insertMany(dataToInsert, {
+                writeConcern: { w: 'majority' },
+            });
+            console.log(result);
+            if (result.length) {
                 res.status(200).json(
-                    success('Successfully added data', result.data)
+                    success('Successfully added data', result)
                 );
             } else {
                 res.status(400).json(failure('Can not add the data'));
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
