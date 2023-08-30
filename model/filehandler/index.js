@@ -1,5 +1,7 @@
 const path = require('path');
 const generateSecretToken = require('../../util/tokenGenerator');
+const generateVerificationCode = require('../../util/generateVerificationCode');
+const sendVerificationEmail = require('../../util/nodeMailer');
 
 const fsPromise = require('fs').promises;
 
@@ -20,10 +22,16 @@ class FileHandlerModel {
         try {
             const body = req.body;
             if (req.url === '/signUp') {
+                const { email } = req.body;
                 const token = generateSecretToken(body);
+                const verificationCode = generateVerificationCode();
+                await sendVerificationEmail(email, verificationCode);
                 body.token = token;
+                body.verificationCode = verificationCode;
+                body.isVerified = false;
             }
             const result = await this.readFile(path);
+            console.log(req.url);
             if (req.url === '/create') {
                 body.user.id = result[result.length - 1].id + 1;
             }
@@ -62,14 +70,31 @@ class FileHandlerModel {
         try {
             const id = req.params.id;
             const body = req.body;
+            const { email, verificationCode } = req.body;
+
             const result = await this.readFile(path);
-            const index = result.findIndex((ele) => ele.id === +id);
-            if (index != -1) {
-                result[index] = { ...result[index], ...body };
-                await fsPromise.writeFile(path, JSON.stringify(result));
-                return { success: true, data: result };
+            if (req.url === '/verifyCode') {
+                const index = result.findIndex(
+                    (ele) =>
+                        ele.email === email &&
+                        ele.verificationCode === verificationCode
+                );
+                if (index != -1) {
+                    result[index].isVerified = true;
+                    await fsPromise.writeFile(path, JSON.stringify(result));
+                    return { success: true, data: result };
+                } else {
+                    return { success: false };
+                }
             } else {
-                return { success: false };
+                const index = result.findIndex((ele) => ele.id === +id);
+                if (index != -1) {
+                    result[index] = { ...result[index], ...body };
+                    await fsPromise.writeFile(path, JSON.stringify(result));
+                    return { success: true, data: result };
+                } else {
+                    return { success: false };
+                }
             }
         } catch (error) {
             return { success: false, data: null };

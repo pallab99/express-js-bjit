@@ -248,6 +248,7 @@ class Product {
             let filteredData = [];
 
             if (
+                //! only category and brand is provided
                 category != undefined &&
                 brand != undefined &&
                 ram === undefined &&
@@ -259,6 +260,8 @@ class Product {
                     (item) => item.category == category && item.brand == brand
                 );
             } else if (
+                //! only category  is provided
+
                 category != undefined &&
                 brand === undefined &&
                 ram === undefined &&
@@ -270,6 +273,7 @@ class Product {
                     (item) => item.category === category
                 );
             } else if (
+                //! only brand  is provided
                 brand != undefined &&
                 category === undefined &&
                 ram === undefined &&
@@ -279,6 +283,7 @@ class Product {
             ) {
                 filteredData = newData.filter((item) => item.brand === brand);
             } else if (category != undefined && brand != undefined) {
+                //!  category brand and some other value is provided
                 filteredData = newData.filter(
                     (item) =>
                         item.category === category &&
@@ -289,6 +294,8 @@ class Product {
                             item.storage === storage)
                 );
             } else if (category != undefined) {
+                //!  category  and some other value is provided
+
                 filteredData = newData.filter(
                     (item) =>
                         item.category === category &&
@@ -298,6 +305,7 @@ class Product {
                             item.storage === storage)
                 );
             } else if (brand != undefined) {
+                //! brand and some other value is provided
                 filteredData = newData.filter(
                     (item) =>
                         item.brand === brand &&
@@ -307,6 +315,7 @@ class Product {
                             item.storage === storage)
                 );
             } else {
+                //!  else condition
                 filteredData = newData.filter(
                     (ele) =>
                         ele.category === category ||

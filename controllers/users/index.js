@@ -3,19 +3,46 @@ const fsPromise = require('fs').promises;
 const { failure, success } = require('../../common/response');
 const generateSecretToken = require('../../util/tokenGenerator');
 const FileHandlerModel = require('../../model/filehandler');
-
+const nodemailer = require('nodemailer');
+const sendVerificationEmail = require('../../util/nodeMailer');
 class Users {
     async signUpUser(req, res) {
         try {
+            // const { email } = req.body;
             const result = await FileHandlerModel.addDataToFile(
                 path.join(__dirname, '..', '..', 'data', 'users.json'),
                 req,
                 res
             );
             if (result.success) {
+                // await sendVerificationEmail(email);
                 res.status(200).json(success('Signup successful', result.data));
             } else {
                 res.status(400).json(failure('Signup failed'));
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal Server Error'));
+        }
+    }
+
+    async verifyCode(req, res) {
+        try {
+            const result = await FileHandlerModel.readFile(
+                path.join(__dirname, '..', '..', 'data', 'users.json')
+            );
+            if (result.length) {
+                const result = await FileHandlerModel.updateData(
+                    path.join(__dirname, '..', '..', 'data', 'users.json'),
+                    req,
+                    res
+                );
+                console.log(result);
+                if (result.success) {
+                    res.status(200).json(success('Verification successful'));
+                } else {
+                    res.status(400).json(failure('Something Went wrong'));
+                }
             }
         } catch (error) {
             res.status(500).json(failure('Internal Server Error'));

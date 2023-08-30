@@ -1,29 +1,23 @@
 const nodemailer = require('nodemailer');
 
-const sendVerificationEmail = (data) => {
-    console.log(data);
-    const mailTransporter = nodemailer.createTransport({
+const sendVerificationEmail = async (email, verificationCode) => {
+    console.log(email);
+    let testAccount = await nodemailer.createTestAccount();
+    const transporter = await nodemailer.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'baylee95@ethereal.email',
-            pass: 'c1dCzt1crbyjKrG1Vc',
+            user: 'tanner61@ethereal.email',
+            pass: 'daWCkYjHEdgJAmvSbX',
         },
     });
-
-    const details = {
-        from: 'baylee95@ethereal.email',
-        to: data.email,
-        subject: 'Email verification',
-        text: `your verification code is .This code will expired after 2 minutes`,
-    };
-    mailTransporter.sendMail(details, (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('email sent');
-        }
+    const info = await transporter.sendMail({
+        from: '"Pallab Majumdar 👻" <tanner61@ethereal.email>', // sender address
+        to: `${email}`,
+        subject: 'Signup verification ✔',
+        text: `Thank you for the signing up.This is your verification code ${verificationCode}`,
     });
+    // console.log(info);
 };
 
 module.exports = sendVerificationEmail;
