@@ -63,17 +63,27 @@ class Product {
 
     async addData(req, res) {
         try {
-            const dataToInsert = req.body;
-            const result = await products.insertMany(dataToInsert, {
-                writeConcern: { w: 'majority' },
-            });
-            console.log(result);
-            if (result.length) {
-                res.status(200).json(
-                    success('Successfully added data', result)
-                );
+            const validation = validationResult(req).array();
+            if (validation.length) {
+                const error = {};
+                validation.forEach((ele) => {
+                    const property = ele.path;
+                    error[property] = ele.msg;
+                });
+                res.status(422).json(failure('Unprocessable Entity', error));
             } else {
-                res.status(400).json(failure('Can not add the data'));
+                const dataToInsert = req.body;
+                const result = await products.insertMany(dataToInsert, {
+                    writeConcern: { w: 'majority' },
+                });
+                console.log(result);
+                if (result.length) {
+                    res.status(200).json(
+                        success('Successfully added data', result)
+                    );
+                } else {
+                    res.status(400).json(failure('Can not add the data'));
+                }
             }
         } catch (error) {
             console.log(error);

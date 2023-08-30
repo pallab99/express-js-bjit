@@ -108,3 +108,16 @@ DELETE /api/products/delete/64ef4e0a71e060dc03b88700 400 85 - 315.519 ms
 GET /api/products/all?offset=1&limit=10 200 5886 - 625.262 ms 
 DELETE /api/products/delete/64d4c4383e784163e7c82be0 200 710 - 620.728 ms 
 GET /api/products/details/64d4c4383e784163e7c82be0 400 85 - 305.732 ms 
+POST /api/products/create 422 132 - 2.370 ms 
+POST /api/products/create 422 132 - 1.155 ms 
+POST /api/products/create 200 260 - 324.617 ms 
+POST /api/products/create 500 64 - 10.232 ms 
+POST /api/products/create 500 64 - 8.387 ms 
+POST /api/products/create 500 64 - 11.154 ms 
+POST /api/products/create - - - - ms 
+POST /api/products/create 422 63 - 8.258 ms 
+POST /api/products/create 422 140 - 7.280 ms 
+POST /api/products/create 422 449 - 3.739 ms 
+POST /api/products/create 422 175 - 3.294 ms 
+POST /api/products/create 200 271 - 332.517 ms 
+GET /api/products/details/64ef5c55d08e9ec2a079dacb 200 271 - 317.133 ms 
