@@ -16,7 +16,11 @@ class Users {
             );
             if (result.success) {
                 // await sendVerificationEmail(email);
-                res.status(200).json(success('Signup successful', result.data));
+                res.status(200).json(
+                    success(
+                        'Signup successful.Please check your email and verify.'
+                    )
+                );
             } else {
                 res.status(400).json(failure('Signup failed'));
             }

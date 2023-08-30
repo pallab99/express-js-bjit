@@ -223,10 +223,7 @@ class Product {
             const { category, brand, ram, processor, os, storage } = req.query;
             if (Object.keys(req.query).length === 0) {
                 res.status(400).json(
-                    success(
-                        'There is no data with these categories',
-                        validateResult
-                    )
+                    success('There is no data.', validateResult)
                 );
             } else {
                 const result = await FileHandlerModel.readFile(
@@ -255,8 +252,25 @@ class Product {
                 );
 
                 let filteredData = [];
-
                 if (
+                    //! all property
+                    category != undefined &&
+                    brand != undefined &&
+                    ram != undefined &&
+                    processor != undefined &&
+                    os != undefined &&
+                    storage != undefined
+                ) {
+                    filteredData = newData.filter(
+                        (item) =>
+                            item.category === category &&
+                            item.brand === brand &&
+                            item.ram === ram &&
+                            item.processor === processor &&
+                            item.os === os &&
+                            item.storage === storage
+                    );
+                } else if (
                     //! only category and brand is provided
                     category != undefined &&
                     brand != undefined &&
@@ -271,7 +285,6 @@ class Product {
                     );
                 } else if (
                     //! only category  is provided
-
                     category != undefined &&
                     brand === undefined &&
                     ram === undefined &&
@@ -329,13 +342,13 @@ class Product {
                 } else {
                     //!  else condition
                     filteredData = newData.filter(
-                        (ele) =>
-                            ele.category === category ||
-                            ele.brand === brand ||
-                            ele.ram === ram ||
-                            ele.processor === processor ||
-                            ele.os === os ||
-                            ele.storage === storage
+                        (item) =>
+                            item.category === category ||
+                            item.brand === brand ||
+                            item.ram === ram ||
+                            item.processor === processor ||
+                            item.os === os ||
+                            item.storage === storage
                     );
                 }
 
