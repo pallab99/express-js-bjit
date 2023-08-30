@@ -223,7 +223,7 @@ class Product {
             const { category, brand, ram, processor, os, storage } = req.query;
             if (validateResult.length != 0) {
                 res.status(400).json(
-                    failure('There is no data.', validateResult)
+                    failure('Unprocessable input.', validateResult)
                 );
             } else {
                 const result = await FileHandlerModel.readFile(

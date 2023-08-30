@@ -60,3 +60,13 @@ GET /api/products/filterProducts?brand=Apple&os=Macos 200 899 - 2.256 ms
 GET /api/products/filterProducts?os=Macos 200 899 - 18.640 ms 
 GET /api/products/filterProducts 200 77 - 5.220 ms 
 GET /api/products/filterProducts 200 52 - 11.090 ms 
+GET /api/products/filterProducts?brand=Apple 200 2087 - 5.448 ms 
+POST /api/users/signUp 401 124 - 2.817 ms 
+POST /api/users/signUp 200 94 - 9415.069 ms 
+POST /api/users/signIn 400 73 - 5.571 ms 
+POST /api/users/verifyCode 200 64 - 14.762 ms 
+POST /api/users/signIn 200 400 - 15.848 ms 
+GET /api/products/filterProducts?brand=Apple&category= 400 178 - 7.606 ms 
+GET /api/products/filterProducts?brand=Apple&category= 400 181 - 13.914 ms 
+GET /api/products/filterProducts 200 52 - 4.619 ms 
+GET /api/products/filterProducts?brand=Apple 200 2087 - 4.498 ms 
