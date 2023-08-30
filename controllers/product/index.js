@@ -48,7 +48,7 @@ class Product {
         try {
             const { id } = req.params;
             const data = await products.findById(id);
-            if (Object.keys(data).length) {
+            if (data) {
                 res.status(200).json(
                     success('Successfully get the data', data)
                 );
@@ -56,6 +56,7 @@ class Product {
                 res.status(400).json(failure(`Id ${id} does not exist`));
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
@@ -82,21 +83,18 @@ class Product {
 
     async deleteData(req, res) {
         try {
-            const id = req.params.id;
-
-            const result = await FileHandlerModel.deleteData(
-                path.join(__dirname, '..', '..', 'data', 'products.json'),
-                req,
-                res
-            );
-            if (result.success) {
-                res.status(200).json(
-                    success('Successfully deleted data', result.data)
-                );
+            const { id } = req.params;
+            const data = await products.findById(id);
+            if (data) {
+                const result = await products.findByIdAndDelete(id, {
+                    writeConcern: { w: 'majority' },
+                });
+                res.status(200).json(success('Successfully deleted', result));
             } else {
                 res.status(400).json(failure(`Id ${id} does not exist`));
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }

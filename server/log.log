@@ -94,3 +94,17 @@ GET /api/products/details/64ef4dad0b1d279012c870c8 200 265 - 2389.315 ms
 POST /api/products/create 200 269 - 324.450 ms 
 POST /api/products/create 200 271 - 325.558 ms 
 GET /api/products/details/64ef4e0a71e060dc03b88700 200 271 - 312.629 ms 
+DELETE /api/products/delete/64ef4e0a71e060dc03b88700 500 64 - 5.701 ms 
+DELETE /api/products/delete/64ef4e0a71e060dc03b88700 500 64 - 11.972 ms 
+DELETE /api/products/delete/64ef4e0a71e060dc03b88700 500 64 - 3584.522 ms 
+DELETE /api/products/delete/64ef4e0a71e060dc03b88700 - - - - ms 
+DELETE /api/products/delete/64ef4e0a71e060dc03b88700 500 64 - 2526.812 ms 
+DELETE /api/products/delete/64ef4e0a71e060dc03b88700 - - - - ms 
+GET /api/products/details/64ef4e0a71e060dc03b88700 500 64 - 313.068 ms 
+GET /api/products/details/64ef4e0a71e060dc03b88700 500 64 - 313.684 ms 
+GET /api/products/details/64ef4e0a71e060dc03b88700 500 64 - 3607.996 ms 
+GET /api/products/details/64ef4e0a71e060dc03b88700 400 85 - 3338.481 ms 
+DELETE /api/products/delete/64ef4e0a71e060dc03b88700 400 85 - 315.519 ms 
+GET /api/products/all?offset=1&limit=10 200 5886 - 625.262 ms 
+DELETE /api/products/delete/64d4c4383e784163e7c82be0 200 710 - 620.728 ms 
+GET /api/products/details/64d4c4383e784163e7c82be0 400 85 - 305.732 ms 
