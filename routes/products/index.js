@@ -17,7 +17,7 @@ router
         validator.filterProduct,
         productController.filterProducts
     )
-    .get('/search', productController.searchByTitle)
+    .get('/search', productController.searchProducts)
     .post('/create', validator.createProduct, productController.addData)
     .delete('/delete/:id', productController.deleteData)
     .patch(

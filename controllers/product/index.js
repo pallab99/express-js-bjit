@@ -367,38 +367,29 @@ class ProductController {
         }
     }
 
-    async searchByTitle(req, res) {
+    async searchProducts(req, res) {
         try {
-            const result = await FileHandlerModel.readFile(
-                path.join(__dirname, '..', '..', 'data', 'products.json')
-            );
+            const { query } = req.query;
+            if (!query) {
+                return res.status(422).json(failure('Query can not be empty'));
+            }
+            const result = await ProductModel.find({
+                $or: [
+                    { title: { $regex: query, $options: 'i' } },
+                    { category: { $regex: query, $options: 'i' } },
+                    { description: { $regex: query, $options: 'i' } },
+                    { brand: { $regex: query, $options: 'i' } },
+                ],
+            });
             if (result.length) {
-                const { query } = req.query;
-                if (!query) {
-                    return res
-                        .status(400)
-                        .json(failure('Search query parameter is required'));
-                }
-                const searchResults = result.filter((product) => {
-                    const regex = new RegExp(query, 'i');
-                    return (
-                        regex.test(product.title) ||
-                        regex.test(product.category) ||
-                        regex.test(product.description) ||
-                        regex.test(product.brand)
-                    );
-                });
-                if (searchResults.length === 0) {
-                    res.status(200).json(success('No data found'));
-                } else {
-                    res.status(200).json(
-                        success('Successfully get the data', searchResults)
-                    );
-                }
+                res.status(200).json(
+                    success('Successfully get the data', result)
+                );
             } else {
-                res.status(200).json(success('Can not get the data'));
+                res.status(200).json(success('Can not get the data', []));
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
