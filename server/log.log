@@ -40,3 +40,10 @@ PATCH /api/products/update/64f01f54b5b8f3f7defe8740 400 591 - 2805.746 ms
 PATCH /api/products/update/64f01f54b5b8f3f7defe8740 400 591 - 698.849 ms 
 PATCH /api/products/update/64f01f54b5b8f3f7defe8740 500 64 - 3282.157 ms 
 PATCH /api/products/update/64f01f54b5b8f3f7defe8740 422 64 - 3590.748 ms 
+GET /api/products/all?offset=1&limit=10 200 5859 - 622.093 ms 
+GET /api/carts/all 500 64 - 3456.541 ms 
+GET /api/carts/all 500 64 - 2375.699 ms 
+GET /api/carts/all 500 64 - 3044.457 ms 
+GET /api/carts/all - - - - ms 
+GET /api/carts/all 200 1067 - 741.553 ms 
+GET /api/carts/all 200 424 - 614.165 ms 

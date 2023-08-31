@@ -9,6 +9,7 @@ const cors = require('cors');
 const productRouter = require('./routes/products');
 const orderRouter = require('./routes/orders');
 const userRouter = require('./routes/users');
+const cartRouter = require('./routes/cart');
 
 const dotEnv = require('dotenv');
 dotEnv.config();
@@ -53,6 +54,7 @@ server.use((err, req, res, next) => {
 server.use('/api/products', productRouter.router);
 server.use('/api/orders', orderRouter.router);
 server.use('/api/users', userRouter.router);
+server.use('/api/carts', cartRouter.router);
 
 server.get('/', (req, res) => {
     res.status(200).json(success('This is the base route'));
