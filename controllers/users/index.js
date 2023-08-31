@@ -5,24 +5,42 @@ const generateSecretToken = require('../../util/tokenGenerator');
 const FileHandlerModel = require('../../model/filehandler');
 const nodemailer = require('nodemailer');
 const sendVerificationEmail = require('../../util/nodeMailer');
+const userModel = require('../../model/user');
+const { validationResult } = require('express-validator');
+
 class Users {
     async signUpUser(req, res) {
         try {
-            // const { email } = req.body;
-            const result = await FileHandlerModel.addDataToFile(
-                path.join(__dirname, '..', '..', 'data', 'users.json'),
-                req,
-                res
-            );
-            if (result.success) {
-                // await sendVerificationEmail(email);
-                res.status(200).json(
-                    success(
-                        'Signup successful.Please check your email and verify.'
-                    )
-                );
+            const validation = validationResult(req).array();
+            if (validation.length) {
+                const error = {};
+                validation.forEach((ele) => {
+                    const property = ele.path;
+                    error[property] = ele.msg;
+                });
+                res.status(422).json(failure('Unprocessable Entity', error));
             } else {
-                res.status(400).json(failure('Signup failed'));
+                const { name, email, password } = req.body;
+                const emailExists = await userModel.find({ email: email });
+                console.log(emailExists);
+                const nameExists = await userModel.find({ name: name });
+                if (emailExists.length) {
+                    return res
+                        .status(400)
+                        .json(failure('Email already exists'));
+                } else if (nameExists.length) {
+                    return res.status(400).json(failure('Name already exists'));
+                }
+                const result = await userModel.insertMany({
+                    name,
+                    email,
+                    password,
+                });
+                if (result) {
+                    res.status(200).json(success('SignIn successful', result));
+                } else {
+                    res.status(400).json(failure('Something went wrong'));
+                }
             }
         } catch (error) {
             console.log(error);

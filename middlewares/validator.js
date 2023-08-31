@@ -133,6 +133,30 @@ const validator = {
             .custom((value) => typeof value === 'string' && value.trim() !== '')
             .withMessage('Category is required.'),
     ],
+
+    signUpUser: [
+        body('name')
+            .not()
+            .equals('')
+            .withMessage('Name is required')
+            .bail()
+            .isString()
+            .withMessage('Name Must be of type string'),
+        body('email')
+            .not()
+            .equals('')
+            .withMessage('Email is required')
+            .bail()
+            .isString()
+            .withMessage('Email Must be of type string'),
+        body('password')
+            .not()
+            .equals('')
+            .withMessage('Password is required')
+            .bail()
+            .isString()
+            .withMessage('Password Must be of type string'),
+    ],
 };
 
 module.exports = validator;
