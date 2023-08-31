@@ -237,7 +237,13 @@ class ProductController {
                     failure('Unprocessable input.', validateResult)
                 );
             } else {
-                const result = await ProductModel.find({});
+                const result = await ProductModel.find({
+                    ram: { $exists: true },
+                    processor: { $exists: true },
+                    storage: { $exists: true },
+                    os: { $exists: true },
+                });
+
                 if (result.length === 0) {
                     return res
                         .status(400)
@@ -249,17 +255,6 @@ class ProductController {
                         );
                 }
 
-                const newData = result.filter(
-                    (ele) =>
-                        ele.category !== undefined &&
-                        ele.brand !== undefined &&
-                        ele.ram !== undefined &&
-                        ele.processor !== undefined &&
-                        ele.os !== undefined &&
-                        ele.storage !== undefined
-                );
-
-                console.log({ newData });
                 let filteredData = [];
 
                 const allDefined = [
@@ -271,16 +266,18 @@ class ProductController {
                     storage,
                 ].every((prop) => prop !== undefined);
 
+                const categories = category?.split(',');
+                const brands = brand?.split(',');
+                // console.log('Hello', categories);
                 if (allDefined) {
-                    console.log('Hello', req.query);
                     filteredData = result.filter(
                         (item) =>
-                            item.category === category &&
-                            item.brand === brand &&
-                            item.ram === ram &&
-                            item.processor === processor &&
-                            item.os === os &&
-                            item.storage === storage
+                            categories.includes(item.category) &&
+                            brands.includes(item.category) &&
+                            item.ram == ram &&
+                            item.processor == processor &&
+                            item.os == os &&
+                            item.storage == storage
                     );
                 } else if (
                     category &&
@@ -290,9 +287,10 @@ class ProductController {
                     !os &&
                     !storage
                 ) {
-                    filteredData = newData.filter(
+                    filteredData = result.filter(
                         (item) =>
-                            item.category === category && item.brand === brand
+                            categories.includes(item.category) &&
+                            brands.includes(item.brand)
                     );
                 } else if (
                     category &&
@@ -302,8 +300,8 @@ class ProductController {
                     !os &&
                     !storage
                 ) {
-                    filteredData = newData.filter(
-                        (item) => item.category === category
+                    filteredData = result.filter((item) =>
+                        categories.includes(item.category)
                     );
                 } else if (
                     brand &&
@@ -313,42 +311,42 @@ class ProductController {
                     !os &&
                     !storage
                 ) {
-                    filteredData = newData.filter(
-                        (item) => item.brand === brand
+                    filteredData = result.filter((item) =>
+                        brands.includes(item.brand)
                     );
                 } else if (category && brand) {
-                    filteredData = newData.filter(
+                    filteredData = result.filter(
                         (item) =>
-                            item.category === category &&
-                            item.brand === brand &&
+                            categories.includes(item.category) &&
+                            brands.includes(item.brand) &&
                             (item.ram === ram ||
                                 item.processor === processor ||
                                 item.os === os ||
                                 item.storage === storage)
                     );
                 } else if (category) {
-                    filteredData = newData.filter(
+                    filteredData = result.filter(
                         (item) =>
-                            item.category === category &&
+                            categories.includes(item.category) &&
                             (item.ram === ram ||
                                 item.processor === processor ||
                                 item.os === os ||
                                 item.storage === storage)
                     );
                 } else if (brand) {
-                    filteredData = newData.filter(
+                    filteredData = result.filter(
                         (item) =>
-                            item.brand === brand &&
+                            brands.includes(item.brand) &&
                             (item.ram === ram ||
                                 item.processor === processor ||
                                 item.os === os ||
                                 item.storage === storage)
                     );
                 } else {
-                    filteredData = newData.filter(
+                    filteredData = result.filter(
                         (item) =>
-                            item.category === category ||
-                            item.brand === brand ||
+                            categories.includes(item.category) ||
+                            brands.includes(item.brand) ||
                             item.ram === ram ||
                             item.processor === processor ||
                             item.os === os ||
