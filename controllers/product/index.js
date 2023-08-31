@@ -3,6 +3,7 @@ const { success, failure } = require('../../common/response');
 const FileHandlerModel = require('../../model/filehandler');
 const { validationResult } = require('express-validator');
 const ProductModel = require('../../model/products');
+const databaseErrorHandler = require('../../util/dbError');
 
 class ProductController {
     async getAll(req, res) {
@@ -76,10 +77,7 @@ class ProductController {
                 res.status(422).json(failure('Unprocessable Entity', error));
             } else {
                 const dataToInsert = req.body;
-                const result = await ProductModel.insertMany(dataToInsert, {
-                    writeConcern: { w: 'majority' },
-                });
-                console.log(result);
+                const result = await ProductModel.insertMany(dataToInsert);
                 if (result.length) {
                     res.status(200).json(
                         success('Successfully added data', result)
@@ -90,6 +88,7 @@ class ProductController {
             }
         } catch (error) {
             console.log(error._message);
+            databaseErrorHandler(error.message);
             res.status(500).json(failure('Internal server error'));
         }
     }
@@ -99,9 +98,7 @@ class ProductController {
             const { id } = req.params;
             const data = await ProductModel.findById(id);
             if (data) {
-                const result = await ProductModel.findByIdAndDelete(id, {
-                    writeConcern: { w: 'majority' },
-                });
+                const result = await ProductModel.findByIdAndDelete(id);
                 res.status(200).json(success('Successfully deleted', result));
             } else {
                 res.status(400).json(failure(`Id ${id} does not exist`));

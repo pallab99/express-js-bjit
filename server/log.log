@@ -70,3 +70,13 @@ GET /api/products/filterProducts?category=smartphones,laptops 500 64 - 371.050 m
 GET /api/products/filterProducts?category=smartphones,laptops 200 6150 - 4734.185 ms 
 GET /api/products/filterProducts?brand=Apple,Samsung&category=smartphones,laptops 200 2860 - 466.977 ms 
 GET /api/products/filterProducts?brand=Apple,Samsung&category=smartphones,laptops&ram=4%20Gb 200 2860 - 323.839 ms 
+POST /api/products/create 200 265 - 393.741 ms 
+DELETE /api/products/delete/64f044e2f93b350be6e51864 200 260 - 716.422 ms 
+GET /api/products/details/64f044e2f93b350be6e51864 400 85 - 325.576 ms 
+POST /api/products/create 500 64 - 33.166 ms 
+POST /api/products/create 500 64 - 64.626 ms 
+POST /api/products/create 500 64 - 34.596 ms 
+POST /api/products/create 500 64 - 37.263 ms 
+POST /api/products/create 500 64 - 111.964 ms 
+POST /api/products/create 500 64 - 35.231 ms 
+POST /api/products/create 500 64 - 8.509 ms 
