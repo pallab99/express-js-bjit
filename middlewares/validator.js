@@ -1,4 +1,5 @@
 const { query, body } = require('express-validator');
+const { EMAIL_REGEX } = require('../constant');
 
 const validator = {
     filterProduct: [
@@ -148,7 +149,9 @@ const validator = {
             .withMessage('Email is required')
             .bail()
             .isString()
-            .withMessage('Email Must be of type string'),
+            .withMessage('Email Must be of type string')
+            .custom((val) => EMAIL_REGEX.test(val))
+            .withMessage('Invalid email'),
         body('password')
             .not()
             .equals('')

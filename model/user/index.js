@@ -19,6 +19,10 @@ const userSchema = new Schema({
         min: [8, 'Password must be minimum 8 characters'],
         max: [15, 'Password can not be greater than 15 characters'],
     },
+    token: {
+        type: String,
+        required: true,
+    },
     addedAt: {
         type: Date,
         default: new Date(),

@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 const sendVerificationEmail = require('../../util/nodeMailer');
 const userModel = require('../../model/user');
 const { validationResult } = require('express-validator');
+const hashPassword = require('../../util/hashPassword');
 
 class Users {
     async signUpUser(req, res) {
@@ -31,11 +32,16 @@ class Users {
                 } else if (nameExists.length) {
                     return res.status(400).json(failure('Name already exists'));
                 }
+                const token = generateSecretToken(req.body);
+                const hashedPassword = await hashPassword(password);
+
                 const result = await userModel.insertMany({
                     name,
                     email,
-                    password,
+                    password: hashedPassword,
+                    token: token,
                 });
+                console.log({ token });
                 if (result) {
                     res.status(200).json(success('SignIn successful', result));
                 } else {
