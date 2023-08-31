@@ -87,7 +87,6 @@ class ProductController {
                 }
             }
         } catch (error) {
-            console.log(error._message);
             databaseErrorHandler(error.message);
             res.status(500).json(failure('Internal server error'));
         }
@@ -111,20 +110,23 @@ class ProductController {
 
     async updateData(req, res) {
         try {
-            const id = req.params.id;
-            const result = await FileHandlerModel.updateData(
-                path.join(__dirname, '..', '..', 'data', 'products.json'),
-                req,
-                res
-            );
-            if (result.success) {
-                res.status(200).json(
-                    success('Successfully updated the data', result.data)
+            const { id } = req.params;
+            const result = await ProductModel.findById(id);
+            const updateData = req.body;
+            if (result) {
+                const updateResult = await ProductModel.findByIdAndUpdate(
+                    { _id: id },
+                    { $set: updateData },
+                    { new: true }
+                );
+                res.status(400).json(
+                    success(`Updated Successfully`, updateResult)
                 );
             } else {
                 res.status(400).json(failure(`Id ${id} does not exist`));
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
