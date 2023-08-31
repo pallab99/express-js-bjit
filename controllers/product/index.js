@@ -2,15 +2,15 @@ const path = require('path');
 const { success, failure } = require('../../common/response');
 const FileHandlerModel = require('../../model/filehandler');
 const { validationResult } = require('express-validator');
-const { products } = require('../../model/products');
+const ProductModel = require('../../model/products');
 
-class Product {
+class ProductController {
     async getAll(req, res) {
         try {
             const page = parseInt(req.query.offset);
             const limit = parseInt(req.query.limit);
             if (isNaN(page) && isNaN(limit)) {
-                const data = await products.find().limit(30);
+                const data = await ProductModel.find().limit(30);
                 if (data.length) {
                     res.status(200).json(
                         success('Successfully get the data', {
@@ -23,8 +23,10 @@ class Product {
                 }
             } else {
                 const skip = (page - 1) * limit;
-                const data = await products.find().skip(skip).limit(limit);
-                const totalCount = await products.countDocuments();
+                const data = await ProductModel.find({})
+                    .skip(skip)
+                    .limit(limit);
+                const totalCount = await ProductModel.countDocuments();
                 const totalPages = Math.ceil(totalCount / limit);
 
                 if (data.length) {
@@ -40,6 +42,7 @@ class Product {
                 }
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
@@ -47,7 +50,7 @@ class Product {
     async getDataById(req, res) {
         try {
             const { id } = req.params;
-            const data = await products.findById(id);
+            const data = await ProductModel.findById(id);
             if (data) {
                 res.status(200).json(
                     success('Successfully get the data', data)
@@ -73,7 +76,7 @@ class Product {
                 res.status(422).json(failure('Unprocessable Entity', error));
             } else {
                 const dataToInsert = req.body;
-                const result = await products.insertMany(dataToInsert, {
+                const result = await ProductModel.insertMany(dataToInsert, {
                     writeConcern: { w: 'majority' },
                 });
                 console.log(result);
@@ -86,7 +89,7 @@ class Product {
                 }
             }
         } catch (error) {
-            console.log(error);
+            console.log(error._message);
             res.status(500).json(failure('Internal server error'));
         }
     }
@@ -94,9 +97,9 @@ class Product {
     async deleteData(req, res) {
         try {
             const { id } = req.params;
-            const data = await products.findById(id);
+            const data = await ProductModel.findById(id);
             if (data) {
-                const result = await products.findByIdAndDelete(id, {
+                const result = await ProductModel.findByIdAndDelete(id, {
                     writeConcern: { w: 'majority' },
                 });
                 res.status(200).json(success('Successfully deleted', result));
@@ -234,17 +237,14 @@ class Product {
                     failure('Unprocessable input.', validateResult)
                 );
             } else {
-                const result = await FileHandlerModel.readFile(
-                    path.join(__dirname, '..', '..', 'data', 'products.json')
-                );
-
+                const result = await ProductModel.find({});
                 if (result.length === 0) {
                     return res
                         .status(400)
                         .json(
                             success(
                                 'There is no data with these categories',
-                                result
+                                []
                             )
                         );
                 }
@@ -259,6 +259,7 @@ class Product {
                         ele.storage !== undefined
                 );
 
+                console.log({ newData });
                 let filteredData = [];
 
                 const allDefined = [
@@ -271,7 +272,8 @@ class Product {
                 ].every((prop) => prop !== undefined);
 
                 if (allDefined) {
-                    filteredData = newData.filter(
+                    console.log('Hello', req.query);
+                    filteredData = result.filter(
                         (item) =>
                             item.category === category &&
                             item.brand === brand &&
@@ -407,4 +409,4 @@ class Product {
     }
 }
 
-module.exports = Product;
+module.exports = ProductController;

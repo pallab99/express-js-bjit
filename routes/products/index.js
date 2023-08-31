@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('./../../controllers/product/index');
+const ProductController = require('./../../controllers/product/index');
 const validateProductsBeforeUpdate = require('../../middlewares/updateProductValidator');
 const validator = require('../../middlewares/validator');
 
-const productController = new Product();
+const productController = new ProductController();
 
 router
     .get('/all', productController.getAll)
