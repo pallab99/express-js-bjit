@@ -32,3 +32,11 @@ GET /api/products/details/64f01f54b5b8f3f7defe8740 200 605 - 340.772 ms
 PATCH /api/products/update/64f01f54b5b8f3f7defe8740 422 101 - 4.824 ms 
 PATCH /api/products/update/64f01f54b5b8f3f7defe8740 400 591 - 680.045 ms 
 GET /api/products/details/64f01f54b5b8f3f7defe8740 200 596 - 371.930 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 422 101 - 13.219 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 400 591 - 658.788 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 422 101 - 7.783 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 400 591 - 663.164 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 400 591 - 2805.746 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 400 591 - 698.849 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 500 64 - 3282.157 ms 
+PATCH /api/products/update/64f01f54b5b8f3f7defe8740 422 64 - 3590.748 ms 

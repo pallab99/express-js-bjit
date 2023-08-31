@@ -43,7 +43,8 @@ class ProductController {
                 }
             }
         } catch (error) {
-            console.log(error);
+            databaseErrorHandler(error.message);
+
             res.status(500).json(failure('Internal server error'));
         }
     }
@@ -60,7 +61,7 @@ class ProductController {
                 res.status(400).json(failure(`Id ${id} does not exist`));
             }
         } catch (error) {
-            console.log(error);
+            databaseErrorHandler(error.message);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
@@ -103,30 +104,47 @@ class ProductController {
                 res.status(400).json(failure(`Id ${id} does not exist`));
             }
         } catch (error) {
-            console.log(error);
+            databaseErrorHandler(error.message);
             res.status(500).json(failure('Internal server error'));
         }
     }
 
     async updateData(req, res) {
         try {
-            const { id } = req.params;
-            const result = await ProductModel.findById(id);
-            const updateData = req.body;
-            if (result) {
-                const updateResult = await ProductModel.findByIdAndUpdate(
-                    { _id: id },
-                    { $set: updateData },
-                    { new: true }
-                );
-                res.status(400).json(
-                    success(`Updated Successfully`, updateResult)
-                );
+            const validation = validationResult(req).array();
+            if (validation.length) {
+                const error = {};
+                validation.forEach((ele) => {
+                    const property = ele.path;
+                    error[property] = ele.msg;
+                });
+                res.status(422).json(failure('Unprocessable Entity', error));
             } else {
-                res.status(400).json(failure(`Id ${id} does not exist`));
+                const { id } = req.params;
+                const result = await ProductModel.findById(id);
+                const updateData = req.body;
+                if (Object.keys(updateData).length > 0) {
+                    if (result) {
+                        const updateResult =
+                            await ProductModel.findByIdAndUpdate(
+                                { _id: id },
+                                { $set: updateData },
+                                { new: true }
+                            );
+                        res.status(400).json(
+                            success(`Updated Successfully`, updateResult)
+                        );
+                    } else {
+                        res.status(400).json(
+                            failure(`Id ${id} does not exist`)
+                        );
+                    }
+                } else {
+                    res.status(422).json(failure('Body can not be empty'));
+                }
             }
         } catch (error) {
-            console.log(error);
+            databaseErrorHandler(error.message);
             res.status(500).json(failure('Internal server error'));
         }
     }
@@ -364,7 +382,7 @@ class ProductController {
                 }
             }
         } catch (error) {
-            console.log(error);
+            databaseErrorHandler(error.message);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
@@ -391,7 +409,7 @@ class ProductController {
                 res.status(200).json(success('Can not get the data', []));
             }
         } catch (error) {
-            console.log(error);
+            databaseErrorHandler(error.message);
             res.status(500).json(failure('Internal Server Error'));
         }
     }

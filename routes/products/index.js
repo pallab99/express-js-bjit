@@ -22,7 +22,7 @@ router
     .delete('/delete/:id', productController.deleteData)
     .patch(
         '/update/:id',
-        validateProductsBeforeUpdate,
+        validator.updateProduct,
         productController.updateData
     );
 
