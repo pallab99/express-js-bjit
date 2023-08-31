@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const cartSchema = new Schema({
-    product: {
+    user: {
         type: Schema.Types.ObjectId,
-        ref: 'Product',
+        ref: 'User',
     },
+    product: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+        },
+    ],
     addedAt: {
         type: Date,
         default: new Date(),

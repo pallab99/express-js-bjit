@@ -4,7 +4,10 @@ const cartModel = require('../../model/cart');
 class Cart {
     async getAllCartItems(req, res) {
         try {
-            const data = await cartModel.find({}).populate('product');
+            const data = await cartModel
+                .find({})
+                .populate('product')
+                .populate('user');
             if (data.length) {
                 res.status(200).json(
                     success('Successfully get the data', data)
