@@ -312,3 +312,12 @@ POST /api/carts/create 500 64 - 724.716 ms
 POST /api/carts/create 500 64 - 1781.773 ms 
 POST /api/carts/create 201 421 - 3499.296 ms 
 POST /api/carts/create 400 89 - 6.198 ms 
+POST /api/carts/create 500 1241 - 6.263 ms 
+POST /api/carts/create 500 1141 - 11.108 ms 
+POST /api/carts/create 400 89 - 11.019 ms 
+POST /api/carts/create 401 79 - 0.527 ms 
+POST /api/carts/create 201 421 - 676.824 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 401 79 - 3.892 ms 
+POST /api/users/signIn 200 471 - 757.501 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 200 2319 - 639.164 ms 
+GET /api/carts/all 200 2348 - 659.166 ms 
