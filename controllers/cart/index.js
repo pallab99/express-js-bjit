@@ -41,38 +41,60 @@ class Cart {
     async addToCart(req, res) {
         try {
             const { user, products } = req.body;
+
+            const error = {};
+            const invalidProductId = products.find(
+                (prod) => !mongoose.Types.ObjectId.isValid(prod.product)
+            );
+            const productIdRequired = products.find(
+                (prod) => prod.product === ''
+            );
+            const quantityRequired = products.find(
+                (prod) => prod.quantity === 0
+            );
+            if (user == undefined || user?.length === 0) {
+                error.user = 'User id is required';
+            }
+            if (quantityRequired) {
+                error.quantity = 'Quantity required';
+            }
+            if (productIdRequired) {
+                error.productRequired = ' Product id required';
+            }
+            if (invalidProductId) {
+                error.invalidProductId = ' Invalid product id';
+            }
+            console.log(error);
+            if (Object.keys(error).length) {
+                return res
+                    .status(400)
+                    .json(failure('Unprocessable Entity', error));
+            }
+
             const productId = products.map((ele) => ele.product);
             const productsData = await ProductModel.find({
                 _id: { $in: productId },
             });
 
-            if (productsData.length === productId.length && user.length) {
-                const totalAmount = productsData.reduce(
-                    (acc, product, index) => {
-                        return acc + product.price * products[index].quantity;
-                    },
-                    0
+            const totalAmount = productsData.reduce((acc, product, index) => {
+                return acc + product.price * products[index].quantity;
+            }, 0);
+
+            let result = await cartModel.insertMany({
+                user,
+                products,
+                totalAmount,
+            });
+
+            if (result.length) {
+                res.status(201).json(
+                    success('Added to cart successfully', result)
                 );
-
-                let result = await cartModel.insertMany({
-                    user,
-                    products,
-                    totalAmount,
-                });
-
-                if (result.length) {
-                    res.status(201).json(success('Added to cart successfully'));
-                } else {
-                    res.status(500).json(failure('Something went wrong'));
-                }
-            } else if (productsData.length != productId.length && !user) {
-                res.status(400).json(failure('User id is required'));
             } else {
-                res.status(400).json(
-                    failure('Product id or user id is not provided')
-                );
+                res.status(500).json(failure('Something went wrong'));
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
