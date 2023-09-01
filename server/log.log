@@ -273,3 +273,11 @@ GET /api/carts/details/64f147e599f7f49c7ab6659b 200 2319 - 1987.116 ms
 GET /api/carts/details/64f147e599f7f49c7ab6659 400 28 - 0.607 ms 
 GET /api/carts/details/64f147e599f7f49c7ab6659b 200 2319 - 1446.484 ms 
 GET /api/carts/details/64f147e599f7f49c7ab6659 400 58 - 0.745 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 200 2319 - 688.779 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 401 79 - 1.154 ms 
+POST /api/users/signIn 200 59 - 752.529 ms 
+GET /api/carts/all 200 3471 - 681.539 ms 
+GET /api/carts/all 401 79 - 0.386 ms 
+GET /api/carts/all 200 3471 - 645.323 ms 
+GET /api/carts/all 401 79 - 0.874 ms 
+GET /api/carts/all 200 3471 - 647.898 ms 
