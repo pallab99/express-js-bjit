@@ -1,5 +1,6 @@
 const { failure, success } = require('../../common/response');
 const cartModel = require('../../model/cart');
+const ProductModel = require('../../model/products');
 
 class Cart {
     async getAllCartItems(req, res) {
@@ -19,7 +20,7 @@ class Cart {
 
             const sum = subTotal.reduce((total, amount) => total + amount, 0);
 
-            console.log(subTotal);
+            console.log(data);
             const newData = {
                 data,
                 totalAmount: sum,
@@ -40,19 +41,81 @@ class Cart {
     async addToCart(req, res) {
         try {
             const { user, products } = req.body;
-            let result = await cartModel.insertMany({
-                user,
-                products,
+            const productId = products.map((ele) => ele.product);
+            console.log(productId);
+            const productsData = await ProductModel.find({
+                _id: { $in: productId },
             });
-            // let abc=await cartModel.
-            // console.log(result[0].products);
-            if (result.length) {
-                res.status(201).json(success('Added to cart successfully'));
+
+            console.log('Retrieved Products:', productsData); // Add this line to check the retrieved products
+
+            if (productsData.length === productId.length && user.length) {
+                let result = await cartModel.insertMany({
+                    user,
+                    products,
+                });
+
+                if (result.length) {
+                    res.status(201).json(success('Added to cart successfully'));
+                } else {
+                    res.status(500).json(failure('Something went wrong'));
+                }
+            } else if (productsData.length != productId.length && !user) {
+                res.status(400).json(failure('User id is required'));
             } else {
-                res.status(500).json(failure('Something went wrong'));
+                res.status(400).json(
+                    failure('Product id or user id is not provided')
+                );
             }
+
+            // if (products?.length && user?.length) {
+            //     const productsData = await ProductModel.find({});
+            //     const productsInRequest = req.body.products;
+            //     const productIdsInRequest = productsInRequest.map(
+            //         (item) => item.product
+            //     );
+
+            //     const missingProductIds = productIdsInRequest.filter(
+            //         (productId) => {
+            //             return !productsData.some(
+            //                 (product) => product._id.toString() === productId
+            //             );
+            //         }
+            //     );
+
+            //     if (missingProductIds.length === 0) {
+            //         console.log('hello');
+            //         let result = await cartModel.insertMany({
+            //             user,
+            //             products,
+            //         });
+
+            //         if (result.length) {
+            //             res.status(201).json(
+            //                 success('Added to cart successfully')
+            //             );
+            //         } else {
+            //             res.status(500).json(failure('Something went wrong'));
+            //         }
+            //     } else {
+            //         const missingProducts = productsInRequest.filter((item) =>
+            //             missingProductIds.includes(item.product)
+            //         );
+
+            //         res.status(400).json(
+            //             failure(
+            //                 'All products are not available',
+            //                 missingProducts
+            //             )
+            //         );
+            //     }
+            // } else if (!user && products?.length) {
+            //     res.status(400).json(failure('User is required'));
+            // } else {
+            //     res.status(500).json(failure('Something went wrong'));
+            // }
         } catch (error) {
-            console.log(error);
+            console.log('dg', error);
             res.status(500).json(failure('Internal server error'));
         }
     }
