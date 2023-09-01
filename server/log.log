@@ -281,3 +281,12 @@ GET /api/carts/all 401 79 - 0.386 ms
 GET /api/carts/all 200 3471 - 645.323 ms 
 GET /api/carts/all 401 79 - 0.874 ms 
 GET /api/carts/all 200 3471 - 647.898 ms 
+POST /api/users/signUp 400 63 - 673.652 ms 
+POST /api/users/signUp 422 86 - 3.188 ms 
+POST /api/users/signUp 200 472 - 1159.521 ms 
+POST /api/users/signIn 200 59 - 787.996 ms 
+POST /api/users/signIn 200 471 - 3393.680 ms 
+GET /api/carts/all 200 3471 - 680.715 ms 
+GET /api/carts/all 401 79 - 0.992 ms 
+GET /api/carts/all 200 3471 - 634.300 ms 
+POST /api/carts/create 400 80 - 331.501 ms 

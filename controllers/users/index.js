@@ -98,7 +98,9 @@ class Users {
                 const token = generateSecretToken(body);
                 emailExists.token = token;
                 await emailExists.save();
-                res.status(200).json(success('Sign in successful'));
+                res.status(200).json(
+                    success('Sign in successful', emailExists)
+                );
             }
         } catch (error) {
             console.log(error);
