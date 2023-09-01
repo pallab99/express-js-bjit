@@ -7,6 +7,8 @@ const router = express.Router();
 router
     .get('/all', validateToken, Cart.getAllCartItems)
     .get('/details/:userId', validateToken, Cart.getCartByUserId)
+    .get('/userOrderDetails/:id', validateToken, Cart.getCartItemsById)
+
     .post('/create', validateToken, addToCartValidation, Cart.addToCart);
 
 exports.router = router;

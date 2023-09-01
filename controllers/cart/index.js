@@ -91,6 +91,28 @@ class Cart {
             res.status(500).json(failure('Internal server error'));
         }
     }
+    async getCartItemsById(req, res) {
+        try {
+            const { id } = req.params;
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json(failure('Invalid user id'));
+            }
+            const data = await cartModel
+                .find({ _id: id })
+                .populate('products.product', '-images -thumbnail')
+                .populate('user', '-password -token');
+            if (data.length) {
+                res.status(200).json(
+                    success('Successfully get the data', data)
+                );
+            } else {
+                res.status(200).json(success('No data found', []));
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal server error'));
+        }
+    }
 }
 
 module.exports = new Cart();
