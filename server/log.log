@@ -90,3 +90,11 @@ POST /api/users/signIn 200 59 - 3779.549 ms
 POST /api/users/signIn 400 66 - 2884.443 ms 
 POST /api/users/signIn 200 59 - 928.557 ms 
 POST /api/users/signIn 200 59 - 729.846 ms 
+POST /api/users/signUp 400 63 - 652.626 ms 
+POST /api/users/signUp 400 63 - 931.323 ms 
+POST /api/users/signUp 400 62 - 742.909 ms 
+POST /api/users/signUp 500 64 - 690.403 ms 
+POST /api/users/signUp 500 64 - 619.460 ms 
+POST /api/users/signUp 200 472 - 2282.720 ms 
+POST /api/users/signIn 200 59 - 724.668 ms 
+POST /api/users/signIn 400 66 - 483.803 ms 

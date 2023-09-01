@@ -36,7 +36,7 @@ class Users {
                     return res.status(400).json(failure('Name already exists'));
                 }
                 const token = generateSecretToken(req.body);
-                const hashedPassword = hashPasswordUsingBcrypt(password);
+                const hashedPassword = await hashPasswordUsingBcrypt(password);
 
                 const result = await userModel.insertMany({
                     name,
