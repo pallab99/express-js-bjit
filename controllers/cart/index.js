@@ -1,6 +1,7 @@
 const { failure, success } = require('../../common/response');
 const cartModel = require('../../model/cart');
 const ProductModel = require('../../model/products');
+const mongoose = require('mongoose');
 
 class Cart {
     async getAllCartItems(req, res) {
@@ -71,55 +72,32 @@ class Cart {
                     failure('Product id or user id is not provided')
                 );
             }
-
-            // if (products?.length && user?.length) {
-            //     const productsData = await ProductModel.find({});
-            //     const productsInRequest = req.body.products;
-            //     const productIdsInRequest = productsInRequest.map(
-            //         (item) => item.product
-            //     );
-
-            //     const missingProductIds = productIdsInRequest.filter(
-            //         (productId) => {
-            //             return !productsData.some(
-            //                 (product) => product._id.toString() === productId
-            //             );
-            //         }
-            //     );
-
-            //     if (missingProductIds.length === 0) {
-            //         console.log('hello');
-            //         let result = await cartModel.insertMany({
-            //             user,
-            //             products,
-            //         });
-
-            //         if (result.length) {
-            //             res.status(201).json(
-            //                 success('Added to cart successfully')
-            //             );
-            //         } else {
-            //             res.status(500).json(failure('Something went wrong'));
-            //         }
-            //     } else {
-            //         const missingProducts = productsInRequest.filter((item) =>
-            //             missingProductIds.includes(item.product)
-            //         );
-
-            //         res.status(400).json(
-            //             failure(
-            //                 'All products are not available',
-            //                 missingProducts
-            //             )
-            //         );
-            //     }
-            // } else if (!user && products?.length) {
-            //     res.status(400).json(failure('User is required'));
-            // } else {
-            //     res.status(500).json(failure('Something went wrong'));
-            // }
         } catch (error) {
-            console.log('dg', error);
+            res.status(500).json(failure('Internal server error'));
+        }
+    }
+
+    async getCartByUserId(req, res) {
+        try {
+            const { userId } = req.params;
+            if (mongoose.Types.ObjectId.isValid(userId)) {
+                console.log('hhfj');
+                return res.status(200).json(failure('Invalid User Id'));
+            } else {
+                const data = await cartModel
+                    .find({ user: userId })
+                    .populate('products.product', '-images -thumbnail')
+                    .populate('user', '-password -token');
+                if (data.length) {
+                    res.status(200).json(
+                        success('Successfully get the data', data)
+                    );
+                } else {
+                    res.status(200).json(success('No data found', []));
+                }
+            }
+        } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
