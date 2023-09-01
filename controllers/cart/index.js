@@ -91,6 +91,7 @@ class Cart {
             res.status(500).json(failure('Internal server error'));
         }
     }
+
     async getCartItemsById(req, res) {
         try {
             const { id } = req.params;

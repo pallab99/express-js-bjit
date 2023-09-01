@@ -22,7 +22,6 @@ const addToCartValidation = (req, res, next) => {
     if (invalidProductId) {
         error.invalidProductId = ' Invalid product id';
     }
-    console.log(error);
     if (Object.keys(error).length) {
         return res.status(400).json(failure('Unprocessable Entity', error));
     } else {
