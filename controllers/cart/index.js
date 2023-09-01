@@ -20,6 +20,25 @@ class Cart {
             res.status(500).json(failure('Internal server error'));
         }
     }
+
+    async addToCart(req, res) {
+        try {
+            const { user, product, noOfProduct, totalAmount } = req.body;
+            const result = await cartModel.insertMany({
+                user,
+                product,
+                noOfProduct,
+                totalAmount,
+            });
+            if (result.length) {
+                res.status(201).json(success('Added to cart successfully'));
+            } else {
+                res.status(500).json(failure('Something went wrong'));
+            }
+        } catch (error) {
+            res.status(500).json(failure('Internal server error'));
+        }
+    }
 }
 
 module.exports = new Cart();

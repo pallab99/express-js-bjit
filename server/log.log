@@ -106,3 +106,9 @@ GET /api/carts/all 401 79 - 2.653 ms
 GET /api/carts/all 401 79 - 1.166 ms 
 GET /api/carts/all 200 845 - 663.130 ms 
 GET /api/carts/all 401 79 - 0.707 ms 
+GET /api/carts/all 200 845 - 649.588 ms 
+POST /api/cart/create 500 63 - 1.150 ms 
+POST /api/cart/create 500 63 - 4.648 ms 
+POST /api/cart/create 500 63 - 2.711 ms 
+POST /api/carts/create 201 62 - 343.075 ms 
+GET /api/carts/all 200 3679 - 654.632 ms 
