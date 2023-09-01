@@ -16,6 +16,10 @@ const cartSchema = new Schema(
             ],
             required: true,
         },
+        totalAmount: {
+            type: Number,
+            required: false,
+        },
     },
     { timestamps: true }
 );

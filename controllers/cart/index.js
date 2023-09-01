@@ -20,7 +20,6 @@ class Cart {
 
             const sum = subTotal.reduce((total, amount) => total + amount, 0);
 
-            console.log(data);
             const newData = {
                 data,
                 totalAmount: sum,
@@ -42,17 +41,22 @@ class Cart {
         try {
             const { user, products } = req.body;
             const productId = products.map((ele) => ele.product);
-            console.log(productId);
             const productsData = await ProductModel.find({
                 _id: { $in: productId },
             });
 
-            console.log('Retrieved Products:', productsData); // Add this line to check the retrieved products
-
             if (productsData.length === productId.length && user.length) {
+                const totalAmount = productsData.reduce(
+                    (acc, product, index) => {
+                        return acc + product.price * products[index].quantity;
+                    },
+                    0
+                );
+
                 let result = await cartModel.insertMany({
                     user,
                     products,
+                    totalAmount,
                 });
 
                 if (result.length) {
