@@ -7,7 +7,10 @@ const nodemailer = require('nodemailer');
 const sendVerificationEmail = require('../../util/nodeMailer');
 const userModel = require('../../model/user');
 const { validationResult } = require('express-validator');
-const hashPassword = require('../../util/hashPassword');
+const {
+    hashPasswordUsingBcrypt,
+    comparePasswords,
+} = require('../../util/hashPassword');
 
 class Users {
     async signUpUser(req, res) {
@@ -33,7 +36,7 @@ class Users {
                     return res.status(400).json(failure('Name already exists'));
                 }
                 const token = generateSecretToken(req.body);
-                const hashedPassword = await hashPassword(password);
+                const hashedPassword = hashPasswordUsingBcrypt(password);
 
                 const result = await userModel.insertMany({
                     name,
@@ -80,38 +83,25 @@ class Users {
     async signInUser(req, res) {
         try {
             const { email, password } = req.body;
-            const userData = await FileHandlerModel.readFile(
-                path.join(__dirname, '..', '..', 'data', 'users.json')
+            const emailExists = await userModel.findOne({ email: email });
+            const passwordExists = await comparePasswords(
+                password,
+                emailExists.password
             );
-            const index = userData.findIndex(
-                (ele) => ele.email === email && ele.password === password
-            );
-            const isVerified = userData[index].isVerified ? true : false;
-            const filteredUser = userData.filter((ele) => {
-                return ele.email === email && ele.password === password;
-            });
-            if (index != -1 && isVerified) {
-                const token = generateSecretToken(req.body);
-                userData[index].token = token;
-
-                res.cookie('token', token, {
-                    maxAge: 20 * 60 * 1000,
-                    httpOnly: true,
-                    secure: true,
-                });
-                await fsPromise.writeFile(
-                    path.join(__dirname, '..', '..', 'data', 'users.json'),
-                    JSON.stringify(userData, 2, null)
-                );
-                res.status(200).json(
-                    success('SignIn successful', filteredUser)
-                );
-            } else if (index === -1) {
+            if (!emailExists || !passwordExists) {
                 res.status(400).json(failure('Wrong email or password'));
-            } else if (!isVerified) {
-                res.status(400).json(failure('You did not verified your code'));
+            } else {
+                const body = {
+                    email: email,
+                    name: emailExists.name,
+                };
+                const token = generateSecretToken(body);
+                emailExists.token = token;
+                await emailExists.save();
+                res.status(200).json(success('Sign in successful'));
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }

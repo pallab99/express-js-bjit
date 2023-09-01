@@ -81,3 +81,12 @@ POST /api/users/signUp 500 64 - 2836.238 ms
 POST /api/users/signUp 200 653 - 1044.911 ms 
 POST /api/users/signUp 200 467 - 1042.238 ms 
 GET /api/carts/all 200 845 - 676.632 ms 
+POST /api/users/signUp 200 472 - 1104.780 ms 
+POST /api/users/signIn 500 64 - 319.057 ms 
+POST /api/users/signIn 500 64 - 325.870 ms 
+POST /api/users/signIn 200 59 - 1135.531 ms 
+POST /api/users/signIn 200 59 - 314.411 ms 
+POST /api/users/signIn 200 59 - 3779.549 ms 
+POST /api/users/signIn 400 66 - 2884.443 ms 
+POST /api/users/signIn 200 59 - 928.557 ms 
+POST /api/users/signIn 200 59 - 729.846 ms 
