@@ -80,21 +80,19 @@ class Cart {
     async getCartByUserId(req, res) {
         try {
             const { userId } = req.params;
-            if (mongoose.Types.ObjectId.isValid(userId)) {
-                console.log('hhfj');
-                return res.status(200).json(failure('Invalid User Id'));
+            if (!mongoose.Types.ObjectId.isValid(userId)) {
+                return res.status(400).json(failure('Invalid user id'));
+            }
+            const data = await cartModel
+                .find({ user: userId })
+                .populate('products.product', '-images -thumbnail')
+                .populate('user', '-password -token');
+            if (data.length) {
+                res.status(200).json(
+                    success('Successfully get the data', data)
+                );
             } else {
-                const data = await cartModel
-                    .find({ user: userId })
-                    .populate('products.product', '-images -thumbnail')
-                    .populate('user', '-password -token');
-                if (data.length) {
-                    res.status(200).json(
-                        success('Successfully get the data', data)
-                    );
-                } else {
-                    res.status(200).json(success('No data found', []));
-                }
+                res.status(200).json(success('No data found', []));
             }
         } catch (error) {
             console.log(error);

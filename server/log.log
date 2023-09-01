@@ -261,3 +261,15 @@ GET /api/carts/details/64f0a3b5274135a64ea53ce 500 64 - 27.012 ms
 GET /api/carts/details/64f0a3b5274135a64ea53ce 500 64 - 31.915 ms 
 GET /api/carts/details/64f0a3b5274135a64ea53ce 500 64 - 23.951 ms 
 GET /api/carts/all 200 3471 - 2312.220 ms 
+GET /api/carts/details/64f0a3b5274135a64ea53ce5 200 58 - 5.408 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659 500 64 - 20.773 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 200 58 - 1.129 ms 
+GET /api/carts/details/64f19e280f52634484a0d0a4 200 58 - 0.729 ms 
+GET /api/carts/details/64f0a3b5274135a64ea53ce5 200 58 - 1.121 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 200 58 - 1.010 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 200 2319 - 7020.502 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659 500 64 - 16.820 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 200 2319 - 1987.116 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659 400 28 - 0.607 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659b 200 2319 - 1446.484 ms 
+GET /api/carts/details/64f147e599f7f49c7ab6659 400 58 - 0.745 ms 
