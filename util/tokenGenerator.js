@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const generateSecretToken = (body) => {
     const payload = {
-        id: body._id,
+        uuid: body.uuid,
+        id: body.id,
         email: body.email,
     };
     const charset = process.env.ACCESS_TOKEN_SECRET;

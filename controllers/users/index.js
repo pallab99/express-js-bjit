@@ -13,7 +13,7 @@ const {
 } = require('../../util/hashPassword');
 const generateSecretRefreshToken = require('../../util/refreshTokenGenerator');
 const jwt = require('jsonwebtoken');
-
+const { v4: uuidv4 } = require('uuid');
 class Users {
     async signUpUser(req, res) {
         try {
@@ -36,10 +36,10 @@ class Users {
                 } else if (nameExists.length) {
                     return res.status(400).json(failure('Name already exists'));
                 }
-                // const token = generateSecretToken(emailExists);
                 const hashedPassword = await hashPasswordUsingBcrypt(password);
 
                 const result = await userModel.insertMany({
+                    uuid: uuidv4(),
                     name,
                     email,
                     password: hashedPassword,
@@ -51,6 +51,7 @@ class Users {
                 }
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
@@ -89,12 +90,12 @@ class Users {
                 res.status(400).json(failure('Wrong email or password'));
             } else {
                 const body = {
-                    email: email,
-                    name: emailExists.name,
+                    uuid: emailExists.uuid,
+                    id: emailExists._id,
+                    email: emailExists.email,
                 };
-                const accessToken = generateSecretToken(emailExists);
-                emailExists.accessToken = accessToken;
-                const refreshToken = generateSecretRefreshToken(emailExists);
+                const accessToken = generateSecretToken(body);
+                const refreshToken = generateSecretRefreshToken(body);
                 emailExists.refreshToken.push(refreshToken);
                 await emailExists.save();
                 res.status(200).json(
@@ -129,14 +130,15 @@ class Users {
 
     async refreshToken(req, res) {
         try {
-            const { token } = req.body;
+            const token = req.headers.authorization?.split(' ')[1];
+            if (token?.length === 0 || !token || token === undefined) {
+                return res.status(401).json(failure('Token Cannot be Null'));
+            }
             const secretKey = process.env.REFRESH_TOKEN_SECRET;
             const decoded = jwt.verify(token, secretKey);
             const { id } = decoded;
             const user = await userModel.findById(id);
 
-            if (token == null)
-                return res.status(401).json(failure('Token Cannot be Null'));
             if (!user?.refreshToken?.includes(token))
                 return res
                     .status(401)
@@ -162,7 +164,10 @@ class Users {
 
     async logOut(req, res) {
         try {
-            const { token } = req.body;
+            const token = req.headers.authorization?.split(' ')[1];
+            if (token?.length === 0 || !token || token === undefined) {
+                return res.status(400).json(failure('Token Cannot be Null'));
+            }
             const secretKey = process.env.REFRESH_TOKEN_SECRET;
             const decoded = jwt.verify(token, secretKey);
             const { id } = decoded;
