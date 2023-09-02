@@ -362,3 +362,6 @@ GET /api/carts/userOrderDetails/64f19b70855cebee18dd4167 200 1191 - 941.668 ms
 POST /api/carts/create 401 - - 315.382 ms 
 POST /api/carts/create 201 421 - 972.040 ms 
 GET /api/carts/details/64f0a3b5274135a64ea53ce5 200 2309 - 943.608 ms 
+GET /api/carts/details/64f0a3b5274135a64ea53ce5 401 - - 2.054 ms 
+GET /api/carts/details/64f0a3b5274135a64ea53ce5 200 2309 - 966.009 ms 
+POST /api/users/signIn 200 485 - 740.135 ms 

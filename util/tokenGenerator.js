@@ -3,7 +3,6 @@ dotEnv.config();
 const jwt = require('jsonwebtoken');
 
 const generateSecretToken = (body) => {
-    console.log('gf', body);
     const payload = {
         id: body._id,
         email: body.email,
