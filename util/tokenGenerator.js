@@ -3,8 +3,9 @@ dotEnv.config();
 const jwt = require('jsonwebtoken');
 
 const generateSecretToken = (body) => {
+    console.log('gf', body);
     const payload = {
-        name: body.name,
+        id: body._id,
         email: body.email,
     };
     const charset = process.env.TOKEN_KEY;

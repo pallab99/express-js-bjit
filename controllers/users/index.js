@@ -35,16 +35,14 @@ class Users {
                 } else if (nameExists.length) {
                     return res.status(400).json(failure('Name already exists'));
                 }
-                const token = generateSecretToken(req.body);
+                // const token = generateSecretToken(emailExists);
                 const hashedPassword = await hashPasswordUsingBcrypt(password);
 
                 const result = await userModel.insertMany({
                     name,
                     email,
                     password: hashedPassword,
-                    token: token,
                 });
-                console.log({ token });
                 if (result) {
                     res.status(200).json(success('SignIn successful', result));
                 } else {
@@ -95,7 +93,7 @@ class Users {
                     email: email,
                     name: emailExists.name,
                 };
-                const token = generateSecretToken(body);
+                const token = generateSecretToken(emailExists);
                 emailExists.token = token;
                 await emailExists.save();
                 res.status(200).json(

@@ -6,6 +6,8 @@ const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+const passport = require('passport');
+
 const productRouter = require('./routes/products');
 const orderRouter = require('./routes/orders');
 const userRouter = require('./routes/users');
@@ -17,13 +19,14 @@ dotEnv.config();
 const port = process.env.PORT;
 const { failure, success } = require('./common/response');
 const connectDB = require('./configs/databaseConnection');
-
+require('./configs/password-jwt');
 //! Middleware
 server.use(cors({ origin: '*' }));
 server.use(express.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cookieParser());
 server.use(morgan('tiny'));
+server.use(passport.initialize());
 
 const logStream = {
     write: (message) => {
