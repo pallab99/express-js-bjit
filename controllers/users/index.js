@@ -26,7 +26,6 @@ class Users {
             } else {
                 const { name, email, password } = req.body;
                 const emailExists = await userModel.find({ email: email });
-                console.log(emailExists);
                 const nameExists = await userModel.find({ name: name });
                 if (emailExists.length) {
                     return res
@@ -50,7 +49,6 @@ class Users {
                 }
             }
         } catch (error) {
-            console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
@@ -66,7 +64,6 @@ class Users {
                     req,
                     res
                 );
-                console.log(result);
                 if (result.success) {
                     res.status(200).json(success('Verification successful'));
                 } else {
@@ -101,7 +98,6 @@ class Users {
                 );
             }
         } catch (error) {
-            console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }

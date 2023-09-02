@@ -33,7 +33,6 @@ class Cart {
                 res.status(200).json(success('No data found', []));
             }
         } catch (error) {
-            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
@@ -87,7 +86,6 @@ class Cart {
                 res.status(200).json(success('No data found', []));
             }
         } catch (error) {
-            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
@@ -110,7 +108,6 @@ class Cart {
                 res.status(200).json(success('No data found', []));
             }
         } catch (error) {
-            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }

@@ -285,7 +285,6 @@ class ProductController {
 
                 const categories = category?.split(',');
                 const brands = brand?.split(',');
-                // console.log('Hello', categories);
                 if (allDefined) {
                     filteredData = result.filter(
                         (item) =>
