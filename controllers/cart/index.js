@@ -9,7 +9,10 @@ class Cart {
             const data = await cartModel
                 .find({})
                 .populate('products.product', '-images -thumbnail')
-                .populate('user', '-password -token');
+                .populate(
+                    'user',
+                    '-password -token -accessToken -refreshToken'
+                );
             const products = data.map((ele) =>
                 ele.products.map((prod) => prod)
             );
@@ -77,7 +80,10 @@ class Cart {
             const data = await cartModel
                 .find({ user: userId })
                 .populate('products.product', '-images -thumbnail')
-                .populate('user', '-password -token');
+                .populate(
+                    'user',
+                    '-password -token -accessToken -refreshToken'
+                );
             if (data.length) {
                 res.status(200).json(
                     success('Successfully get the data', data)
@@ -99,7 +105,10 @@ class Cart {
             const data = await cartModel
                 .find({ _id: id })
                 .populate('products.product', '-images -thumbnail')
-                .populate('user', '-password -token');
+                .populate(
+                    'user',
+                    '-password -token -accessToken -refreshToken'
+                );
             if (data.length) {
                 res.status(200).json(
                     success('Successfully get the data', data)

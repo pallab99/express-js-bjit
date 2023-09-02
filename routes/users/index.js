@@ -8,5 +8,6 @@ router
     .post('/signup', validator.signUpUser, userController.signUpUser)
     .post('/signIn', userController.signInUser)
     .post('/verifyCode', userController.verifyCode)
-    .get('/signOut', userController.signOutUser);
+    .post('/refreshToken', userController.refreshToken)
+    .post('/logOut', userController.logOut);
 exports.router = router;

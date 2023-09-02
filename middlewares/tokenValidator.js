@@ -4,7 +4,7 @@ const dotEnv = require('dotenv');
 dotEnv.config();
 const validateToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
-    const charset = process.env.TOKEN_KEY;
+    const charset = process.env.ACCESS_TOKEN_SECRET;
     if (token === undefined) {
         res.status(401).json(failure('Authorization failed.Please Sign in.'));
     } else {

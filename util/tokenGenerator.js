@@ -7,8 +7,8 @@ const generateSecretToken = (body) => {
         id: body._id,
         email: body.email,
     };
-    const charset = process.env.TOKEN_KEY;
-    const token = jwt.sign(payload, charset);
+    const charset = process.env.ACCESS_TOKEN_SECRET;
+    const token = jwt.sign(payload, charset, { expiresIn: '2 m' });
     return token;
 };
 

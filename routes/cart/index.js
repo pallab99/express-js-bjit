@@ -6,10 +6,9 @@ const router = express.Router();
 const passport = require('passport');
 const passportJWTAuth = passport.authenticate('jwt', { session: false });
 router
-    .get('/all', passportJWTAuth, Cart.getAllCartItems)
-    .get('/details/:userId', passportJWTAuth, Cart.getCartByUserId)
-    .get('/userOrderDetails/:id', passportJWTAuth, Cart.getCartItemsById)
-
-    .post('/create', passportJWTAuth, addToCartValidation, Cart.addToCart);
+    .get('/all', validateToken, Cart.getAllCartItems)
+    .get('/details/:userId', validateToken, Cart.getCartByUserId)
+    .get('/userOrderDetails/:id', validateToken, Cart.getCartItemsById)
+    .post('/create', validateToken, addToCartValidation, Cart.addToCart);
 
 exports.router = router;
