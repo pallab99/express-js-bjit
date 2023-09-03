@@ -5,6 +5,4 @@ const setTokenToCookie = (res, token) => {
     });
 };
 
-//3.154e10
-
 module.exports = setTokenToCookie;

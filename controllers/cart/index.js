@@ -9,7 +9,10 @@ class Cart {
             const data = await cartModel
                 .find({})
                 .populate('products.product', '-images -thumbnail')
-                .populate('user', '-password -isValidSession');
+                .populate(
+                    'user',
+                    '-password -isValidSession -__v -uuid -createdAt -updatedAt'
+                );
             const products = data.map((ele) =>
                 ele.products.map((prod) => prod)
             );
@@ -50,7 +53,7 @@ class Cart {
                 return acc + product.price * products[index].quantity;
             }, 0);
 
-            let result = await cartModel.insertMany({
+            let result = await cartModel.create({
                 user,
                 products,
                 totalAmount,
@@ -79,7 +82,7 @@ class Cart {
                 .populate('products.product', '-images -thumbnail')
                 .populate(
                     'user',
-                    '-password -token -accessToken -refreshToken'
+                    '-password -isValidSession -__v -uuid -createdAt -updatedAt'
                 );
             if (data.length) {
                 res.status(200).json(
@@ -104,7 +107,7 @@ class Cart {
                 .populate('products.product', '-images -thumbnail')
                 .populate(
                     'user',
-                    '-password -token -accessToken -refreshToken'
+                    '-password -isValidSession -__v -uuid -createdAt -updatedAt'
                 );
             if (data.length) {
                 res.status(200).json(

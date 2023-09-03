@@ -28,8 +28,8 @@ class Users {
                 res.status(422).json(failure('Unprocessable Entity', error));
             } else {
                 const { name, email, password } = req.body;
-                const emailExists = await userModel.find({ email: email });
-                const nameExists = await userModel.find({ name: name });
+                const emailExists = await userModel.findOne({ email: email });
+                const nameExists = await userModel.findOne({ name: name });
                 if (emailExists.length) {
                     return res
                         .status(400)
@@ -39,7 +39,7 @@ class Users {
                 }
                 const hashedPassword = await hashPasswordUsingBcrypt(password);
 
-                const result = await userModel.insertMany({
+                const result = await userModel.create({
                     uuid: uuidv4(),
                     name,
                     email,
@@ -135,23 +135,10 @@ class Users {
         }
     }
 
-    async signOutUser(req, res) {
-        try {
-            if (req.cookies.token != undefined) {
-                res.clearCookie('token');
-                res.status(200).json(success('Sign out successful'));
-            } else {
-                res.status(400).json(failure('Token Already Expired'));
-            }
-        } catch (error) {
-            res.status(500).json(failure('Internal Server Error'));
-        }
-    }
-
     async refreshToken(req, res) {
         try {
             const token = req.headers.authorization?.split(' ')[1];
-            if (token?.length === 0 || !token || token === undefined) {
+            if (!token || token === undefined) {
                 return res.status(401).json(failure('Token Cannot be Null'));
             }
             const secretKey = process.env.REFRESH_TOKEN_SECRET;
