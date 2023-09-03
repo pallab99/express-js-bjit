@@ -14,6 +14,7 @@ const {
 const generateSecretRefreshToken = require('../../util/refreshTokenGenerator');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
+const setTokenToCookie = require('../../util/setTokenToCookie');
 class Users {
     async signUpUser(req, res) {
         try {
@@ -86,6 +87,11 @@ class Users {
                 password,
                 emailExists.password
             );
+            if (emailExists.isValidSession) {
+                return res
+                    .status(400)
+                    .json(failure('You are already signed in'));
+            }
             if (!emailExists || !passwordExists) {
                 res.status(400).json(failure('Wrong email or password'));
             } else {
@@ -96,13 +102,27 @@ class Users {
                 };
                 const accessToken = generateSecretToken(body);
                 const refreshToken = generateSecretRefreshToken(body);
-                emailExists.refreshToken.push(refreshToken);
+                emailExists.isValidSession = true;
                 await emailExists.save();
+
+                setTokenToCookie(res, {
+                    name: 'accessToken',
+                    value: accessToken,
+                    maxAge: 300000,
+                });
+                setTokenToCookie(res, {
+                    name: 'refreshToken',
+                    value: refreshToken,
+                    maxAge: 3.154e10,
+                });
+
                 res.status(200).json(
                     success('Sign in successful', {
                         user: {
+                            _id: emailExists._id,
                             name: emailExists.name,
                             email: emailExists.email,
+                            isValidSession: emailExists.isValidSession,
                         },
                         accessToken: accessToken,
                         refreshToken: refreshToken,
@@ -139,49 +159,78 @@ class Users {
             const { id } = decoded;
             const user = await userModel.findById(id);
 
-            if (!user?.refreshToken?.includes(token))
-                return res
-                    .status(401)
-                    .json(failure('Invalid refresh token provided'));
-
             jwt.verify(token, secretKey, (err, user) => {
-                if (err)
+                if (err) {
                     return res
                         .status(401)
-                        .json(failure('Can not generate access token'));
-                const accessToken = generateSecretToken(user);
-                res.json(
-                    success('Access Token generated successfully', {
-                        accessToken: accessToken,
-                    })
-                );
+                        .json(failure('Invalid token provided.'));
+                } else {
+                    const accessToken = generateSecretToken(user);
+
+                    setTokenToCookie(res, {
+                        name: 'accessToken',
+                        value: accessToken,
+                        maxAge: 300000,
+                    });
+                    setTokenToCookie(res, {
+                        name: 'refreshToken',
+                        value: token,
+                        maxAge: 3.154e10,
+                    });
+
+                    return res.json(
+                        success('Access Token generated successfully', {
+                            accessToken: accessToken,
+                        })
+                    );
+                }
             });
         } catch (error) {
             console.log(error);
             res.status(500).json(failure('Internal Server Error'));
         }
     }
-
     async logOut(req, res) {
         try {
-            const token = req.headers.authorization?.split(' ')[1];
-            if (token?.length === 0 || !token || token === undefined) {
-                return res.status(400).json(failure('Token Cannot be Null'));
-            }
-            const secretKey = process.env.REFRESH_TOKEN_SECRET;
-            const decoded = jwt.verify(token, secretKey);
-            const { id } = decoded;
-            const user = await userModel.findById(id);
-            const { refreshToken } = user;
-            const index = refreshToken.findIndex((ele) => ele === token);
-            if (index != -1) {
-                user.refreshToken.splice(index, 1);
-                await user.save();
-                res.status(200).json(success('Logout successfully'));
+            if (Object.keys(req.cookies).length === 0) {
+                return res
+                    .status(403)
+                    .json(failure('You are already logged out'));
             } else {
-                res.status(400).json(
-                    failure('Invalid refresh token.You are already logged out')
-                );
+                const accessToken = req.cookies.accessToken;
+                const secretKey = process.env.ACCESS_TOKEN_SECRET;
+
+                try {
+                    const decoded = jwt.verify(accessToken, secretKey);
+                    const { id } = decoded;
+                    console.log(id);
+                    const user = await userModel.findById(id);
+                    user.isValidSession = false;
+                    await user.save();
+
+                    setTokenToCookie(res, {
+                        name: 'accessToken',
+                        value: '',
+                        maxAge: 0,
+                    });
+                    setTokenToCookie(res, {
+                        name: 'refreshToken',
+                        value: '',
+                        maxAge: 0,
+                    });
+                    res.status(200).json(success('Log out successful'));
+                } catch (tokenError) {
+                    if (tokenError instanceof jwt.TokenExpiredError) {
+                        return res
+                            .status(401)
+                            .json(failure('Token has expired'));
+                    } else {
+                        console.error(tokenError);
+                        return res
+                            .status(500)
+                            .json(failure('Internal Server Error'));
+                    }
+                }
             }
         } catch (error) {
             console.log(error);

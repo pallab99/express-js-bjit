@@ -8,6 +8,7 @@ const generateSecretToken = (body) => {
         id: body.id,
         email: body.email,
     };
+    console.log({ body });
     const charset = process.env.ACCESS_TOKEN_SECRET;
     const token = jwt.sign(payload, charset, { expiresIn: '2 m' });
     return token;
