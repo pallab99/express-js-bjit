@@ -9,10 +9,7 @@ class Cart {
             const data = await cartModel
                 .find({})
                 .populate('products.product', '-images -thumbnail')
-                .populate(
-                    'user',
-                    '-password -token -accessToken -refreshToken'
-                );
+                .populate('user', '-password -isValidSession');
             const products = data.map((ele) =>
                 ele.products.map((prod) => prod)
             );
