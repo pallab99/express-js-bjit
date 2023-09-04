@@ -150,15 +150,51 @@ const validator = {
             .bail()
             .isString()
             .withMessage('Email Must be of type string')
-            .custom((val) => EMAIL_REGEX.test(val))
-            .withMessage('Invalid email'),
+            .bail()
+            .isEmail()
+            .withMessage('Invalid email address'),
         body('password')
             .not()
             .equals('')
             .withMessage('Password is required')
             .bail()
             .isString()
-            .withMessage('Password Must be of type string'),
+            .withMessage('Password Must be of type string')
+            .bail()
+            .isStrongPassword({
+                minLength: 8,
+                minLowerCase: 1,
+                minUpperCase: 1,
+                minSymbols: 1,
+                minNumbers: 1,
+            }),
+        body('phoneNumber')
+            .not()
+            .equals('')
+            .withMessage('PhoneNumber is required')
+            .bail()
+            .isNumeric()
+            .withMessage('PhoneNumber must be a number'),
+        body('rank')
+            .optional()
+            .not()
+            .equals('')
+            .withMessage('Rank is required')
+            .bail()
+            .isNumeric()
+            .withMessage('Rank must be a number'),
+        body('address.country')
+            .isLength({ min: 2 })
+            .withMessage('Country must have at least 2 characters'),
+        body('address.city')
+            .isLength({ min: 2 })
+            .withMessage('City must have at least 2 characters'),
+        body('address.area')
+            .isLength({ min: 2 })
+            .withMessage('Area must have at least 2 characters'),
+        body('address.street')
+            .isLength({ min: 2 })
+            .withMessage('Street must have at least 2 characters'),
     ],
 };
 

@@ -4,10 +4,6 @@ const validator = require('validator');
 
 const userSchema = new Schema(
     {
-        uuid: {
-            type: String,
-            required: false,
-        },
         name: {
             type: String,
             unique: true,
@@ -27,16 +23,27 @@ const userSchema = new Schema(
                 message: 'Invalid email format',
             },
         },
-        password: {
-            type: String,
-            required: [true, 'Password is required'],
-            min: [8, 'Password must be minimum 8 characters'],
-            max: [15, 'Password can not be greater than 15 characters'],
+        phoneNumber: {
+            type: Number,
+            required: [true, 'Phone Number is required'],
         },
-        isValidSession: {
-            type: Boolean,
-            default: false,
-            required: false,
+        address: {
+            country: {
+                type: String,
+                required: true,
+            },
+            city: {
+                type: String,
+                required: true,
+            },
+            area: {
+                type: String,
+                required: true,
+            },
+            street: {
+                type: String,
+                required: true,
+            },
         },
     },
     { timestamps: true }
