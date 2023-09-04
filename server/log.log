@@ -710,3 +710,12 @@ POST /api/auth/login 200 246 - 1130.601 ms
 DELETE /api/auth/logout 200 59 - 640.540 ms 
 POST /api/auth/login 400 65 - 344.164 ms 
 POST /api/auth/sign-up 200 287 - 1444.591 ms 
+POST /api/auth/sign-up 400 80 - 714.907 ms 
+POST /api/auth/sign-up 500 64 - 4615.780 ms 
+POST /api/auth/sign-up 500 64 - 4536.069 ms 
+POST /api/auth/sign-up 500 64 - 415.774 ms 
+POST /api/auth/sign-up 500 64 - 376.559 ms 
+POST /api/auth/sign-up 400 70 - 5780.153 ms 
+POST /api/auth/sign-up 400 70 - 3072.483 ms 
+POST /api/auth/sign-up 400 70 - 651.288 ms 
+POST /api/auth/sign-up 200 287 - 6482.830 ms 

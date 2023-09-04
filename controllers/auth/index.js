@@ -80,7 +80,10 @@ class AuthController {
                     .json(failure('Unprocessable Entity', error));
             } else {
                 const emailExists = await authModel.findOne({ email: email });
-                if (!emailExists) {
+                const emailExistsAtUser = await userModel.findOne({
+                    email: email,
+                });
+                if (!emailExists && !emailExistsAtUser) {
                     const newUser = await userModel.create({
                         email,
                         name,
@@ -101,7 +104,7 @@ class AuthController {
                             .findById(newRegistration._id)
                             .select('-password')
                             .exec();
-                        if (newRegistration) {
+                        if (newRegistration && savedRegistration) {
                             return res
                                 .status(200)
                                 .json(
