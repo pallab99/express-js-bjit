@@ -158,6 +158,21 @@ const validator = {
             .equals('')
             .withMessage('Password is required')
             .bail()
+            .custom((value, { req }) => {
+                let { name, email } = req.body;
+                name = name.replace(/\s+/g, '');
+                email = email.split('@')[0];
+                const nameRegex = new RegExp(name, 'i');
+                const emailRegex = new RegExp(email, 'i');
+                if (nameRegex.test(value) || emailRegex.test(value)) {
+                    throw new Error(
+                        'Password cannot contain your username or email'
+                    );
+                } else {
+                    return true;
+                }
+            })
+            .bail()
             .isString()
             .withMessage('Password Must be of type string')
             .bail()
@@ -171,6 +186,7 @@ const validator = {
             .withMessage(
                 'Password must be at least 8 characters with a lowercase ,a uppercase,a number and a special character'
             ),
+
         body('phoneNumber')
             .not()
             .equals('')
