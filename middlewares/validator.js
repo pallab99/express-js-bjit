@@ -167,7 +167,10 @@ const validator = {
                 minUpperCase: 1,
                 minSymbols: 1,
                 minNumbers: 1,
-            }),
+            })
+            .withMessage(
+                'Password must be at least 8 characters with a lowercase ,a uppercase,a number and a special character'
+            ),
         body('phoneNumber')
             .not()
             .equals('')
@@ -177,24 +180,43 @@ const validator = {
             .withMessage('PhoneNumber must be a number'),
         body('rank')
             .optional()
-            .not()
-            .equals('')
-            .withMessage('Rank is required')
+            .custom((data) => {
+                if (data > 0 && data < 10 && typeof data === 'number') {
+                    return true;
+                }
+                throw new Error('Rank must be between 1 and 10');
+            })
             .bail()
             .isNumeric()
             .withMessage('Rank must be a number'),
         body('address.country')
-            .isLength({ min: 2 })
-            .withMessage('Country must have at least 2 characters'),
+            .not()
+            .equals('')
+            .withMessage('Country is required')
+            .bail()
+            .isString()
+            .withMessage('Country only be string'),
         body('address.city')
-            .isLength({ min: 2 })
-            .withMessage('City must have at least 2 characters'),
+            .not()
+            .equals('')
+            .withMessage('City is required')
+            .bail()
+            .isString()
+            .withMessage('City only be string'),
         body('address.area')
-            .isLength({ min: 2 })
-            .withMessage('Area must have at least 2 characters'),
+            .not()
+            .equals('')
+            .withMessage('Area is required')
+            .bail()
+            .isString()
+            .withMessage('Area only be string'),
         body('address.street')
-            .isLength({ min: 2 })
-            .withMessage('Street must have at least 2 characters'),
+            .not()
+            .equals('')
+            .withMessage('Street is required')
+            .bail()
+            .isString()
+            .withMessage('Street only be string'),
     ],
 };
 
