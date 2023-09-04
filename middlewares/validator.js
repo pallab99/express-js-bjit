@@ -1,5 +1,5 @@
 const { query, body } = require('express-validator');
-const { EMAIL_REGEX } = require('../constant');
+const { EMAIL_REGEX, PHONE_REGEX } = require('../constant');
 
 const validator = {
     filterProduct: [
@@ -177,7 +177,15 @@ const validator = {
             .withMessage('PhoneNumber is required')
             .bail()
             .isNumeric()
-            .withMessage('PhoneNumber must be a number'),
+            .withMessage('PhoneNumber must be a number')
+            .bail()
+            .custom((data) => {
+                if (PHONE_REGEX.test(data)) {
+                    return true;
+                } else {
+                    throw new Error('This is not a valid phone number');
+                }
+            }),
         body('rank')
             .optional()
             .custom((data) => {
@@ -217,6 +225,37 @@ const validator = {
             .bail()
             .isString()
             .withMessage('Street only be string'),
+    ],
+
+    loginUser: [
+        body('email')
+            .not()
+            .equals('')
+            .withMessage('Email is required')
+            .bail()
+            .isString()
+            .withMessage('Email Must be of type string')
+            .bail()
+            .isEmail()
+            .withMessage('Invalid email address'),
+        body('password')
+            .not()
+            .equals('')
+            .withMessage('Password is required')
+            .bail()
+            .isString()
+            .withMessage('Password Must be of type string')
+            .bail()
+            .isStrongPassword({
+                minLength: 8,
+                minLowerCase: 1,
+                minUpperCase: 1,
+                minSymbols: 1,
+                minNumbers: 1,
+            })
+            .withMessage(
+                'Password must be at least 8 characters with a lowercase ,a uppercase,a number and a special character'
+            ),
     ],
 };
 
