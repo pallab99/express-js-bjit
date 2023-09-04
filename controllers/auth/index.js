@@ -150,7 +150,7 @@ class AuthController {
                     .json(failure('You are already logged out'));
             } else {
                 const user = await authModel.findById(id);
-                if (user) {
+                if (user && user.sessionActive) {
                     user.sessionActive = false;
                     await user.save();
                     res.cookie('user-id', '', {
