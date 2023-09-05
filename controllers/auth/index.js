@@ -210,8 +210,13 @@ class AuthController {
                 }
             }
         } catch (error) {
-            console.log(error);
-            res.status(500).json(failure('Internal Server Error'));
+            if (error instanceof jwt.JsonWebTokenError) {
+                return res.status(401).send(failure('Unauthorized access'));
+            }
+            if (error instanceof jwt.TokenExpiredError) {
+                return res.status(401).send(failure('Unauthorized access'));
+            }
+            return res.status(401).send(failure('Unauthorized access'));
         }
     }
 }
