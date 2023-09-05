@@ -7,6 +7,7 @@ const {
     comparePasswords,
 } = require('../../util/hashPassword');
 const generateSecretToken = require('../../util/tokenGenerator');
+const LoginAttemptModel = require('../../model/loginAttempt');
 
 class AuthController {
     async login(req, res) {
@@ -36,9 +37,46 @@ class AuthController {
                         password,
                         emailExists?.password
                     );
-                    if (!emailExists || !passwordExists) {
-                        res.status(400).json(failure('Wrong credentials'));
+
+                    if (!passwordExists) {
+                        let user = await LoginAttemptModel.findOne({ email });
+                        if (!user) {
+                            user = new LoginAttemptModel();
+                            user.email = email;
+                            user.timestamp.push(new Date());
+                            await user.save();
+                            console.log(user);
+                        } else {
+                            user.timestamp.push(new Date());
+                            await user.save();
+                            console.log(user?.timestamp);
+                            const earliestTimestamp = user?.timestamp[0];
+                            const latestTimestamp =
+                                user?.timestamp[user?.timestamp?.length - 1];
+                            const timeDifference =
+                                (latestTimestamp - earliestTimestamp) / 1000;
+
+                            if (
+                                timeDifference >= 20 ||
+                                user?.timestamp?.length >= 5
+                            ) {
+                                return res
+                                    .status(400)
+                                    .json(failure('Too many login attempts'));
+                            }
+                        }
+                        return res
+                            .status(400)
+                            .json(failure('Wrong credentials'));
                     } else {
+                        let unsuccessfulLogin = await LoginAttemptModel.findOne(
+                            { email }
+                        );
+                        unsuccessfulLogin?.timestamp.splice(
+                            0,
+                            unsuccessfulLogin?.timestamp?.length
+                        );
+                        await unsuccessfulLogin.save();
                         const data = {
                             _id: emailExists?._id,
                             email: emailExists?.email,

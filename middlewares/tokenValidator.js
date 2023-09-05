@@ -42,6 +42,11 @@ dotEnv.config();
 
 const tokenAuthorization = (req, res, next) => {
     try {
+        if (!req.headers.authorization) {
+            return res
+                .status(401)
+                .send(failure('Unable to access.Please login'));
+        }
         const { authorization } = req.headers;
         const token = authorization?.split(' ')[1];
         const secretKey = process.env.ACCESS_TOKEN_SECRET;
@@ -67,6 +72,11 @@ const tokenAuthorization = (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
     try {
+        if (!req.headers.authorization) {
+            return res
+                .status(401)
+                .send(failure('Unable to access.Please login'));
+        }
         const { authorization } = req.headers;
         const token = authorization?.split(' ')[1];
         const secretKey = process.env.ACCESS_TOKEN_SECRET;
