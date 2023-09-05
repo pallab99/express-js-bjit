@@ -25,7 +25,7 @@ const checkUnsuccessfulLogin = async (req, res, next) => {
                 const timeDifference =
                     (latestTimestamp - earliestTimestamp) / 1000;
 
-                if (timeDifference > 20 && user?.timestamp?.length > 8) {
+                if (timeDifference > 10 && user?.timestamp?.length > 8) {
                     const userAuth = await authModel.findOne({ email });
                     const passwordExists = await comparePasswords(
                         password,
