@@ -7,7 +7,8 @@ const {
     comparePasswords,
 } = require('../../util/hashPassword');
 const generateSecretToken = require('../../util/tokenGenerator');
-const LoginAttemptModel = require('../../model/loginAttempt');
+const generateSecretRefreshToken = require('../../util/refreshTokenGenerator');
+const jwt = require('jsonwebtoken');
 
 class AuthController {
     async login(req, res) {
@@ -43,14 +44,6 @@ class AuthController {
                             .status(400)
                             .json(failure('Wrong credentials'));
                     } else {
-                        // let unsuccessfulLogin = await LoginAttemptModel.findOne(
-                        //     { email }
-                        // );
-                        // unsuccessfulLogin?.timestamp.splice(
-                        //     0,
-                        //     unsuccessfulLogin?.timestamp?.length
-                        // );
-                        // await unsuccessfulLogin.save();
                         const data = {
                             _id: emailExists?._id,
                             email: emailExists?.email,
@@ -60,12 +53,14 @@ class AuthController {
                             phoneNumber: emailExists?.user?.phoneNumber,
                         };
                         const jwtToken = generateSecretToken(data);
-                        data.token = jwtToken;
+                        const refreshToken = generateSecretRefreshToken(data);
+                        data.accessToken = jwtToken;
+                        data.refreshToken = refreshToken;
                         emailExists.sessionActive = true;
                         await emailExists.save();
-                        res.cookie('user-id', emailExists?._id, {
-                            httpOnly: true,
-                        });
+                        // res.cookie('user-id', emailExists?._id, {
+                        //     httpOnly: true,
+                        // });
                         res.status(200).json(
                             success('Sign in successful', data)
                         );
@@ -178,6 +173,40 @@ class AuthController {
                     return res
                         .status(400)
                         .json(failure('You are already logged out'));
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal Server Error'));
+        }
+    }
+
+    async refreshToken(req, res) {
+        try {
+            const token = req.headers.authorization?.split(' ')[1];
+            if (!token || token === undefined) {
+                return res.status(401).json(failure('Token Cannot be Null'));
+            }
+            const secretKey = process.env.REFRESH_TOKEN_SECRET;
+            const decoded = jwt.verify(token, secretKey);
+            const userData = {
+                _id: decoded?._id,
+                email: decoded?.email,
+                rank: decoded?.rank,
+                name: decoded?.name,
+                address: decoded?.address,
+                phoneNumber: decoded?.phoneNumber,
+            };
+            console.log({ userData });
+            const refreshToken = await jwt.verify(token, secretKey);
+            if (refreshToken) {
+                const accessToken = generateSecretToken(userData);
+                if (accessToken) {
+                    res.status(200).json(
+                        success('Access token generated.', accessToken)
+                    );
+                } else {
+                    res.status(400).json(failure('Something went wrong'));
                 }
             }
         } catch (error) {

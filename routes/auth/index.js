@@ -12,6 +12,7 @@ router
         AuthController.login
     )
     .post('/sign-up', validator.signUpUser, AuthController.signUp)
+    .post('/refreshToken', AuthController.refreshToken)
     .delete('/logout', AuthController.logOut);
 
 exports.router = router;

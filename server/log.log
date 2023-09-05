@@ -423,3 +423,17 @@ POST /api/auth/login 400 66 - 1714.143 ms
 POST /api/auth/login 400 66 - 1674.224 ms 
 POST /api/auth/login 400 89 - 1365.735 ms 
 POST /api/auth/login 200 638 - 2511.553 ms 
+POST /api/auth/login 400 65 - 684.138 ms 
+POST /api/auth/login 200 638 - 3060.140 ms 
+POST /api/auth/login 200 1043 - 6078.642 ms 
+POST /api/users/refreshToken 500 64 - 357.954 ms 
+POST /api/users/refreshToken 500 64 - 348.035 ms 
+POST /api/users/refreshToken 500 64 - 1295.003 ms 
+POST /api/users/refreshToken 500 64 - 1174.061 ms 
+POST /api/users/refreshToken 500 64 - 1594.955 ms 
+POST /api/auth/refreshToken 500 64 - 9.621 ms 
+POST /api/auth/refreshToken 500 64 - 2684.293 ms 
+POST /api/products/create 401 62 - 14.404 ms 
+POST /api/auth/refreshToken 200 443 - 354.663 ms 
+POST /api/products/create 200 266 - 361.456 ms 
+POST /api/products/create 401 62 - 1.959 ms 
