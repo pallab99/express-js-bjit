@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const ProductController = require('./../../controllers/product/index');
 const validator = require('../../middlewares/validator');
+const {
+    tokenAuthorization,
+    isAdmin,
+} = require('../../middlewares/tokenValidator');
 
 const productController = new ProductController();
 
@@ -17,7 +21,13 @@ router
         productController.filterProducts
     )
     .get('/search', productController.searchProducts)
-    .post('/create', validator.createProduct, productController.addData)
+    .post(
+        '/create',
+        validator.createProduct,
+        tokenAuthorization,
+        isAdmin,
+        productController.addData
+    )
     .delete('/delete/:id', productController.deleteData)
     .patch(
         '/update/:id',

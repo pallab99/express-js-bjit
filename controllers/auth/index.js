@@ -6,6 +6,7 @@ const {
     hashPasswordUsingBcrypt,
     comparePasswords,
 } = require('../../util/hashPassword');
+const generateSecretToken = require('../../util/tokenGenerator');
 
 class AuthController {
     async login(req, res) {
@@ -46,6 +47,8 @@ class AuthController {
                             address: emailExists?.user?.address,
                             phoneNumber: emailExists?.user?.phoneNumber,
                         };
+                        const jwtToken = generateSecretToken(data);
+                        data.token = jwtToken;
                         emailExists.sessionActive = true;
                         await emailExists.save();
                         res.cookie('user-id', emailExists?._id, {

@@ -3,14 +3,9 @@ dotEnv.config();
 const jwt = require('jsonwebtoken');
 
 const generateSecretToken = (body) => {
-    const payload = {
-        uuid: body.uuid,
-        id: body.id,
-        email: body.email,
-    };
     console.log({ body });
     const charset = process.env.ACCESS_TOKEN_SECRET;
-    const token = jwt.sign(payload, charset, { expiresIn: '2 m' });
+    const token = jwt.sign(body, charset, { expiresIn: '1 h' });
     return token;
 };
 
