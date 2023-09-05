@@ -137,6 +137,7 @@ const validator = {
 
     signUpUser: [
         body('name')
+            .exists()
             .not()
             .equals('')
             .withMessage('Name is required')
@@ -144,6 +145,7 @@ const validator = {
             .isString()
             .withMessage('Name Must be of type string'),
         body('email')
+            .exists()
             .not()
             .equals('')
             .withMessage('Email is required')
@@ -154,6 +156,7 @@ const validator = {
             .isEmail()
             .withMessage('Invalid email address'),
         body('password')
+            .exists()
             .not()
             .equals('')
             .withMessage('Password is required')
@@ -188,6 +191,7 @@ const validator = {
             ),
 
         body('phoneNumber')
+            .exists()
             .not()
             .equals('')
             .withMessage('PhoneNumber is required')
@@ -214,6 +218,7 @@ const validator = {
             .isNumeric()
             .withMessage('Rank must be a number'),
         body('address.country')
+            .exists()
             .not()
             .equals('')
             .withMessage('Country is required')
@@ -221,6 +226,7 @@ const validator = {
             .isString()
             .withMessage('Country only be string'),
         body('address.city')
+            .exists()
             .not()
             .equals('')
             .withMessage('City is required')
@@ -228,6 +234,7 @@ const validator = {
             .isString()
             .withMessage('City only be string'),
         body('address.area')
+            .exists()
             .not()
             .equals('')
             .withMessage('Area is required')
@@ -235,6 +242,7 @@ const validator = {
             .isString()
             .withMessage('Area only be string'),
         body('address.street')
+            .exists()
             .not()
             .equals('')
             .withMessage('Street is required')
