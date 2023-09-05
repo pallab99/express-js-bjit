@@ -5,6 +5,10 @@ const loginAttemptSchema = new mongoose.Schema({
     timestamp: {
         type: [Date],
     },
+    blockUserFromLogin: {
+        type: Date,
+        required: false,
+    },
 });
 
 const LoginAttemptModel = mongoose.model('LoginAttempt', loginAttemptSchema);

@@ -43,14 +43,14 @@ class AuthController {
                             .status(400)
                             .json(failure('Wrong credentials'));
                     } else {
-                        let unsuccessfulLogin = await LoginAttemptModel.findOne(
-                            { email }
-                        );
-                        unsuccessfulLogin?.timestamp.splice(
-                            0,
-                            unsuccessfulLogin?.timestamp?.length
-                        );
-                        await unsuccessfulLogin.save();
+                        // let unsuccessfulLogin = await LoginAttemptModel.findOne(
+                        //     { email }
+                        // );
+                        // unsuccessfulLogin?.timestamp.splice(
+                        //     0,
+                        //     unsuccessfulLogin?.timestamp?.length
+                        // );
+                        // await unsuccessfulLogin.save();
                         const data = {
                             _id: emailExists?._id,
                             email: emailExists?.email,

@@ -59,7 +59,6 @@ const tokenAuthorization = (req, res, next) => {
                 .send(failure('Unable to access.Please login'));
         }
     } catch (error) {
-        console.log(error);
         if (error instanceof jwt.TokenExpiredError) {
             return res.status(401).send(failure('Unauthorized access'));
         } else if (error instanceof jwt.JsonWebTokenError) {
@@ -87,7 +86,6 @@ const isAdmin = (req, res, next) => {
             return res.status(401).send(failure('Unable to access'));
         }
     } catch (error) {
-        console.log(error);
         if (error instanceof jwt.JsonWebTokenError) {
             return res.status(401).send(failure('Unauthorized access'));
         }
