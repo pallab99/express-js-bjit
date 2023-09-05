@@ -39,32 +39,6 @@ class AuthController {
                     );
 
                     if (!passwordExists) {
-                        let user = await LoginAttemptModel.findOne({ email });
-                        if (!user) {
-                            user = new LoginAttemptModel();
-                            user.email = email;
-                            user.timestamp.push(new Date());
-                            await user.save();
-                            console.log(user);
-                        } else {
-                            user.timestamp.push(new Date());
-                            await user.save();
-                            console.log(user?.timestamp);
-                            const earliestTimestamp = user?.timestamp[0];
-                            const latestTimestamp =
-                                user?.timestamp[user?.timestamp?.length - 1];
-                            const timeDifference =
-                                (latestTimestamp - earliestTimestamp) / 1000;
-
-                            if (
-                                timeDifference >= 20 ||
-                                user?.timestamp?.length >= 5
-                            ) {
-                                return res
-                                    .status(400)
-                                    .json(failure('Too many login attempts'));
-                            }
-                        }
                         return res
                             .status(400)
                             .json(failure('Wrong credentials'));

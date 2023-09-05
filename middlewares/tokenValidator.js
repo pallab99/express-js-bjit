@@ -60,10 +60,9 @@ const tokenAuthorization = (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
-        if (error instanceof jwt.JsonWebTokenError) {
-            return res.status(401).send(failure('Unauthorized access'));
-        }
         if (error instanceof jwt.TokenExpiredError) {
+            return res.status(401).send(failure('Unauthorized access'));
+        } else if (error instanceof jwt.JsonWebTokenError) {
             return res.status(401).send(failure('Unauthorized access'));
         }
         return res.status(401).send(failure('Unauthorized access'));
