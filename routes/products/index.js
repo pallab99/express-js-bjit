@@ -10,7 +10,7 @@ const {
 const productController = new ProductController();
 
 router
-    .get('/all', productController.getAll)
+    .get('/all', validator.getAllProductsFilter, productController.getAll)
     .get('/details/:id', productController.getDataById)
     .get('/sortByPrice', productController.sortByPrice)
     .get('/filterByCategory', productController.filterByCategory)

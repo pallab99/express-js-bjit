@@ -28,3 +28,13 @@ brandArray is not defined
 Parameter "filter" to find() must be an object, got "[object Object]" (type object)
 Cannot access 'data' before initialization
 Cannot read properties of undefined (reading 'length')
+undefined is not a function
+Query was already executed: Product.countDocuments({ '$or': [ { brand: [Object] } ] })
+Query was already executed: Product.countDocuments({ '$or': [ { brand: [Object] } ] })
+Query was already executed: Product.countDocuments({ '$or': [ { brand: [Object] } ] })
+Query was already executed: Product.countDocuments({ '$or': [ { brand: [Object] } ] })
+Query was already executed: Product.countDocuments({ '$or': [ { brand: [Object] } ] })
+filterDirection is not defined
+Cannot access 'filterValue' before initialization
+Cast to Number failed for value "NaN" (type number) at path "stock" for model "Product"
+Cast to Number failed for value "NaN" (type number) at path "stock" for model "Product"

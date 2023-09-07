@@ -9,6 +9,17 @@ const { ListSearchIndexesCursor } = require('mongodb');
 class ProductController {
     async getAll(req, res) {
         try {
+            const validation = validationResult(req).array();
+            if (validation.length) {
+                const error = {};
+                validation.forEach((validationError) => {
+                    const property = validationError.path;
+                    error[property] = validationError.msg;
+                });
+                return res
+                    .status(422)
+                    .json(failure('Unprocessable Entity', error));
+            }
             const page = parseInt(req.query.offset);
             const limit = parseInt(req.query.limit);
 
@@ -16,34 +27,58 @@ class ProductController {
                 return res.status(422).json(failure('Invalid page or limit'));
             }
 
-            let { search, sortBy, sortOrder, brand } = req.query;
+            let {
+                search,
+                sortBy,
+                sortOrder,
+                brand,
+                filter,
+                filterOrder,
+                filterValue,
+                category,
+            } = req.query;
 
             let baseQuery = ProductModel.find();
 
-            if (search && search.length) {
+            if (search && search?.length) {
                 baseQuery = baseQuery.or([
                     { title: { $regex: search, $options: 'i' } },
                     { description: { $regex: search, $options: 'i' } },
                 ]);
             }
 
-            if (sortBy && sortBy.length) {
+            if (sortBy && sortBy?.length) {
                 const sortField = sortBy;
                 const sortDirection = sortOrder === 'desc' ? -1 : 1;
                 baseQuery = baseQuery.sort({ [sortField]: sortDirection });
             }
-            if (brand && brand.length) {
+            if (brand && brand?.length) {
                 console.log(brand);
                 const brandArray = brand.split(',');
                 baseQuery = baseQuery.or([{ brand: { $in: brandArray } }]);
             }
+            if (filter && filter?.length) {
+                const filterField = filter;
+                const filterObj = {};
+                filterValue = parseInt(filterValue);
+                if (filterOrder === 'high') {
+                    filterObj[filterField] = { $gt: filterValue };
+                } else {
+                    filterObj[filterField] = { $lt: filterValue };
+                }
+                baseQuery = baseQuery.find(filterObj);
+            }
+            if (category && category?.length) {
+                console.log(category);
+                const categoryArray = category.split(',');
+                baseQuery = baseQuery.or([
+                    { category: { $in: categoryArray } },
+                ]);
+            }
             const skip = (page - 1) * limit;
             const data = await baseQuery.skip(skip).limit(limit).exec();
-
             if (data.length > 0) {
-                const totalCount = await ProductModel.find()
-                    .countDocuments()
-                    .exec();
+                const totalCount = data.length;
                 const totalPages = Math.ceil(totalCount / limit);
 
                 const result = {
@@ -57,66 +92,9 @@ class ProductController {
                         result,
                     })
                 );
+            } else {
+                return res.status(400).json(success('No data found', []));
             }
-            // if (1) {
-            //     console.log('hjfsdjf', brand);
-            //     const skip = (page - 1) * limit;
-            //     const sortAscOrDesc = sortOrder === 'desc' ? -1 : 1;
-
-            //     console.log(sortAscOrDesc);
-            //     const brandArray = brand?.split(',');
-            //     console.log({ brandArray });
-            //     if (!search?.length) {
-            //         search = '';
-            //     }
-            //     const data = await ProductModel.find({
-            //         $or: [
-            //             { title: { $regex: search, $options: 'i' } },
-            //             { description: { $regex: search, $options: 'i' } },
-            //             { brand: { $in: brandArray } },
-            //         ],
-            //     })
-            //         .sort({ [sortBy]: sortAscOrDesc })
-            //         .skip(skip)
-            //         .limit(limit);
-
-            //     if (data.length) {
-            //         const totalCount = data.length;
-            //         const totalPages = Math.ceil(totalCount / limit);
-
-            //         return res.status(200).json(
-            //             success('Successfully get the data', {
-            //                 currentPage: page,
-            //                 totalPages: totalPages,
-            //                 totalData: totalCount,
-            //                 items: data,
-            //             })
-            //         );
-            //     } else {
-            //         return res.status(400).json(success('No data found', []));
-            //     }
-            // } else {
-            //     const skip = (page - 1) * limit;
-            //     const data = await ProductModel.find({})
-            //         .skip(skip)
-            //         .limit(limit);
-
-            //     const totalCount = await ProductModel.countDocuments({});
-            //     const totalPages = Math.ceil(totalCount / limit);
-
-            //     if (data.length) {
-            //         return res.status(200).json(
-            //             success('Successfully get the data', {
-            //                 currentPage: page,
-            //                 totalPages: totalPages,
-            //                 totalData: totalCount,
-            //                 items: data,
-            //             })
-            //         );
-            //     } else {
-            //         return res.status(400).json(success('No data found', []));
-            //     }
-            // }
         } catch (error) {
             databaseErrorHandler(error.message);
             console.error(error);

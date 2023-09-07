@@ -281,6 +281,107 @@ const validator = {
                 'Password must be at least 8 characters with a lowercase ,a uppercase,a number and a special character'
             ),
     ],
+
+    getAllProductsFilter: [
+        query('sortBy')
+            .optional()
+            .not()
+            .equals('')
+            .withMessage('SortBy cannot be empty')
+            .bail()
+            .custom((value) => {
+                if (
+                    value === 'price' ||
+                    value === 'stock' ||
+                    value === 'rating'
+                ) {
+                    return true;
+                } else {
+                    throw new Error('Invalid property provided for sortBy');
+                }
+            }),
+        query('sortOrder')
+            .optional()
+            .not()
+            .equals('')
+            .withMessage('sortOrder cannot be empty')
+            .bail()
+            .custom((value) => {
+                if (value === 'asc' || value === 'desc') {
+                    return true;
+                } else {
+                    throw new Error('Invalid property provided for sortOrder');
+                }
+            }),
+        query('filter')
+            .optional()
+            .not()
+            .equals('')
+            .withMessage('filter cannot be empty')
+            .bail()
+            .custom((value) => {
+                if (
+                    value === 'stock' ||
+                    value === 'price' ||
+                    value === 'rating' ||
+                    value === 'discountPercentage'
+                ) {
+                    return true;
+                } else {
+                    throw new Error('Invalid property provided for filter');
+                }
+            }),
+        query('filterOrder')
+            .optional()
+            .not()
+            .equals('')
+            .withMessage('filterOrder cannot be empty')
+            .bail()
+            .custom((value) => {
+                if (value === 'high' || value === 'low') {
+                    return true;
+                } else {
+                    throw new Error(
+                        'Invalid property provided for filterOrder'
+                    );
+                }
+            }),
+        query('filterValue')
+            .optional()
+            .not()
+            .equals('')
+            .withMessage('filterValue cannot be empty')
+            .bail()
+            .custom((value) => {
+                value = parseInt(value);
+                console.log(value);
+                if (!isNaN(value)) {
+                    return true;
+                } else {
+                    throw new Error('Filter value must be a number');
+                }
+            }),
+        query('brand')
+            .optional()
+            .custom((value) => {
+                console.log(value);
+                if (value.length) {
+                    return true;
+                } else {
+                    throw new Error('Brand cannot be empty');
+                }
+            }),
+        query('Category')
+            .optional()
+            .custom((value) => {
+                console.log(value);
+                if (value.length) {
+                    return true;
+                } else {
+                    throw new Error('Category cannot be empty');
+                }
+            }),
+    ],
 };
 
 module.exports = validator;
