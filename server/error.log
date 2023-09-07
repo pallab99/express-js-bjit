@@ -11,3 +11,20 @@ sortBy is not defined
 sort is not defined
 sort is not defined
 unknown top level operator: $sort. If you have a field name that starts with a '$' symbol, consider using $getField or $setField.
+brand.size is not a function
+$regex has to be a string
+Cannot read properties of undefined (reading 'length')
+Assignment to constant variable.
+Cannot read properties of undefined (reading 'split')
+ProductModel.sort is not a function
+The comparison function must be either a function or undefined
+The comparison function must be either a function or undefined
+undefined is not a function
+The comparison function must be either a function or undefined
+baseQuery.exec is not a function
+baseQuery.exec is not a function
+baseQuery.exec is not a function
+brandArray is not defined
+Parameter "filter" to find() must be an object, got "[object Object]" (type object)
+Cannot access 'data' before initialization
+Cannot read properties of undefined (reading 'length')

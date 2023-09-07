@@ -16,69 +16,107 @@ class ProductController {
                 return res.status(422).json(failure('Invalid page or limit'));
             }
 
-            const { search, sortBy, sortOrder } = req.query;
+            let { search, sortBy, sortOrder, brand } = req.query;
 
-            if (
-                search &&
-                search.trim() !== '' &&
-                sortBy &&
-                sortBy.trim() !== ''
-            ) {
-                console.log('hjfsdjf');
-                const skip = (page - 1) * limit;
-                const sortAscOrDesc = sortOrder === 'desc' ? -1 : 1;
-                // const sort = {};
-                // if (sortBy === 'asc' || sortBy === 'desc') {
-                //     sort[sortBy] = sortAscOrDesc; // -1 for desc, 1 for asc
-                // }
-                console.log(sortAscOrDesc);
-                const data = await ProductModel.find({
-                    $or: [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } },
-                    ],
-                })
-                    .sort({ [sortBy]: sortAscOrDesc })
-                    .skip(skip)
-                    .limit(limit);
+            let baseQuery = ProductModel.find();
 
-                if (data.length) {
-                    const totalCount = data.length;
-                    const totalPages = Math.ceil(totalCount / limit);
+            if (search && search.length) {
+                baseQuery = baseQuery.or([
+                    { title: { $regex: search, $options: 'i' } },
+                    { description: { $regex: search, $options: 'i' } },
+                ]);
+            }
 
-                    return res.status(200).json(
-                        success('Successfully get the data', {
-                            currentPage: page,
-                            totalPages: totalPages,
-                            totalData: totalCount,
-                            items: data,
-                        })
-                    );
-                } else {
-                    return res.status(400).json(success('No data found', []));
-                }
-            } else {
-                const skip = (page - 1) * limit;
-                const data = await ProductModel.find({})
-                    .skip(skip)
-                    .limit(limit);
+            if (sortBy && sortBy.length) {
+                const sortField = sortBy;
+                const sortDirection = sortOrder === 'desc' ? -1 : 1;
+                baseQuery = baseQuery.sort({ [sortField]: sortDirection });
+            }
+            if (brand && brand.length) {
+                console.log(brand);
+                const brandArray = brand.split(',');
+                baseQuery = baseQuery.or([{ brand: { $in: brandArray } }]);
+            }
+            const skip = (page - 1) * limit;
+            const data = await baseQuery.skip(skip).limit(limit).exec();
 
-                const totalCount = await ProductModel.countDocuments({});
+            if (data.length > 0) {
+                const totalCount = await ProductModel.find()
+                    .countDocuments()
+                    .exec();
                 const totalPages = Math.ceil(totalCount / limit);
 
-                if (data.length) {
-                    return res.status(200).json(
-                        success('Successfully get the data', {
-                            currentPage: page,
-                            totalPages: totalPages,
-                            totalData: totalCount,
-                            items: data,
-                        })
-                    );
-                } else {
-                    return res.status(400).json(success('No data found', []));
-                }
+                const result = {
+                    currentPage: page,
+                    totalPages: totalPages,
+                    totalData: totalCount,
+                    products: data,
+                };
+                return res.status(200).json(
+                    success('Successfully get the data', {
+                        result,
+                    })
+                );
             }
+            // if (1) {
+            //     console.log('hjfsdjf', brand);
+            //     const skip = (page - 1) * limit;
+            //     const sortAscOrDesc = sortOrder === 'desc' ? -1 : 1;
+
+            //     console.log(sortAscOrDesc);
+            //     const brandArray = brand?.split(',');
+            //     console.log({ brandArray });
+            //     if (!search?.length) {
+            //         search = '';
+            //     }
+            //     const data = await ProductModel.find({
+            //         $or: [
+            //             { title: { $regex: search, $options: 'i' } },
+            //             { description: { $regex: search, $options: 'i' } },
+            //             { brand: { $in: brandArray } },
+            //         ],
+            //     })
+            //         .sort({ [sortBy]: sortAscOrDesc })
+            //         .skip(skip)
+            //         .limit(limit);
+
+            //     if (data.length) {
+            //         const totalCount = data.length;
+            //         const totalPages = Math.ceil(totalCount / limit);
+
+            //         return res.status(200).json(
+            //             success('Successfully get the data', {
+            //                 currentPage: page,
+            //                 totalPages: totalPages,
+            //                 totalData: totalCount,
+            //                 items: data,
+            //             })
+            //         );
+            //     } else {
+            //         return res.status(400).json(success('No data found', []));
+            //     }
+            // } else {
+            //     const skip = (page - 1) * limit;
+            //     const data = await ProductModel.find({})
+            //         .skip(skip)
+            //         .limit(limit);
+
+            //     const totalCount = await ProductModel.countDocuments({});
+            //     const totalPages = Math.ceil(totalCount / limit);
+
+            //     if (data.length) {
+            //         return res.status(200).json(
+            //             success('Successfully get the data', {
+            //                 currentPage: page,
+            //                 totalPages: totalPages,
+            //                 totalData: totalCount,
+            //                 items: data,
+            //             })
+            //         );
+            //     } else {
+            //         return res.status(400).json(success('No data found', []));
+            //     }
+            // }
         } catch (error) {
             databaseErrorHandler(error.message);
             console.error(error);
