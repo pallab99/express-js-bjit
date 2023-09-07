@@ -38,3 +38,17 @@ filterDirection is not defined
 Cannot access 'filterValue' before initialization
 Cast to Number failed for value "NaN" (type number) at path "stock" for model "Product"
 Cast to Number failed for value "NaN" (type number) at path "stock" for model "Product"
+Cannot access 'data' before initialization
+Converting circular structure to JSON
+    --> starting at object with constructor 'NativeConnection'
+    |     property 'base' -> object with constructor 'Mongoose'
+    |     property 'connections' -> object with constructor 'Array'
+    --- index 0 closes the circle
+Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+Cannot access 'skip' before initialization
+products.skip is not a function
+baseQuery.or is not a function

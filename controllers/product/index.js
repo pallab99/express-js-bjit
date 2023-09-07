@@ -20,10 +20,10 @@ class ProductController {
                     .status(422)
                     .json(failure('Unprocessable Entity', error));
             }
-            const page = parseInt(req.query.offset);
-            const limit = parseInt(req.query.limit);
+            const page = parseInt(req.query.offset) || 1;
+            const limit = parseInt(req.query.limit) || 30;
 
-            if (isNaN(page) || isNaN(limit)) {
+            if (isNaN(page) || page <= 0 || isNaN(limit) || limit <= 0) {
                 return res.status(422).json(failure('Invalid page or limit'));
             }
 
@@ -39,7 +39,27 @@ class ProductController {
             } = req.query;
 
             let baseQuery = ProductModel.find();
+            if (!search && !sortBy && !brand && !filter && !category) {
+                const skip = (page - 1) * limit;
 
+                const data = await ProductModel.find({})
+                    .skip(skip)
+                    .limit(limit);
+                const totalCount = await ProductModel.countDocuments();
+                const totalPages = Math.ceil(totalCount / limit);
+
+                const result = {
+                    currentPage: page,
+                    totalPages: totalPages,
+                    totalData: totalCount,
+                    products: data,
+                };
+                return res.status(200).json(
+                    success('Successfully get the data', {
+                        result,
+                    })
+                );
+            }
             if (search && search?.length) {
                 baseQuery = baseQuery.or([
                     { title: { $regex: search, $options: 'i' } },
@@ -77,6 +97,7 @@ class ProductController {
             }
             const skip = (page - 1) * limit;
             const data = await baseQuery.skip(skip).limit(limit).exec();
+
             if (data.length > 0) {
                 const totalCount = data.length;
                 const totalPages = Math.ceil(totalCount / limit);
