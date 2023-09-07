@@ -2,3 +2,12 @@ Product validation failed: title: Title cannot be greater than 30
 Product validation failed: title: Title cannot be greater than 30
 Product validation failed: title: Title cannot be greater than 30
 Product validation failed: title: Title cannot be greater than 30
+query is not defined
+query is not defined
+data.skip is not a function
+$regex has to be a string
+Cannot set headers after they are sent to the client
+sortBy is not defined
+sort is not defined
+sort is not defined
+unknown top level operator: $sort. If you have a field name that starts with a '$' symbol, consider using $getField or $setField.

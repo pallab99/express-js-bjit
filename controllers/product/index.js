@@ -4,47 +4,84 @@ const FileHandlerModel = require('../../model/filehandler');
 const { validationResult } = require('express-validator');
 const ProductModel = require('../../model/products');
 const databaseErrorHandler = require('../../util/dbError');
+const { ListSearchIndexesCursor } = require('mongodb');
 
 class ProductController {
     async getAll(req, res) {
         try {
             const page = parseInt(req.query.offset);
             const limit = parseInt(req.query.limit);
-            if (isNaN(page) && isNaN(limit)) {
-                const data = await ProductModel.find().limit(30);
+
+            if (isNaN(page) || isNaN(limit)) {
+                return res.status(422).json(failure('Invalid page or limit'));
+            }
+
+            const { search, sortBy, sortOrder } = req.query;
+
+            if (
+                search &&
+                search.trim() !== '' &&
+                sortBy &&
+                sortBy.trim() !== ''
+            ) {
+                console.log('hjfsdjf');
+                const skip = (page - 1) * limit;
+                const sortAscOrDesc = sortOrder === 'desc' ? -1 : 1;
+                // const sort = {};
+                // if (sortBy === 'asc' || sortBy === 'desc') {
+                //     sort[sortBy] = sortAscOrDesc; // -1 for desc, 1 for asc
+                // }
+                console.log(sortAscOrDesc);
+                const data = await ProductModel.find({
+                    $or: [
+                        { title: { $regex: search, $options: 'i' } },
+                        { description: { $regex: search, $options: 'i' } },
+                    ],
+                })
+                    .sort({ [sortBy]: sortAscOrDesc })
+                    .skip(skip)
+                    .limit(limit);
+
                 if (data.length) {
-                    res.status(200).json(
+                    const totalCount = data.length;
+                    const totalPages = Math.ceil(totalCount / limit);
+
+                    return res.status(200).json(
                         success('Successfully get the data', {
+                            currentPage: page,
+                            totalPages: totalPages,
+                            totalData: totalCount,
                             items: data,
-                            totalCount: data.length,
                         })
                     );
                 } else {
-                    res.status(400).json(success('Can not get the data', []));
+                    return res.status(400).json(success('No data found', []));
                 }
             } else {
                 const skip = (page - 1) * limit;
                 const data = await ProductModel.find({})
                     .skip(skip)
                     .limit(limit);
-                const totalCount = await ProductModel.countDocuments();
+
+                const totalCount = await ProductModel.countDocuments({});
                 const totalPages = Math.ceil(totalCount / limit);
 
                 if (data.length) {
-                    res.status(200).json(
+                    return res.status(200).json(
                         success('Successfully get the data', {
-                            items: data,
                             currentPage: page,
                             totalPages: totalPages,
+                            totalData: totalCount,
+                            items: data,
                         })
                     );
                 } else {
-                    res.status(400).json(success('Can not get the data', []));
+                    return res.status(400).json(success('No data found', []));
                 }
             }
         } catch (error) {
             databaseErrorHandler(error.message);
-
+            console.error(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
