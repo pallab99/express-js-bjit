@@ -52,3 +52,5 @@ Converting circular structure to JSON
 Cannot access 'skip' before initialization
 products.skip is not a function
 baseQuery.or is not a function
+offset is not defined
+Assignment to constant variable.

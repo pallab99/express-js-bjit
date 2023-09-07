@@ -283,6 +283,7 @@ const validator = {
     ],
 
     getAllProductsFilter: [
+        // query()
         query('sortBy')
             .optional()
             .not()

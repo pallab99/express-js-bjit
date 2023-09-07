@@ -20,10 +20,10 @@ class ProductController {
                     .status(422)
                     .json(failure('Unprocessable Entity', error));
             }
-            const page = parseInt(req.query.offset) || 1;
-            const limit = parseInt(req.query.limit) || 30;
+            let page = parseInt(req.query.offset);
+            let limit = parseInt(req.query.limit);
 
-            if (isNaN(page) || page <= 0 || isNaN(limit) || limit <= 0) {
+            if ((page && page <= 0) || (limit && limit <= 0)) {
                 return res.status(422).json(failure('Invalid page or limit'));
             }
 
@@ -45,9 +45,15 @@ class ProductController {
                 const data = await ProductModel.find({})
                     .skip(skip)
                     .limit(limit);
-                const totalCount = await ProductModel.countDocuments();
-                const totalPages = Math.ceil(totalCount / limit);
-
+                let totalCount = await ProductModel.countDocuments();
+                if (!page && !limit) {
+                    page = 1;
+                    limit = 30;
+                    totalCount = limit;
+                } else {
+                    totalCount = await ProductModel.countDocuments();
+                }
+                let totalPages = Math.ceil(totalCount / limit);
                 const result = {
                     currentPage: page,
                     totalPages: totalPages,

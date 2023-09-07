@@ -204,3 +204,15 @@ GET /api/products/all?offset=1&limit=10 200 6385 - 3035.627 ms
 GET /api/products/all?offset=1&limit=10 200 6399 - 769.048 ms 
 GET /api/products/all?offset=2&limit=10 200 5871 - 629.822 ms 
 GET /api/products/all?offset=1&limit=10&search=apple 200 2077 - 311.461 ms 
+GET /api/products/all?search=apple 200 2077 - 1179.904 ms 
+GET /api/products/all 200 18533 - 987.844 ms 
+GET /api/products/all 500 64 - 5826.698 ms 
+GET /api/products/all 200 18533 - 4901.051 ms 
+GET /api/products/all 422 64 - 18.053 ms 
+GET /api/products/all 422 64 - 14.114 ms 
+GET /api/products/all 500 64 - 5471.751 ms 
+GET /api/products/all 200 59817 - 3714.428 ms 
+GET /api/products/all 200 59817 - 4197.788 ms 
+GET /api/products/all?offset=1&limit=10 422 64 - 7.232 ms 
+GET /api/products/all?offset=1&limit=10 200 6399 - 2952.599 ms 
+GET /api/products/all?offset=1&limit=10&search=apple 200 2077 - 353.337 ms 
