@@ -349,9 +349,13 @@ const validator = {
             .equals('')
             .withMessage('sortOrder cannot be empty')
             .bail()
-            .custom((value) => {
+            .custom((value, { req }) => {
                 if (value === 'asc' || value === 'desc') {
-                    return true;
+                    if (!req.query.sortBy) {
+                        throw new Error('Sort By is not specified');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Invalid property provided for sortOrder');
                 }
@@ -387,9 +391,16 @@ const validator = {
             .equals('')
             .withMessage('filterOrder cannot be empty')
             .bail()
-            .custom((value) => {
+            .custom((value, { req }) => {
                 if (value === 'high' || value === 'low') {
-                    return true;
+                    if (!req.query.filter) {
+                        throw new Error('Filter is not specified');
+                    }
+                    if (!req.query.filterValue) {
+                        throw new Error('Filter  value is not specified');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error(
                         'Invalid property provided for filterOrder'
@@ -402,11 +413,18 @@ const validator = {
             .equals('')
             .withMessage('filterValue cannot be empty')
             .bail()
-            .custom((value) => {
+            .custom((value, { req }) => {
                 value = parseInt(value);
                 console.log({ value });
                 if (!isNaN(value)) {
-                    return true;
+                    if (!req.query.filter) {
+                        throw new Error('Filter is not specified');
+                    }
+                    if (!req.query.filterOrder) {
+                        throw new Error('Filter order value is not specified');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Filter value must be a number');
                 }

@@ -57,3 +57,8 @@ Assignment to constant variable.
 validationErrors is not defined
 validation.array is not a function
 Cast to Number failed for value "NaN" (type number) at path "stock" for model "Product"
+baseQuery.or is not a function
+baseQuery.or is not a function
+baseQuery is not defined
+data is not defined
+totalPages is not defined

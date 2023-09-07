@@ -67,7 +67,6 @@ class ProductController {
                     { description: { $regex: search, $options: 'i' } },
                 ]);
             }
-
             if (sortBy && sortBy?.length) {
                 const sortField = sortBy;
                 const sortDirection = sortOrder === 'desc' ? -1 : 1;
@@ -83,7 +82,7 @@ class ProductController {
                 const filterObj = {};
                 filterValue = parseInt(filterValue);
                 if (filterOrder === 'high') {
-                    filterObj[filterField] = { $gt: filterValue };
+                    filterObj[filterField] = { $gte: filterValue };
                 } else {
                     filterObj[filterField] = { $lt: filterValue };
                 }
@@ -98,7 +97,7 @@ class ProductController {
             }
 
             const skip = (page - 1) * limit;
-            const data = await baseQuery.skip(skip).limit(limit).exec();
+            const data = await baseQuery.skip(skip).limit(limit);
 
             if (data.length > 0) {
                 const totalCount = data.length;
@@ -120,7 +119,6 @@ class ProductController {
             }
         } catch (error) {
             databaseErrorHandler(error.message);
-            console.error(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
