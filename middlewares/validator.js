@@ -285,18 +285,34 @@ const validator = {
     getAllProductsFilter: [
         query('offset')
             .optional()
-            .custom((value) => {
+            .custom((value, { req, res }) => {
+                const val = parseInt(value);
+                if (isNaN(val)) {
+                    throw new Error('Offset must be a number');
+                }
                 if (value >= 1) {
-                    return true;
+                    if (!req.query.limit) {
+                        throw new Error('Limit is not specified');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Offset cannot be less than 1');
                 }
             }),
         query('limit')
             .optional()
-            .custom((value) => {
+            .custom((value, { req, res }) => {
+                const val = parseInt(value);
+                if (isNaN(val)) {
+                    throw new Error('limit must be a number');
+                }
                 if (value >= 1) {
-                    return true;
+                    if (!req.query.offset) {
+                        throw new Error('Offset is not specified');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Limit cannot be less than 1');
                 }
@@ -312,13 +328,17 @@ const validator = {
             .equals('')
             .withMessage('SortBy cannot be empty')
             .bail()
-            .custom((value) => {
+            .custom((value, { req, res }) => {
                 if (
                     value === 'price' ||
                     value === 'stock' ||
                     value === 'rating'
                 ) {
-                    return true;
+                    if (!req.query.sortOrder) {
+                        throw new Error('Sort order is not specified');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Invalid property provided for sortBy');
                 }
@@ -342,14 +362,21 @@ const validator = {
             .equals('')
             .withMessage('filter cannot be empty')
             .bail()
-            .custom((value) => {
+            .custom((value, { req, res }) => {
                 if (
                     value === 'stock' ||
                     value === 'price' ||
                     value === 'rating' ||
                     value === 'discountPercentage'
                 ) {
-                    return true;
+                    if (!req.query.filterOrder) {
+                        throw new Error('Filter  order is not specified');
+                    }
+                    if (!req.query.filterValue) {
+                        throw new Error('Filter  value is not specified');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Invalid property provided for filter');
                 }
@@ -377,7 +404,7 @@ const validator = {
             .bail()
             .custom((value) => {
                 value = parseInt(value);
-                console.log(value);
+                console.log({ value });
                 if (!isNaN(value)) {
                     return true;
                 } else {
@@ -387,19 +414,34 @@ const validator = {
         query('brand')
             .optional()
             .custom((value) => {
-                console.log(value);
                 if (value.length) {
-                    return true;
+                    const brand = value.split(',');
+                    const validBrand = brand.every(function (item) {
+                        return typeof item === 'string';
+                    });
+                    if (!validBrand) {
+                        throw new Error('All the categories must be strings');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Brand cannot be empty');
                 }
             }),
-        query('Category')
+        query('category')
             .optional()
             .custom((value) => {
-                console.log(value);
+                console.log({ value });
                 if (value.length) {
-                    return true;
+                    const category = value.split(',');
+                    const validCategory = category.every(function (item) {
+                        return typeof item === 'string';
+                    });
+                    if (!validCategory) {
+                        throw new Error('All the categories must be strings');
+                    } else {
+                        return true;
+                    }
                 } else {
                     throw new Error('Category cannot be empty');
                 }
