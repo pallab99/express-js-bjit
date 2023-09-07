@@ -4,7 +4,6 @@ const FileHandlerModel = require('../../model/filehandler');
 const { validationResult } = require('express-validator');
 const ProductModel = require('../../model/products');
 const databaseErrorHandler = require('../../util/dbError');
-const { ListSearchIndexesCursor } = require('mongodb');
 
 class ProductController {
     async getAll(req, res) {
@@ -22,10 +21,6 @@ class ProductController {
             }
             let page = parseInt(req.query.offset);
             let limit = parseInt(req.query.limit);
-
-            if ((page && page <= 0) || (limit && limit <= 0)) {
-                return res.status(422).json(failure('Invalid page or limit'));
-            }
 
             let {
                 search,
@@ -101,6 +96,7 @@ class ProductController {
                     { category: { $in: categoryArray } },
                 ]);
             }
+
             const skip = (page - 1) * limit;
             const data = await baseQuery.skip(skip).limit(limit).exec();
 

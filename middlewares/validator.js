@@ -283,7 +283,29 @@ const validator = {
     ],
 
     getAllProductsFilter: [
-        // query()
+        query('offset')
+            .optional()
+            .custom((value) => {
+                if (value >= 1) {
+                    return true;
+                } else {
+                    throw new Error('Offset cannot be less than 1');
+                }
+            }),
+        query('limit')
+            .optional()
+            .custom((value) => {
+                if (value >= 1) {
+                    return true;
+                } else {
+                    throw new Error('Limit cannot be less than 1');
+                }
+            }),
+        query('search')
+            .optional()
+            .not()
+            .equals('')
+            .withMessage('Search cannot be empty'),
         query('sortBy')
             .optional()
             .not()

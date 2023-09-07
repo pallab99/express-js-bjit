@@ -54,3 +54,5 @@ products.skip is not a function
 baseQuery.or is not a function
 offset is not defined
 Assignment to constant variable.
+validationErrors is not defined
+validation.array is not a function
