@@ -58,7 +58,7 @@ server.use((err, req, res, next) => {
 server.use('/api/products', productRouter.router);
 // server.use('/api/orders', orderRouter.router);
 server.use('/api/users', userRouter.router);
-// server.use('/api/carts', cartRouter.router);
+server.use('/api/carts', cartRouter.router);
 server.use('/api/auth', authRouter.router);
 
 server.get('/', (req, res) => {

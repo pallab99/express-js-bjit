@@ -58,8 +58,7 @@ class Cart {
                 products,
                 totalAmount,
             });
-
-            if (result.length) {
+            if (result) {
                 res.status(201).json(
                     success('Added to cart successfully', result)
                 );

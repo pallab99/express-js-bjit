@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const generateSecretToken = (body) => {
     console.log({ body });
     const charset = process.env.ACCESS_TOKEN_SECRET;
-    const token = jwt.sign(body, charset, { expiresIn: '20 s' });
+    const token = jwt.sign(body, charset, { expiresIn: '1 h' });
     return token;
 };
 

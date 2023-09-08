@@ -363,3 +363,11 @@ GET /api/products/all?offset=%22hh%22&limit=15&search=apple&sortBy=price&sortOrd
 GET /api/products/all?offset=1&limit=15&search=apple&sortBy=price&sortOrder=desc&brand=Apple,Samsung&filter=stock&filterOrder=high&filterValue=20 200 3701 - 409.419 ms 
 GET /api/products/all?offset=1&limit=15 500 64 - 1100.978 ms 
 GET /api/products/all?offset=1&limit=15 200 9404 - 3615.573 ms 
+POST /api/carts/create 401 62 - 7.862 ms 
+POST /api/auth/login 200 1043 - 2764.303 ms 
+POST /api/carts/create 500 63 - 654.396 ms 
+POST /api/carts/create 401 62 - 4.996 ms 
+POST /api/auth/login 200 1043 - 2771.011 ms 
+POST /api/carts/create 500 63 - 645.311 ms 
+POST /api/carts/create 500 63 - 3585.037 ms 
+POST /api/carts/create 201 419 - 2987.492 ms 
