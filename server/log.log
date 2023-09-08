@@ -519,3 +519,5 @@ POST /api/carts/create 200 310 - 7896.256 ms
 POST /api/carts/create 200 310 - 3007.230 ms 
 POST /api/carts/create 200 324 - 4637.136 ms 
 POST /api/carts/create 200 376 - 2990.623 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 500 64 - 340.348 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 400 55 - 3521.484 ms 

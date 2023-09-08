@@ -165,8 +165,16 @@ class Cart {
         try {
             const { cartId } = req.params;
             const { productId, quantity } = req.body;
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                return res.status(400).json(failure('Invalid cart id'));
+            }
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return res.status(400).json(failure('Invalid product id'));
+            }
             const cart = await cartModel.findOne({ _id: cartId });
-
+            if (!cart) {
+                return res.status(400).json(failure('Invalid cart'));
+            }
             const existingProduct = cart.products.filter((ele) => {
                 return String(ele.product) == productId;
             });
@@ -186,7 +194,7 @@ class Cart {
                     .json(success('Updated cart successfully', cart));
             } else {
                 return res
-                    .status(200)
+                    .status(400)
                     .json(failure('The product was not found in the cart'));
             }
         } catch (error) {
