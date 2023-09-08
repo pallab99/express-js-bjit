@@ -61,12 +61,23 @@ class Cart {
                         quantity,
                     });
                     await newCart.save();
-                    console.log({ newCart });
+
+                    let sum = 0;
+                    const total = newCart.products.map((ele) => {
+                        sum += ele.product.price * ele.quantity;
+                        return sum;
+                    });
+                    newCart.total = total[total.length - 2];
+                    console.log(newCart);
+                    await newCart.save();
                     if (newCart) {
                         return res
                             .status(201)
                             .json(
-                                success('Added to cart successfully', result)
+                                success(
+                                    'Added to new cart successfully',
+                                    newCart
+                                )
                             );
                     } else {
                         return res
@@ -74,42 +85,41 @@ class Cart {
                             .json(failure('Something went wrong'));
                     }
                 } else {
-                    const cart = await cartModel
-                        .findOne({ user: user })
-                        .populate('user')
-                        .populate('products.product', '-images -thumbnail');
-                    const products = cart.products;
+                    const cart = await cartModel.findOne({ user: user });
 
-                    // console.log(products[0].product);
-
-                    // const existingProduct = products.findIndex((product) => {
-                    //     const prodId = product.product._id
-                    //         .toString()
-                    //         .split('(')[0];
-                    //     // console.log(prodId);
-                    //     prodId == productId;
-                    // });
-
-                    // console.log(existingProduct);
-                    console.log(products);
-                    const productIds = products.map((ele) =>
-                        String(ele.product._id)
-                    );
-                    console.log({ productIds });
-                    console.log({ productId });
-                    const existingProduct = await cartModel.find({
-                        productId: { $in: productIds },
+                    const existingProduct = cart.products.find((ele) => {
+                        return String(ele.product) === productId;
                     });
-                    console.log({ existingProduct });
-                    // for (let i = 0; i < products.length; i++) {
-                    //     console.log(products[i].product._id);
+                    if (existingProduct) {
+                        console.log('match');
+                        existingProduct.quantity += quantity;
+                    } else {
+                        console.log('not match');
+                        cart.products.push({
+                            product: productId,
+                            quantity: quantity,
+                        });
+                    }
+                    await cart.save();
+                    const allProducts = await cartModel
+                        .findOne({ user: user })
+                        .populate('products.product');
+                    let sum = 0;
+                    const total = allProducts.products.map((ele) => {
+                        console.log(ele);
+                        sum += ele.product.price * ele.quantity;
+                        // console.log(ele.product);
+                        return sum;
+                    });
+                    console.log(total);
+                    cart.total = total[total.length - 2];
+                    await cart.save();
+                    // const data = {
 
-                    //     const existingProduct = await cartModel.find({
-                    //         _id: products[i].product._id,
-                    //     });
-
-                    //     console.log({ existingProduct });
-                    // }
+                    // };
+                    return res
+                        .status(200)
+                        .json(success('Added to the existing cart', cart));
                 }
             }
         } catch (error) {
