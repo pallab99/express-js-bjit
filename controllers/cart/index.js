@@ -55,33 +55,41 @@ class Cart {
             } else {
                 const existingCart = await cartModel.findOne({ user: user });
                 if (!existingCart) {
-                    const newCart = await cartModel.create({ user: user });
-                    newCart.products.push({
-                        product: productId,
-                        quantity,
-                    });
-                    await newCart.save();
+                    const productData = await ProductModel.findById(productId);
+                    if (productData.stock >= quantity) {
+                        const newCart = await cartModel.create({ user: user });
+                        newCart.products.push({
+                            product: productId,
+                            quantity,
+                        });
+                        await newCart.save();
 
-                    let sum = 0;
-                    const total = newCart.products.map((ele) => {
-                        sum += ele.product.price * ele.quantity;
-                        return sum;
-                    });
-                    newCart.total = total[total.length - 2];
-                    await newCart.save();
-                    if (newCart) {
-                        return res
-                            .status(201)
-                            .json(
-                                success(
-                                    'Added to new cart successfully',
-                                    newCart
-                                )
-                            );
+                        let sum = 0;
+                        const total = newCart.products.map((ele) => {
+                            sum += ele.product.price * ele.quantity;
+                            return sum;
+                        });
+                        newCart.total = total[total.length - 2];
+                        await newCart.save();
+
+                        if (newCart) {
+                            return res
+                                .status(201)
+                                .json(
+                                    success(
+                                        'Added to new cart successfully',
+                                        newCart
+                                    )
+                                );
+                        } else {
+                            return res
+                                .status(400)
+                                .json(failure('Something went wrong'));
+                        }
                     } else {
                         return res
                             .status(400)
-                            .json(failure('Something went wrong'));
+                            .json(failure('Not enough stock available'));
                     }
                 } else {
                     const cart = await cartModel.findOne({ user: user });
