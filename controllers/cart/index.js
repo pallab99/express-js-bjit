@@ -2,6 +2,7 @@ const { failure, success } = require('../../common/response');
 const cartModel = require('../../model/cart');
 const ProductModel = require('../../model/products');
 const mongoose = require('mongoose');
+const userModel = require('../../model/user');
 
 class Cart {
     async getAllCartItems(req, res) {
@@ -42,30 +43,77 @@ class Cart {
 
     async addToCart(req, res) {
         try {
-            const { user, products } = req.body;
-
-            const productId = products.map((ele) => ele.product);
-            const productsData = await ProductModel.find({
-                _id: { $in: productId },
-            });
-
-            const totalAmount = productsData.reduce((acc, product, index) => {
-                return acc + product.price * products[index].quantity;
-            }, 0);
-
-            let result = await cartModel.create({
-                user,
-                products,
-                totalAmount,
-            });
-            if (result) {
-                res.status(201).json(
-                    success('Added to cart successfully', result)
-                );
+            const { user, productId, quantity } = req.body;
+            const userExistsInUserModel = await userModel.findById(user);
+            const productExistsInProductModel =
+                await ProductModel.findById(productId);
+            if (!userExistsInUserModel) {
+                return res.status(400).json(failure('User Id not found'));
+            }
+            if (!productExistsInProductModel) {
+                return res.status(400).json(failure('Product Id not found'));
             } else {
-                res.status(500).json(failure('Something went wrong'));
+                const existingCart = await cartModel.findOne({ user: user });
+                if (!existingCart) {
+                    const newCart = await cartModel.create({ user: user });
+                    newCart.products.push({
+                        product: productId,
+                        quantity,
+                    });
+                    await newCart.save();
+                    console.log({ newCart });
+                    if (newCart) {
+                        return res
+                            .status(201)
+                            .json(
+                                success('Added to cart successfully', result)
+                            );
+                    } else {
+                        return res
+                            .status(400)
+                            .json(failure('Something went wrong'));
+                    }
+                } else {
+                    const cart = await cartModel
+                        .findOne({ user: user })
+                        .populate('user')
+                        .populate('products.product', '-images -thumbnail');
+                    const products = cart.products;
+
+                    // console.log(products[0].product);
+
+                    // const existingProduct = products.findIndex((product) => {
+                    //     const prodId = product.product._id
+                    //         .toString()
+                    //         .split('(')[0];
+                    //     // console.log(prodId);
+                    //     prodId == productId;
+                    // });
+
+                    // console.log(existingProduct);
+                    console.log(products);
+                    const productIds = products.map((ele) =>
+                        String(ele.product._id)
+                    );
+                    console.log({ productIds });
+                    console.log({ productId });
+                    const existingProduct = await cartModel.find({
+                        productId: { $in: productIds },
+                    });
+                    console.log({ existingProduct });
+                    // for (let i = 0; i < products.length; i++) {
+                    //     console.log(products[i].product._id);
+
+                    //     const existingProduct = await cartModel.find({
+                    //         _id: products[i].product._id,
+                    //     });
+
+                    //     console.log({ existingProduct });
+                    // }
+                }
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json(failure('Internal server error'));
         }
     }
