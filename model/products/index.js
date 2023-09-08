@@ -15,7 +15,7 @@ const productSchema = new Schema({
         type: Number,
         required: [true, 'Price is required'],
         min: [10, 'price must be minimum 10'],
-        max: [100, 'price must be maximum 100'],
+        max: [10000, 'price must be maximum 100'],
     },
     discountPercentage: {
         type: Number,

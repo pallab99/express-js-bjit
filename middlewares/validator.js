@@ -81,7 +81,7 @@ const validator = {
         body('title').notEmpty().withMessage('Title is required.'),
         body('description').notEmpty().withMessage('Description is required.'),
         body('price')
-            .isFloat({ min: 0, max: 100 })
+            .isFloat({ min: 0, max: 10000 })
             .withMessage('Price must be a valid number between 0 and 100.'),
         body('discountPercentage')
             .isFloat({ min: 0, max: 50 })

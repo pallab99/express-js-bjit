@@ -5,6 +5,7 @@ const transactionModel = require('../../model/transactions');
 const mongoose = require('mongoose');
 class Transaction {
     async createTransaction(req, res) {
+        console.log('transaction created');
         try {
             const { cartId, paymentMethod } = req.body;
             if (!mongoose.Types.ObjectId.isValid(cartId)) {
