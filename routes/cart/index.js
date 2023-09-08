@@ -5,12 +5,14 @@ const addToCartValidation = require('../../middlewares/cartValidator');
 const router = express.Router();
 // const passport = require('passport');
 // const passportJWTAuth = passport.authenticate('jwt', { session: false });
-router.post(
-    '/create',
-    validateToken.tokenAuthorization,
-    addToCartValidation,
-    Cart.addToCart
-);
+router
+    .post(
+        '/create',
+        validateToken.tokenAuthorization,
+        addToCartValidation,
+        Cart.addToCart
+    )
+    .patch('/updateCart/:cartId', Cart.updateCart);
 
 exports.router = router;
 

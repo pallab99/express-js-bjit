@@ -472,3 +472,15 @@ POST /api/carts/create 500 64 - 4063.638 ms
 POST /api/carts/create 201 287 - 2276.281 ms 
 POST /api/carts/create 400 69 - 1259.687 ms 
 POST /api/carts/create 201 287 - 2223.483 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 500 64 - 2.226 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b - - - - ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 500 64 - 4160.536 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 500 64 - 3164.647 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 500 64 - 2595.250 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 200 230 - 4543.403 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 200 80 - 2851.257 ms 
+POST /api/carts/create 200 283 - 2555.767 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 200 281 - 678.373 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 200 281 - 659.107 ms 
+POST /api/carts/create 200 335 - 2952.855 ms 
+PATCH /api/carts/updateCart/64facb903e1eace08307396b 200 334 - 648.159 ms 

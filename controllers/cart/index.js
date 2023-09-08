@@ -155,6 +155,41 @@ class Cart {
         }
     }
 
+    async updateCart(req, res) {
+        try {
+            const { cartId } = req.params;
+            const { productId, quantity } = req.body;
+            const cart = await cartModel.findOne({ _id: cartId });
+
+            const existingProduct = cart.products.filter((ele) => {
+                return String(ele.product) == productId;
+            });
+            const index = cart?.products?.findIndex((ele) => {
+                return String(ele.product) == productId;
+            });
+            console.log(index);
+            if (index != -1) {
+                if (existingProduct[0]?.quantity > quantity) {
+                    existingProduct[0].quantity -= quantity;
+                    await cart.save();
+                } else {
+                    cart.products.splice(index, 1);
+                    await cart.save();
+                }
+                return res
+                    .status(200)
+                    .json(success('Updated cart successfully', cart));
+            } else {
+                return res
+                    .status(200)
+                    .json(failure('The product was not found in the cart'));
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal server error'));
+        }
+    }
+
     async getCartByUserId(req, res) {
         try {
             const { userId } = req.params;
