@@ -17,6 +17,13 @@ class Transaction {
                         .status(400)
                         .json(failure('Transaction is already completed'));
                 } else {
+                    cartData.products.map(async (e) => {
+                        const product = await ProductModel.findOne({
+                            _id: e.product,
+                        });
+                        product.stock -= e.quantity;
+                        await product.save();
+                    });
                     const newTransaction = await transactionModel.create({
                         cart: cartId,
                         paymentMethod,
@@ -28,8 +35,6 @@ class Transaction {
                             _id: newTransaction._id,
                         })
                         .populate('cart');
-                    console.log(result);
-
                     return res
                         .status(200)
                         .json(
@@ -39,8 +44,6 @@ class Transaction {
             } else {
                 return res.status(400).json(failure('Transaction failed'));
             }
-
-            // console.log(productData);
         } catch (error) {
             console.log(error);
             res.status(500).json(failure('Internal server error'));

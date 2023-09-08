@@ -61,6 +61,7 @@ class Cart {
             } else {
                 const existingCart = await cartModel.findOne({ user: user });
                 if (!existingCart) {
+                    console.log('existingCart');
                     const productData = await ProductModel.findById(productId);
                     if (productData.stock >= quantity) {
                         const newCart = await cartModel.create({ user: user });
@@ -69,9 +70,13 @@ class Cart {
                             quantity,
                         });
                         await newCart.save();
-
+                        const cart = await cartModel
+                            .findOne({ user: user })
+                            .populate('products.product');
+                        // console.log('jjjj', cart);
                         let sum = 0;
-                        const total = newCart.products.map((ele) => {
+                        const total = cart.products.map((ele) => {
+                            console.log('dddd', ele.product);
                             sum += ele.product.price * ele.quantity;
                             return sum;
                         });
@@ -143,7 +148,7 @@ class Cart {
                         // console.log(ele.product);
                         return sum;
                     });
-                    console.log('ff', total);
+                    // console.log('ff', total);
 
                     cart.total = total[0];
                     await cart.save();
