@@ -546,3 +546,6 @@ POST /api/transaction/create 400 75 - 334.876 ms
 POST /api/transaction/create 200 477 - 1655.049 ms 
 POST /api/transaction/create 200 477 - 1653.547 ms 
 POST /api/transaction/create 400 75 - 312.556 ms 
+PATCH /api/carts/updateCart/64fadbe0d49ff83b7218678d 200 375 - 651.538 ms 
+PATCH /api/carts/updateCart/64fadbe0d49ff83b7218678d 500 64 - 992.131 ms 
+PATCH /api/carts/updateCart/64fadbe0d49ff83b7218678d 200 375 - 5974.830 ms 

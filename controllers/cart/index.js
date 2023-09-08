@@ -194,6 +194,22 @@ class Cart {
                     cart.products.splice(index, 1);
                     await cart.save();
                 }
+
+                await cart.save();
+                const allProducts = await cartModel
+                    .findOne({ _id: cartId })
+                    .populate('products.product');
+                let sum = 0;
+                const total = allProducts.products.map((ele) => {
+                    sum += ele.product.price * ele.quantity;
+                    // console.log(ele.product);
+                    return sum;
+                });
+                // console.log('ff', total);
+
+                cart.total = total[0];
+                await cart.save();
+
                 return res
                     .status(200)
                     .json(success('Updated cart successfully', cart));
