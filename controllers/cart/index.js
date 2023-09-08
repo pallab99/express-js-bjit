@@ -167,7 +167,6 @@ class Cart {
             const index = cart?.products?.findIndex((ele) => {
                 return String(ele.product) == productId;
             });
-            console.log(index);
             if (index != -1) {
                 if (existingProduct[0]?.quantity > quantity) {
                     existingProduct[0].quantity -= quantity;

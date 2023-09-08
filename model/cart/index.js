@@ -24,6 +24,11 @@ const cartSchema = new Schema(
             type: Number,
             required: false,
         },
+        transactionComplete: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
     },
     { timestamps: true }
 );

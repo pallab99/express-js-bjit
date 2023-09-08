@@ -13,6 +13,7 @@ const orderRouter = require('./routes/orders');
 const userRouter = require('./routes/users');
 const cartRouter = require('./routes/cart');
 const authRouter = require('./routes/auth');
+const transactionRouter = require('./routes/transaction');
 
 const dotEnv = require('dotenv');
 dotEnv.config();
@@ -60,6 +61,7 @@ server.use('/api/products', productRouter.router);
 server.use('/api/users', userRouter.router);
 server.use('/api/carts', cartRouter.router);
 server.use('/api/auth', authRouter.router);
+server.use('/api/transaction', transactionRouter.router);
 
 server.get('/', (req, res) => {
     res.status(200).json(success('This is the base route'));
