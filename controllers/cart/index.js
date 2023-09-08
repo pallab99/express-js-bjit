@@ -44,6 +44,12 @@ class Cart {
     async addToCart(req, res) {
         try {
             const { user, productId, quantity } = req.body;
+            if (!mongoose.Types.ObjectId.isValid(user) || !user || user == '') {
+                return res.status(400).json(failure('Invalid user id'));
+            }
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return res.status(400).json(failure('Invalid product id'));
+            }
             const userExistsInUserModel = await userModel.findById(user);
             const productExistsInProductModel =
                 await ProductModel.findById(productId);

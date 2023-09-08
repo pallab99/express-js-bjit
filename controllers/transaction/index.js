@@ -2,11 +2,14 @@ const { failure, success } = require('../../common/response');
 const cartModel = require('../../model/cart');
 const ProductModel = require('../../model/products');
 const transactionModel = require('../../model/transactions');
-
+const mongoose = require('mongoose');
 class Transaction {
     async createTransaction(req, res) {
         try {
             const { cartId, paymentMethod } = req.body;
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                return res.status(400).json(failure('Invalid cart id'));
+            }
             const cartData = await cartModel.findOne({ _id: cartId });
             if (cartData) {
                 if (cartData.transactionComplete) {
