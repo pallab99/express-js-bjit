@@ -68,7 +68,6 @@ class Cart {
                         return sum;
                     });
                     newCart.total = total[total.length - 2];
-                    console.log(newCart);
                     await newCart.save();
                     if (newCart) {
                         return res
@@ -90,20 +89,41 @@ class Cart {
                     const existingProduct = cart.products.find((ele) => {
                         return String(ele.product) === productId;
                     });
-                    if (existingProduct) {
-                        console.log('match');
-                        existingProduct.quantity += quantity;
-                    } else {
-                        console.log('not match');
-                        cart.products.push({
-                            product: productId,
-                            quantity: quantity,
-                        });
-                    }
-                    await cart.save();
                     const allProducts = await cartModel
                         .findOne({ user: user })
                         .populate('products.product');
+                    if (existingProduct) {
+                        const productData =
+                            await ProductModel.findById(productId);
+
+                        console.log({ productData });
+
+                        if (
+                            productData.stock >=
+                            existingProduct.quantity + quantity
+                        ) {
+                            existingProduct.quantity += quantity;
+                        } else {
+                            return res
+                                .status(400)
+                                .json(failure('Not enough stock available'));
+                        }
+                    } else {
+                        const productData =
+                            await ProductModel.findById(productId);
+                        if (productData.stock >= quantity) {
+                            cart.products.push({
+                                product: productId,
+                                quantity: quantity,
+                            });
+                        } else {
+                            return res
+                                .status(400)
+                                .json(failure('Not enough stock available'));
+                        }
+                    }
+                    await cart.save();
+
                     let sum = 0;
                     const total = allProducts.products.map((ele) => {
                         console.log(ele);
@@ -111,7 +131,6 @@ class Cart {
                         // console.log(ele.product);
                         return sum;
                     });
-                    console.log(total);
                     cart.total = total[total.length - 2];
                     await cart.save();
                     // const data = {
