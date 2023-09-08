@@ -190,6 +190,15 @@ class Cart {
                 if (existingProduct[0]?.quantity > quantity) {
                     existingProduct[0].quantity -= quantity;
                     await cart.save();
+                } else if (existingProduct[0]?.quantity < quantity) {
+                    return res
+                        .status(200)
+                        .json(
+                            success(
+                                'Invalid quantity provided for removing',
+                                cart
+                            )
+                        );
                 } else {
                     cart.products.splice(index, 1);
                     await cart.save();
