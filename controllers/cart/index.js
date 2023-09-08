@@ -75,7 +75,8 @@ class Cart {
                             sum += ele.product.price * ele.quantity;
                             return sum;
                         });
-                        newCart.total = total[total.length - 2];
+                        console.log('ff', total);
+                        newCart.total = total[0];
                         await newCart.save();
 
                         if (newCart) {
@@ -110,8 +111,6 @@ class Cart {
                         const productData =
                             await ProductModel.findById(productId);
 
-                        console.log({ productData });
-
                         if (
                             productData.stock >=
                             existingProduct.quantity + quantity
@@ -140,12 +139,13 @@ class Cart {
 
                     let sum = 0;
                     const total = allProducts.products.map((ele) => {
-                        console.log(ele);
                         sum += ele.product.price * ele.quantity;
                         // console.log(ele.product);
                         return sum;
                     });
-                    cart.total = total[total.length - 2];
+                    console.log('ff', total);
+
+                    cart.total = total[0];
                     await cart.save();
                     // const data = {
 

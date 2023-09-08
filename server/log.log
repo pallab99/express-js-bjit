@@ -515,3 +515,7 @@ POST /api/transaction/create 500 64 - 14.708 ms
 POST /api/transaction/create 400 58 - 6.084 ms 
 POST /api/carts/create 400 89 - 6.096 ms 
 POST /api/carts/create 400 61 - 4.891 ms 
+POST /api/carts/create 200 310 - 7896.256 ms 
+POST /api/carts/create 200 310 - 3007.230 ms 
+POST /api/carts/create 200 324 - 4637.136 ms 
+POST /api/carts/create 200 376 - 2990.623 ms 
