@@ -38,11 +38,10 @@ class productReviewController {
                     rating: rating,
                 });
                 await productExist.save();
-                let sum = 0;
-
-                for (let i = 0; i < productExist.reviews.length; i++) {
-                    sum += productExist.reviews[i].rating;
-                }
+                const sum = productExist.reviews.reduce(
+                    (accumulator, review) => accumulator + review.rating,
+                    0
+                );
 
                 const avg = sum / productExist.reviews.length;
 
@@ -78,11 +77,10 @@ class productReviewController {
                 });
                 await result.save();
 
-                let sum = 0;
-
-                for (let i = 0; i < result.reviews.length; i++) {
-                    sum += result.reviews[i].rating;
-                }
+                const sum = result.reviews.reduce(
+                    (accumulator, review) => accumulator + review.rating,
+                    0
+                );
 
                 const avg = sum / result.reviews.length;
 
@@ -108,7 +106,7 @@ class productReviewController {
             const { productId } = req.params;
             if (!mongoose.Types.ObjectId.isValid(productId)) {
                 return res
-                    .status(500)
+                    .status(400)
                     .json(failure('Invalid product id provided'));
             }
             const result = await productReviewModel
@@ -138,7 +136,7 @@ class productReviewController {
             const { userId } = req.params;
             if (!mongoose.Types.ObjectId.isValid(userId)) {
                 return res
-                    .status(500)
+                    .status(400)
                     .json(failure('Invalid user id provided'));
             }
             const allReviews = await productReviewModel
@@ -155,12 +153,12 @@ class productReviewController {
             const userReviews = allReviews.reduce((result, review) => {
                 review.reviews.forEach((userReview) => {
                     if (String(userReview.user._id) === userId) {
+                        console.log('ggggg', review);
                         result.push({ product: review.product, userReview });
                     }
                 });
                 return result;
             }, []);
-            console.log(userReviews);
             res.status(200).json(
                 success('successfully get the data', userReviews)
             );
@@ -172,19 +170,3 @@ class productReviewController {
 }
 
 module.exports = new productReviewController();
-
-// const userIds = allReviews.reviews.map((item) => String(item.user));
-// console.log({ userIds });
-// const result = await productReviewModel.find({
-//     userId: { $in: userIds },
-// });
-// console.log({ result });
-// const result = await productReviewModel.find({
-//     product: productId,
-// });
-// if (result.length > 0) {
-//     return res
-//         .status(200)
-//         .json(success('Successfully get the data', result));
-// }
-// return res.status(200).json(success('No data found', []));

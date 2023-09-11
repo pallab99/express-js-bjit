@@ -630,3 +630,10 @@ GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec52 500 64 - 11.771 
 GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec52 200 51 - 2302.160 ms 
 GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec52 200 52 - 5983.381 ms 
 GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1591 - 655.396 ms 
+GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1591 - 712.363 ms 
+GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1591 - 3348.828 ms 
+GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1591 - 4013.906 ms 
+GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1591 - 4880.452 ms 
+POST /api/productReview/create 200 330 - 1961.822 ms 
+POST /api/productReview/create 500 64 - 1266.193 ms 
+POST /api/productReview/create 200 254 - 1621.868 ms 
