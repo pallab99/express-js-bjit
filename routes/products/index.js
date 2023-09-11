@@ -28,6 +28,7 @@ router
         isAdmin,
         productController.addData
     )
+    .post('/review')
     .delete('/delete/:id', productController.deleteData)
     .patch(
         '/update/:id',
