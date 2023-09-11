@@ -5,6 +5,13 @@ const { validationResult } = require('express-validator');
 const ProductModel = require('../../model/products');
 const userModel = require('../../model/user');
 class productReviewController {
+    /**
+     * Adds a rating and review for a product.
+     *
+     * @param {Object} req - The request object containing the user, product, message, and rating.
+     * @param {Object} res - The response object used to send the response.
+     * @returns {Object} - The updated product review or an error message as a JSON response.
+     */
     async addRating(req, res) {
         try {
             const validation = validationResult(req).array();
@@ -101,6 +108,13 @@ class productReviewController {
         }
     }
 
+    /**
+     * Retrieves the reviews for a specific product.
+     *
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object.
+     * @returns {Object} - The response object with the retrieved reviews or an error message.
+     */
     async getReviewByProduct(req, res) {
         try {
             const { productId } = req.params;
@@ -131,6 +145,13 @@ class productReviewController {
         }
     }
 
+    /**
+     * Retrieves all the reviews for a specific user.
+     *
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object.
+     * @returns {Object} - JSON response with the retrieved reviews for the specified user or a failure message if there was an error.
+     */
     async getReviewByUser(req, res) {
         try {
             const { userId } = req.params;
@@ -153,7 +174,6 @@ class productReviewController {
             const userReviews = allReviews.reduce((result, review) => {
                 review.reviews.forEach((userReview) => {
                     if (String(userReview.user._id) === userId) {
-                        console.log('ggggg', review);
                         result.push({ product: review.product, userReview });
                     }
                 });
