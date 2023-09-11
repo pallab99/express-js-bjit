@@ -171,14 +171,26 @@ class productReviewController {
             if (!allReviews.length) {
                 return res.status(200).json(success('No data found', []));
             }
-            const userReviews = allReviews.reduce((result, review) => {
+            const userReviewsMap = new Map();
+
+            allReviews.forEach((review) => {
                 review.reviews.forEach((userReview) => {
                     if (String(userReview.user._id) === userId) {
-                        result.push({ product: review.product, userReview });
+                        const productKey = String(review.product._id);
+                        if (!userReviewsMap.has(productKey)) {
+                            userReviewsMap.set(productKey, {
+                                product: review.product,
+                                userReviews: [],
+                            });
+                        }
+                        userReviewsMap
+                            .get(productKey)
+                            .userReviews.push(userReview);
                     }
                 });
-                return result;
-            }, []);
+            });
+
+            const userReviews = Array.from(userReviewsMap.values());
             res.status(200).json(
                 success('successfully get the data', userReviews)
             );

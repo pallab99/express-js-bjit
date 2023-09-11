@@ -637,3 +637,8 @@ GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1591 - 4880.
 POST /api/productReview/create 200 330 - 1961.822 ms 
 POST /api/productReview/create 500 64 - 1266.193 ms 
 POST /api/productReview/create 200 254 - 1621.868 ms 
+GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1232 - 4138.409 ms 
+GET /api/productReview/getReviewByUser/64f6cbd6e21e89419048ec51 200 1232 - 2941.244 ms 
+POST /api/productReview/create 200 254 - 1626.064 ms 
+GET /api/productReview/getReviewByUser/64f6dd545c5f6bcc8b4ce49d 200 1233 - 632.519 ms 
+GET /api/productReview/getReviewByProduct/64f01f54b5b8f3f7defe8734 200 1130 - 627.973 ms 
