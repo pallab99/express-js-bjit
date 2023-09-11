@@ -1,15 +1,38 @@
 const { failure, success } = require('../../common/response');
 const productReviewModel = require('../../model/productReview');
 const mongoose = require('mongoose');
-const { Types } = mongoose;
+const { validationResult } = require('express-validator');
+const ProductModel = require('../../model/products');
+const userModel = require('../../model/user');
 class productReviewController {
     async addRating(req, res) {
         try {
+            const validation = validationResult(req).array();
+            if (validation.length) {
+                const error = {};
+                validation.forEach((validationError) => {
+                    const property = validationError.path;
+                    error[property] = validationError.msg;
+                });
+                return res
+                    .status(422)
+                    .json(failure('Unprocessable Entity', error));
+            }
             const { user, product, message, rating } = req.body;
 
             const productExist = await productReviewModel.findOne({
                 product: String(product),
             });
+            const productFound = await ProductModel.findOne({
+                product: product,
+            });
+            const userFound = await userModel.findOne({ user: user });
+            if (!userFound) {
+                return res.status(200).json(failure('No user found'));
+            }
+            if (!productFound) {
+                return res.status(200).json(failure('No product found'));
+            }
             if (productExist) {
                 productExist.reviews.push({
                     user: user,
@@ -37,11 +60,13 @@ class productReviewController {
                     ],
                 };
                 if (productExist) {
-                    res.status(200).json(
-                        success('Successfully created the review', data)
-                    );
+                    return res
+                        .status(200)
+                        .json(success('Successfully created the review', data));
                 } else {
-                    res.status(200).json(failure('Something went wrong'));
+                    return res
+                        .status(200)
+                        .json(failure('Something went wrong'));
                 }
             } else {
                 const result = await productReviewModel.create({

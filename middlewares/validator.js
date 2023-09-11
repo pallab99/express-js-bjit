@@ -1,5 +1,6 @@
 const { query, body } = require('express-validator');
 const { EMAIL_REGEX, PHONE_REGEX } = require('../constant');
+const mongoose = require('mongoose');
 
 const validator = {
     filterProduct: [
@@ -462,6 +463,53 @@ const validator = {
                     }
                 } else {
                     throw new Error('Category cannot be empty');
+                }
+            }),
+    ],
+
+    addProductReview: [
+        body('user')
+            .exists()
+            .not()
+            .equals('')
+            .withMessage('User id cannot be empty')
+            .bail()
+            .custom((value) => {
+                if (mongoose.Types.ObjectId.isValid(value)) {
+                    return true;
+                } else {
+                    throw new Error('Invalid user id');
+                }
+            }),
+        body('product')
+            .exists()
+            .not()
+            .equals('')
+            .withMessage('Product id cannot be empty')
+            .bail()
+            .custom((value) => {
+                if (mongoose.Types.ObjectId.isValid(value)) {
+                    return true;
+                } else {
+                    throw new Error('Invalid product id');
+                }
+            }),
+        body('product')
+            .exists()
+            .not()
+            .equals('')
+            .withMessage('Message  cannot be empty')
+            .bail(),
+        body('rating')
+            .exists()
+            .withMessage('Rating can not be null')
+            .bail()
+            .custom((value) => {
+                if (!isNaN(value)) {
+                    if (value >= 0 && value <= 5) return true;
+                    throw new Error('Rating must be between 0 and 5');
+                } else {
+                    throw new Error('Rating only accepts numeric values');
                 }
             }),
     ],

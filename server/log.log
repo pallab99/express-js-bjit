@@ -587,3 +587,12 @@ POST /api/productReview/create 500 64 - 996.070 ms
 POST /api/productReview/create 500 64 - 987.370 ms 
 POST /api/productReview/create 200 324 - 1309.005 ms 
 POST /api/productReview/create 200 246 - 962.696 ms 
+POST /api/productReview/create 422 93 - 6.504 ms 
+POST /api/productReview/create 422 93 - 1.409 ms 
+POST /api/productReview/create 422 85 - 6.394 ms 
+POST /api/productReview/create 422 124 - 7.019 ms 
+POST /api/productReview/create 200 252 - 1011.226 ms 
+POST /api/productReview/create 422 85 - 1.763 ms 
+POST /api/productReview/create 422 102 - 12.707 ms 
+POST /api/productReview/create 422 106 - 3.153 ms 
+POST /api/productReview/create 200 56 - 2554.476 ms 
