@@ -494,7 +494,7 @@ const validator = {
                     throw new Error('Invalid product id');
                 }
             }),
-        body('product')
+        body('message')
             .exists()
             .not()
             .equals('')
