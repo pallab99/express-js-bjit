@@ -670,3 +670,6 @@ POST /api/productReview/create 200 246 - 1604.248 ms
 POST /api/productReview/create 200 246 - 1606.511 ms 
 DELETE /api/productReview/deleteReview/64f01f54b5b8f3f7defe8735 500 68 - 656.100 ms 
 DELETE /api/productReview/deleteReview/64f01f54b5b8f3f7defe8735 400 67 - 3.137 ms 
+DELETE /api/productReview/deleteReview/64f01f54b5b8f3f7defe8735 500 56 - 333.493 ms 
+GET /api/productReview/getReviewByProduct/64f01f54b5b8f3f7defe8734 200 846 - 648.523 ms 
+GET /api/productReview/getReviewByUser/64f6dd545c5f6bcc8b4ce49d 200 1092 - 648.589 ms 

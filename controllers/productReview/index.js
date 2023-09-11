@@ -235,6 +235,13 @@ class productReviewController {
         }
     }
 
+    /**
+     * Deletes a review for a specific product by a user.
+     *
+     * @param {object} req - The request object containing the user and product IDs.
+     * @param {object} res - The response object used to send the response.
+     * @returns {object} - A success response with a message indicating the review was deleted successfully, or a failure response with an error message.
+     */
     async deleteReview(req, res) {
         try {
             const { user } = req.body;
