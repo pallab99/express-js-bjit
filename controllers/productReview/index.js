@@ -23,10 +23,8 @@ class productReviewController {
             const productExist = await productReviewModel.findOne({
                 product: String(product),
             });
-            const productFound = await ProductModel.findOne({
-                product: product,
-            });
-            const userFound = await userModel.findOne({ user: user });
+            const productFound = await ProductModel.findById(product);
+            const userFound = await userModel.findById(user);
             if (!userFound) {
                 return res.status(200).json(failure('No user found'));
             }
@@ -104,6 +102,89 @@ class productReviewController {
             res.status(500).json(failure('Internal Server Error'));
         }
     }
+
+    async getReviewByProduct(req, res) {
+        try {
+            const { productId } = req.params;
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return res
+                    .status(500)
+                    .json(failure('Invalid product id provided'));
+            }
+            const result = await productReviewModel
+                .find({
+                    product: productId,
+                })
+                .populate('product', '-images -thumbnail')
+                .populate('reviews')
+                .populate(
+                    'reviews.user',
+                    '-address -phoneNumber -createdAt -updatedAt'
+                );
+            if (result.length > 0) {
+                return res
+                    .status(200)
+                    .json(success('Successfully get the data', result));
+            }
+            return res.status(200).json(success('No data found', []));
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal Server Error'));
+        }
+    }
+
+    async getReviewByUser(req, res) {
+        try {
+            const { userId } = req.params;
+            if (!mongoose.Types.ObjectId.isValid(userId)) {
+                return res
+                    .status(500)
+                    .json(failure('Invalid user id provided'));
+            }
+            const allReviews = await productReviewModel
+                .find({ 'reviews.user': userId })
+                .populate('product', '-thumbnail -images')
+                .populate('reviews')
+                .populate(
+                    'reviews.user',
+                    '-address -phoneNumber -createdAt -updatedAt'
+                );
+            if (!allReviews.length) {
+                return res.status(200).json(success('No data found', []));
+            }
+            const userReviews = allReviews.reduce((result, review) => {
+                review.reviews.forEach((userReview) => {
+                    if (String(userReview.user._id) === userId) {
+                        result.push({ product: review.product, userReview });
+                    }
+                });
+                return result;
+            }, []);
+            console.log(userReviews);
+            res.status(200).json(
+                success('successfully get the data', userReviews)
+            );
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failure('Internal Server Error'));
+        }
+    }
 }
 
 module.exports = new productReviewController();
+
+// const userIds = allReviews.reviews.map((item) => String(item.user));
+// console.log({ userIds });
+// const result = await productReviewModel.find({
+//     userId: { $in: userIds },
+// });
+// console.log({ result });
+// const result = await productReviewModel.find({
+//     product: productId,
+// });
+// if (result.length > 0) {
+//     return res
+//         .status(200)
+//         .json(success('Successfully get the data', result));
+// }
+// return res.status(200).json(success('No data found', []));
