@@ -681,3 +681,14 @@ POST /api/productReview/create 401 72 - 4.809 ms
 POST /api/productReview/create 422 97 - 22.691 ms 
 GET /api/productReview/getReviewByUser/64f6dd545c5f6bcc8b4ce49d 200 1092 - 714.859 ms 
 GET /api/productReview/getReviewByProduct/64f01f54b5b8f3f7defe8734 200 846 - 696.175 ms 
+POST /api/productReview/create 401 62 - 4.996 ms 
+POST /api/auth/login 200 1043 - 2698.133 ms 
+POST /api/productReview/create 500 64 - 1881.110 ms 
+POST /api/productReview/create 500 64 - 1909.677 ms 
+POST /api/productReview/create 500 64 - 1947.566 ms 
+POST /api/productReview/create 200 326 - 6511.270 ms 
+GET /api/products/details/64f01f54b5b8f3f7defe8734 200 715 - 310.630 ms 
+POST /api/productReview/create 500 64 - 1539.015 ms 
+POST /api/productReview/create 200 246 - 1878.074 ms 
+POST /api/productReview/create 200 244 - 1861.407 ms 
+GET /api/products/details/64f01f54b5b8f3f7defe8734 200 1702 - 5516.027 ms 

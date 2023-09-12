@@ -47,6 +47,15 @@ const productSchema = new Schema({
         required: false,
     },
     images: [String],
+    reviews: {
+        type: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Review',
+                required: true,
+            },
+        ],
+    },
 });
 const ProductModel = mongoose.model('Product', productSchema);
 module.exports = ProductModel;

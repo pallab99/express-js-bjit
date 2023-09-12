@@ -126,7 +126,7 @@ class ProductController {
     async getDataById(req, res) {
         try {
             const { id } = req.params;
-            const data = await ProductModel.findById(id);
+            const data = await ProductModel.findById(id).populate('reviews');
             if (data) {
                 res.status(200).json(
                     success('Successfully get the data', data)

@@ -58,6 +58,9 @@ class productReviewController {
 
                     productExist.averageRating = avg;
                     await productExist.save();
+                    productFound.reviews.push(productExist._id);
+                    productFound.rating = avg;
+                    await productFound.save();
 
                     const data = {
                         _id: productExist?._id,
@@ -84,8 +87,11 @@ class productReviewController {
 
                     const avg = sum / productExist.reviews.length;
 
-                    productExist.averageRating = avg;
+                    productExist.rating = avg;
                     await productExist.save();
+                    productFound.reviews.push(productExist._id);
+                    productFound.rating = avg;
+                    await productFound.save();
 
                     const data = {
                         _id: productExist?._id,
@@ -128,7 +134,9 @@ class productReviewController {
 
                 result.averageRating = avg;
                 await result.save();
-
+                productFound.reviews.push(result._id);
+                productFound.rating = avg;
+                await productFound.save();
                 if (result) {
                     res.status(200).json(
                         success('Successfully get the data', result)
